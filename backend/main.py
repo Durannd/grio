@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from backend.api.v1.endpoints import users, concepts, assessment
-from backend.database import engine, Base
-
+from backend.database import engine
+from backend import models
 
 app = FastAPI()
 

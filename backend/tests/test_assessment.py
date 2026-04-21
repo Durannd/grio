@@ -1,6 +1,3 @@
-from fastapi.testclient import TestClient
-from backend.main import app
-
 def test_get_assessment(client):
     response = client.get("/api/v1/assessment")
     assert response.status_code == 200
