@@ -1,5 +1,5 @@
 from neo4j import Driver
-from backend.schemas.concept import ConceptCreate
+from schemas.concept import ConceptCreate
 
 def create_concept(driver: Driver, concept: ConceptCreate):
     with driver.session() as session:

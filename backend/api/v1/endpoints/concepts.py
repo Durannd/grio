@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
-from backend.core.neo4j import driver
-from backend.crud import concept as crud_concept
-from backend.schemas import concept as schema_concept
+from core.neo4j import driver
+from crud import concept as crud_concept
+from schemas import concept as schema_concept
 
 router = APIRouter()
 

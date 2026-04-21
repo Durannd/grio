@@ -1,26 +1,50 @@
 from sqlalchemy.orm import Session
-from backend.models.question import Question, DifficultyEnum
-from backend.schemas.question import QuestionCreate
+from models.question import Question, Option, DifficultyEnum
 
 def populate_questions(db: Session):
     if db.query(Question).count() == 0:
-        questions = [
-            # Facil
-            QuestionCreate(text="Qual a capital da França?", difficulty=DifficultyEnum.facil, concept_name="Geografia"),
-            QuestionCreate(text="Quanto é 2+2?", difficulty=DifficultyEnum.facil, concept_name="Matemática"),
-            QuestionCreate(text="Qual a cor do céu?", difficulty=DifficultyEnum.facil, concept_name="Conhecimentos Gerais"),
-            # Media
-            QuestionCreate(text="Quem escreveu 'Dom Quixote'?", difficulty=DifficultyEnum.media, concept_name="Literatura"),
-            QuestionCreate(text="Qual o ponto de ebulição da água em Celsius?", difficulty=DifficultyEnum.media, concept_name="Física"),
-            QuestionCreate(text="Qual a maior cordilheira do mundo?", difficulty=DifficultyEnum.media, concept_name="Geografia"),
-            # Dificil
-            QuestionCreate(text="O que é a constante de Planck?", difficulty=DifficultyEnum.dificil, concept_name="Física Quântica"),
-            QuestionCreate(text="Quem foi o primeiro programador da história?", difficulty=DifficultyEnum.dificil, concept_name="História da Computação"),
-            QuestionCreate(text="Qual a fórmula da velocidade da luz no vácuo?", difficulty=DifficultyEnum.dificil, concept_name="Física"),
+        questions_data = [
+            {
+                "text": "Qual a capital da França?",
+                "difficulty": DifficultyEnum.facil,
+                "concept_name": "Geografia",
+                "options": ["Londres", "Paris", "Roma", "Madri"],
+                "correct_option": "Paris",
+            },
+            {
+                "text": "Quanto é 2+2?",
+                "difficulty": DifficultyEnum.facil,
+                "concept_name": "Matemática",
+                "options": ["3", "4", "5", "6"],
+                "correct_option": "4",
+            },
+            {
+                "text": "Qual a cor do céu?",
+                "difficulty": DifficultyEnum.facil,
+                "concept_name": "Conhecimentos Gerais",
+                "options": ["Verde", "Azul", "Vermelho", "Amarelo"],
+                "correct_option": "Azul",
+            },
         ]
-        for q in questions:
-            db_question = Question(**q.dict())
+        for q_data in questions_data:
+            db_question = Question(
+                text=q_data["text"],
+                difficulty=q_data["difficulty"],
+                concept_name=q_data["concept_name"],
+            )
             db.add(db_question)
+
+            options = []
+            for option_text in q_data["options"]:
+                db_option = Option(text=option_text, question=db_question)
+                db.add(db_option)
+                options.append(db_option)
+
+            db.flush()
+
+            correct_option = next(o for o in options if o.text == q_data["correct_option"])
+            db_question.correct_option = correct_option
+
         db.commit()
 
 def get_assessment_questions(db: Session):
