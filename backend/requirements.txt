@@ -5,3 +5,4 @@ pydantic
 pytest
 httpx
 neo4j
+psycopg2
