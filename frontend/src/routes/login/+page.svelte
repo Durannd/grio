@@ -1,30 +1,33 @@
 <script lang="ts">
-  import CadastroForm from "$lib/components/CadastroForm.svelte";
+  import LoginForm from "$lib/components/LoginForm.svelte";
   import { goto } from "$app/navigation";
 
-  let successMessage = "";
   let errorMessage = "";
 
   async function handleSubmit(event: any) {
     const { email, password } = event.detail;
     errorMessage = "";
-    successMessage = "";
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/users/", {
+      const formData = new URLSearchParams();
+      formData.append("username", email);
+      formData.append("password", password);
+
+      const response = await fetch("http://localhost:8000/api/v1/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify({ email, password, name: email.split("@")[0] }),
+        body: formData,
       });
 
       if (response.ok) {
-        successMessage = "Usuário criado com sucesso! Redirecionando...";
-        setTimeout(() => goto("/login"), 2000);
+        const data = await response.json();
+        localStorage.setItem("token", data.access_token);
+        goto("/dashboard");
       } else {
         const data = await response.json();
-        errorMessage = data.detail || "Ocorreu um erro.";
+        errorMessage = data.detail || "Email ou senha incorretos.";
       }
     } catch (error) {
       errorMessage = "Não foi possível conectar ao servidor.";
@@ -34,22 +37,18 @@
 
 <div class="auth-container">
   <div class="auth-header animate-slide-up stagger-1">
-    <h1 class="text-gradient">Junte-se ao Griô</h1>
-    <p>Comece sua trilha rumo à universidade.</p>
+    <h1 class="text-gradient">Acesse o Griô</h1>
+    <p>Bem-vindo de volta à sua jornada de conhecimento.</p>
   </div>
 
-  <CadastroForm on:submit={handleSubmit} />
-
-  {#if successMessage}
-    <p class="success-msg animate-slide-up stagger-3">{successMessage}</p>
-  {/if}
+  <LoginForm on:submit={handleSubmit} />
 
   {#if errorMessage}
     <p class="error-msg animate-slide-up stagger-3">{errorMessage}</p>
   {/if}
 
   <p class="auth-footer animate-slide-up stagger-3">
-    Já possui uma conta? <a href="/login">Fazer Login</a>
+    Ainda não tem uma conta? <a href="/cadastro">Cadastre-se</a>
   </p>
 </div>
 
@@ -86,16 +85,6 @@
     margin-top: 1.5rem;
     font-size: 0.9rem;
     border: 1px solid rgba(204, 79, 79, 0.2);
-  }
-
-  .success-msg {
-    color: var(--success);
-    background: rgba(103, 163, 114, 0.1);
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-sm);
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-    border: 1px solid rgba(103, 163, 114, 0.2);
   }
 
   .auth-footer {
