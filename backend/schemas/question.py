@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 
 class OptionBase(BaseModel):
@@ -10,31 +10,7 @@ class OptionCreate(OptionBase):
 class Option(OptionBase):
     id: int
 
-    class Config:
-        orm_mode = True
-
-class QuestionBase(BaseModel):
-    text: str
-    difficulty: str
-    concept_name: str
-
-class QuestionCreate(QuestionBase):
-    pass
-
-from pydantic import BaseModel, Field, field_validator
-from typing import List, Optional
-
-class OptionBase(BaseModel):
-    text: str
-
-class OptionCreate(OptionBase):
-    pass
-
-class Option(OptionBase):
-    id: int
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class QuestionBase(BaseModel):
     text: str
@@ -49,15 +25,7 @@ class Question(QuestionBase):
     options: List[Option] = []
     correct_option_id: Optional[int] = None
 
-    class Config:
-        orm_mode = True
-
-
-    class Config:
-        orm_mode = True
-
-class Assessment(BaseModel):
-    questions: List[Question]
+    model_config = ConfigDict(from_attributes=True)
 
 class Assessment(BaseModel):
     questions: List[Question]

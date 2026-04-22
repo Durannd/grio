@@ -5,4 +5,7 @@ pydantic
 pytest
 httpx
 neo4j
-psycopg2
+psycopg2-binary
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart

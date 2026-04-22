@@ -4,12 +4,21 @@ from fastapi.testclient import TestClient
 from neo4j import GraphDatabase
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 from main import app
 from database import Base, get_db
 
+# Import all models to ensure they are registered with Base metadata before create_all
+from models.user import User
+from models.question import Question, Option
+
 DATABASE_URL = "sqlite:///:memory:"
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+engine = create_engine(
+    DATABASE_URL, 
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
+)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base.metadata.create_all(bind=engine)
@@ -23,6 +32,15 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
+@pytest.fixture(scope="function", autouse=True)
+def setup_database():
+    # Setup
+    print("TABLES REGISTERED:", Base.metadata.tables.keys())
+    Base.metadata.create_all(bind=engine)
+    yield
+    # Teardown
+    Base.metadata.drop_all(bind=engine)
+
 @pytest.fixture(scope="function")
 def client():
     with TestClient(app) as c:
@@ -30,13 +48,11 @@ def client():
 
 @pytest.fixture(scope="function")
 def db_session():
-    Base.metadata.create_all(bind=engine)
     db = TestingSessionLocal()
     try:
         yield db
     finally:
         db.close()
-        Base.metadata.drop_all(bind=engine)
 
 @pytest.fixture(scope="session")
 def neo4j_driver():

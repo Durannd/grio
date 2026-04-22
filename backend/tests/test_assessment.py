@@ -11,8 +11,17 @@ def test_submit_assessment(client, neo4j_driver):
     assert user_response.status_code == 200
     user_id = user_response.json()["id"]
 
+    # Login to get token
+    login_response = client.post("/api/v1/auth/login", data={"username": "test-assessment@example.com", "password": "test"})
+    assert login_response.status_code == 200
+    token = login_response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
     # Get assessment questions
-    assessment_response = client.get("/api/v1/assessment")
+    assessment_response = client.get("/api/v1/assessment", headers=headers)
+    if assessment_response.status_code != 200:
+        print(assessment_response.json())
+    assert assessment_response.status_code == 200
     questions = assessment_response.json()["questions"]
 
     # Select the correct answer for the first question
@@ -24,7 +33,7 @@ def test_submit_assessment(client, neo4j_driver):
         "user_id": user_id,
         "answers": [{"question_id": first_question["id"], "selected_option_id": correct_option_id}]
     }
-    response = client.post("/api/v1/assessment/submit", json=submission_data)
+    response = client.post("/api/v1/assessment/submit", json=submission_data, headers=headers)
     if response.status_code != 200:
         print(response.json())
     assert response.status_code == 200

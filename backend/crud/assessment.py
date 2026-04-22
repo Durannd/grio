@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from backend.schemas.assessment import AssessmentSubmission
-from backend.models.question import Question
-from backend.core.neo4j import get_driver
+from schemas.assessment import AssessmentSubmission
+from models.question import Question
+from core.neo4j import get_driver
 from collections import defaultdict
 
 def process_assessment_submission(db: Session, submission: AssessmentSubmission):
@@ -18,19 +18,24 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
             if question.correct_option_id == answer.selected_option_id:
                 scores[concept] += 1
 
-    # Grava a proficiência no Neo4j
+    # Grava a proficiência no Neo4j usando atualização em lote (UNWIND)
     driver = get_driver()
     with driver.session() as session:
+        proficiencies_data = []
         for concept, total in totals.items():
             score = scores[concept] / total if total > 0 else 0
+            proficiencies_data.append({"concept": concept, "score": score})
+        
+        if proficiencies_data:
             session.run(
-                "MATCH (u:User {id: $user_id}) "
-                "MERGE (c:Concept {name: $concept}) "
+                "MERGE (u:User {id: $user_id}) "
+                "WITH u "
+                "UNWIND $proficiencies AS prof "
+                "MERGE (c:Concept {name: prof.concept}) "
                 "MERGE (u)-[r:HAS_PROFICIENCY]->(c) "
-                "SET r.score = $score",
+                "SET r.score = prof.score",
                 user_id=submission.user_id,
-                concept=concept,
-                score=score
+                proficiencies=proficiencies_data
             )
 
     return {"status": "success", "message": "Assessment submitted successfully."}

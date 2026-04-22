@@ -3,7 +3,7 @@ from schemas.concept import ConceptCreate
 
 def create_concept(driver: Driver, concept: ConceptCreate):
     with driver.session() as session:
-        result = session.write_transaction(_create_concept_node, concept)
+        result = session.execute_write(_create_concept_node, concept)
         return result
 
 def _create_concept_node(tx, concept: ConceptCreate):
@@ -12,4 +12,5 @@ def _create_concept_node(tx, concept: ConceptCreate):
         "RETURN c"
     )
     result = tx.run(query, name=concept.name, description=concept.description)
-    return result.single()[0]
+    node = result.single()[0]
+    return {"name": node["name"], "description": node["description"], "id": str(getattr(node, "element_id", node.id))}
