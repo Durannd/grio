@@ -99,4 +99,4 @@ htmlcov/
 .cache/
 .openclaude/
 .claude/
-docs/superpowers/
+.agent

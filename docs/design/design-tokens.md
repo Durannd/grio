@@ -11,9 +11,9 @@
 
 | Token                | Hex       | HSL                  | Uso                                              |
 |----------------------|-----------|----------------------|--------------------------------------------------|
-| `--color-primary`    | `#D4940A` | `hsl(40, 91%, 43%)`  | Ações principais, botões CTA, destaques          |
-| `--color-primary-light` | `#F2B830` | `hsl(43, 89%, 57%)` | Hover de botões, badges, notificações            |
-| `--color-primary-dark`  | `#A67208` | `hsl(40, 91%, 34%)` | Botões pressionados, bordas ativas               |
+| `--color-primary`    | `#C9A05E` | `hsl(42, 51%, 58%)`  | Dourado Logo: Ações principais, ícones de marca  |
+| `--color-primary-light` | `#DFB97B` | `hsl(42, 60%, 68%)` | Hover de botões dourados, reflexos, glows        |
+| `--color-primary-dark`  | `#9A753B` | `hsl(42, 45%, 42%)` | Bordas e estados pressed                         |
 
 ### 1.2. Cores Secundárias
 
@@ -44,29 +44,28 @@
 
 | Token                 | Hex       | Uso                                           |
 |-----------------------|-----------|-----------------------------------------------|
-| `--color-bg-primary`  | `#0F0F1A` | Fundo principal (dark mode)                    |
-| `--color-bg-secondary`| `#1A1A2E` | Cards, painéis, sidebar                        |
-| `--color-bg-elevated` | `#252540` | Elementos elevados, dropdowns, tooltips        |
-| `--color-bg-surface`  | `#F5F0E8` | Fundo principal (light mode — tom de papel)    |
-| `--color-text-primary`| `#EDEDED` | Texto principal (dark mode)                    |
-| `--color-text-secondary`| `#A0A0B8` | Texto secundário, labels, placeholders       |
-| `--color-text-dark`   | `#1A1A2E` | Texto principal (light mode)                   |
-| `--color-border`      | `#2E2E48` | Bordas sutis, separadores                      |
+| `--color-bg-primary`  | `#0A0A0A` | Fundo principal (Absolute Dark)                |
+| `--color-bg-secondary`| `#141414` | Cards, painéis de conteúdo                     |
+| `--color-bg-elevated` | `#1A1A1A` | Dropdowns, tooltips, modais                   |
+| `--color-bg-surface`  | `#FFFFFF` | Reservado para uso invertido (light mode)      |
+| `--color-text-primary`| `#FAFAFA` | Texto principal                               |
+| `--color-text-secondary`| `#A3A3A3`| Texto de suporte, descrições secundárias      |
+| `--color-text-dark`   | `#0A0A0A` | Texto escuro sobre fundos dourados            |
+| `--color-border`      | `#262626` | Separadores subtis em vidro                   |
 
 ### 1.6. Gradientes
 
 ```css
-/* Gradiente principal — usado em CTAs e destaques */
---gradient-primary: linear-gradient(135deg, #D4940A 0%, #F2B830 100%);
+/* Gradiente Dourado (Storytelling Accent) */
+--gradient-primary: linear-gradient(135deg, #DFB97B 0%, #C9A05E 50%, #9A753B 100%);
 
-/* Gradiente do Griô — identidade da marca */
---gradient-brand: linear-gradient(135deg, #2D1B69 0%, #D4940A 50%, #C45A3C 100%);
+/* Fundo Principal Translúcido (Liquid Glass) */
+--glass-bg: rgba(20, 20, 20, 0.4);
+--glass-border: 1px solid rgba(250, 250, 250, 0.05);
+--glass-blur: blur(12px);
 
-/* Gradiente de fundo — cards premium */
---gradient-surface: linear-gradient(180deg, #1A1A2E 0%, #0F0F1A 100%);
-
-/* Gradiente de streak/conquista */
---gradient-streak: linear-gradient(135deg, #C45A3C 0%, #F2B830 100%);
+/* Gradiente de fundo */
+--gradient-surface: radial-gradient(circle at 50% 0%, #1A1A1A 0%, #0A0A0A 100%);
 ```
 
 ---
@@ -77,9 +76,9 @@
 
 | Uso         | Fonte                  | Fallback               | Motivo                                  |
 |-------------|------------------------|-------------------------|-----------------------------------------|
-| Títulos     | **Plus Jakarta Sans**  | `sans-serif`            | Geométrica, bold, moderna e amigável    |
-| Corpo       | **Inter**              | `system-ui, sans-serif` | Máxima legibilidade em telas pequenas   |
-| Código/Math | **JetBrains Mono**     | `monospace`             | Para fórmulas e código quando necessário |
+| Títulos     | **Playfair Display**   | `serif`                 | Elegância, storytelling, luxo, sabedoria |
+| Corpo       | **Inter**              | `system-ui, sans-serif` | Máxima legibilidade em interfaces       |
+| Código/Math | **JetBrains Mono**     | `monospace`             | Para fórmulas matemáticas e código      |
 
 ### Escala Tipográfica
 
@@ -114,18 +113,18 @@
 ## 4. Bordas e Sombras
 
 ```css
-/* Bordas */
---radius-sm: 0.375rem;   /* Badges, tags */
---radius-md: 0.75rem;    /* Botões, inputs */
+/* Bordas (Liquid Glass usa bordas ligeiramente mais suaves) */
+--radius-sm: 0.25rem;    /* Badges */
+--radius-md: 0.5rem;     /* Inputs, Botões */
 --radius-lg: 1rem;       /* Cards */
---radius-xl: 1.5rem;     /* Modais, painéis grandes */
---radius-full: 9999px;   /* Avatares, pills */
+--radius-xl: 1.5rem;     /* Modais grandes */
+--radius-full: 9999px;   /* Pills, avatares */
 
-/* Sombras (dark mode) */
---shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
---shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
---shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
---shadow-glow: 0 0 20px rgba(212, 148, 10, 0.3);  /* Glow dourado da marca */
+/* Sombras Premium / Glows Dourados */
+--shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+--shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+--shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.8);
+--shadow-glow: 0 0 24px rgba(201, 160, 94, 0.25); /* Glow elegante com a cor do logotipo */
 ```
 
 ---
@@ -164,7 +163,6 @@
 
 | Cor               | Referência Cultural                                                     |
 |-------------------|-------------------------------------------------------------------------|
-| Dourado âmbar     | Riqueza do conhecimento como herança coletiva. Ouro do saber, não do metal. |
-| Índigo profundo   | O céu noturno sob o qual o Griô contava histórias. Profundidade e sabedoria. |
-| Terracota         | A terra brasileira — raízes, origem, pertencimento.                      |
-| Off-white quente  | O papel envelhecido da literatura de cordel, a tradição oral registrada.  |
+| Ouro Griô         | Representa a herança inestimável do conhecimento e a elegância atemporal.|
+| Absolute Dark     | O vazio inicial e o céu profundo onde o conhecimento brilha.             |
+| Glassmorphism     | A fluidez das ideias e a transparência da sabedoria.                     |
