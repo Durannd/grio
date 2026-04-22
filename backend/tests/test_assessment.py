@@ -1,15 +1,11 @@
 from fastapi.testclient import TestClient
-from backend.main import app
-from backend.core.neo4j import get_driver
+from main import app
+from core.neo4j import get_driver
 import pytest
 
 client = TestClient(app)
 
 def test_submit_assessment(client, neo4j_driver):
-    # Create test concepts
-    with neo4j_driver.session() as session:
-        session.run("CREATE (:Concept {name: 'Test Concept 1'})")
-        session.run("CREATE (:Concept {name: 'Test Concept 2'})")
     # Create a test user
     user_response = client.post("/api/v1/users/", json={"name": "Test User", "email": "test-assessment@example.com", "password": "test"})
     assert user_response.status_code == 200
@@ -42,7 +38,3 @@ def test_submit_assessment(client, neo4j_driver):
         record = result.single()
         assert record is not None
         assert record["score"] == 1.0
-
-    # Cleanup
-    with neo4j_driver.session() as session:
-        session.run("MATCH (u:User {id: $user_id}) DETACH DELETE u", user_id=user_id)
