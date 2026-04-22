@@ -1,40 +1,36 @@
 from sqlalchemy.orm import Session
-from schemas.assessment import AssessmentSubmission
-from models.question import Question
-from core.neo4j import get_driver
+from backend.schemas.assessment import AssessmentSubmission
+from backend.models.question import Question
+from backend.core.neo4j import get_driver
+from collections import defaultdict
 
 def process_assessment_submission(db: Session, submission: AssessmentSubmission):
-    score_by_concept = {}
-    total_by_concept = {}
+    # Dicionários para armazenar pontuações e totais por conceito
+    scores = defaultdict(int)
+    totals = defaultdict(int)
 
+    # Itera sobre as respostas para calcular a pontuação
     for answer in submission.answers:
         question = db.query(Question).filter(Question.id == answer.question_id).first()
-        if not question:
-            continue
+        if question:
+            concept = question.concept_name
+            totals[concept] += 1
+            if question.correct_option_id == answer.selected_option_id:
+                scores[concept] += 1
 
-        concept = question.concept_name
-        total_by_concept.setdefault(concept, 0)
-        total_by_concept[concept] += 1
-        score_by_concept.setdefault(concept, 0)
-
-        if answer.selected_option_id == question.correct_option_id:
-            score_by_concept[concept] += 1
-
+    # Grava a proficiência no Neo4j
     driver = get_driver()
     with driver.session() as session:
-        for concept, score in score_by_concept.items():
-            total = total_by_concept[concept]
-            proficiency = score / total if total > 0 else 0
+        for concept, total in totals.items():
+            score = scores[concept] / total if total > 0 else 0
             session.run(
-                """
-                MATCH (u:User {id: $user_id})
-                MERGE (c:Concept {name: $concept_name})
-                MERGE (u)-[r:HAS_PROFICIENCY]->(c)
-                SET r.score = $score
-                """,
+                "MATCH (u:User {id: $user_id}) "
+                "MERGE (c:Concept {name: $concept}) "
+                "MERGE (u)-[r:HAS_PROFICIENCY]->(c) "
+                "SET r.score = $score",
                 user_id=submission.user_id,
-                concept_name=concept,
-                score=proficiency,
+                concept=concept,
+                score=score
             )
 
-    return {"status": "success"}
+    return {"status": "success", "message": "Assessment submitted successfully."}

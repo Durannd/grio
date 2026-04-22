@@ -34,6 +34,17 @@ def client():
         yield c
     Base.metadata.drop_all(bind=engine)
 
+@pytest.fixture(scope="function", autouse=True)
+def setup_test_data(neo4j_driver):
+    with neo4j_driver.session() as session:
+        # Create concepts
+        session.run("CREATE (:Concept {name: 'Test Concept 1'})")
+        session.run("CREATE (:Concept {name: 'Test Concept 2'})")
+    yield
+    with neo4j_driver.session() as session:
+        # Cleanup
+        session.run("MATCH (c:Concept) DETACH DELETE c")
+
 @pytest.fixture(scope="function")
 def neo4j_driver():
     driver = get_driver()
