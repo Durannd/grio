@@ -1,0 +1,2602 @@
+[
+  {
+    "id": "2009_1",
+    "question_number": 1,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A atmosfera terrestre é composta pelos gases nitrogênio (N2) e oxigênio (O2), que somam cerca de 99%, e por gases traços, entre eles o gás carbônico (CO2), vapor de água (H2O), metano (CH4), ozônio (O3) e o óxido nitroso (N2O), que compõem o restante 1% do ar que respiramos. Os gases traços, por serem constituídos por pelo menos três átomos, conseguem absorver o calor irradiado pela Terra, aquecendo o planeta. Esse fenômeno, que acontece há bilhões de anos, é chamado de efeito estufa. A partir da Revolução Industrial (século XIX), a concentração de gases traços na atmosfera, em particular o CO2, tem aumentado significativamente, o que resultou no aumento da temperatura em escala global. Mais recentemente, outro fator tornou-se diretamente envolvido no aumento da concentração de CO2 na atmosfera: o desmatamento. BROWN, I. F.; ALECHANDRE, A. S. Conceitos básicos sobre clima, carbono, florestas e comunidades. A.G. Moreira & S. Schwartzman. As mudanças climáticas globais e os ecossistemas brasileiros. Brasília: Instituto de Pesquisa Ambiental da Amazônia, 2000 (adaptado). \nConsiderando o texto, uma alternativa viável para combater o efeito estufa é ",
+    "choices": {
+      "text": [
+        "reduzir o calor irradiado pela Terra mediante a substituição da produção primária pela industrialização refrigerada. ",
+        "promover a queima da biomassa vegetal, responsável pelo aumento do efeito estufa devido à produção de CH4. ",
+        "reduzir o desmatamento, mantendo-se, assim, o potencial da vegetação em absorver o CO2 da atmosfera. ",
+        "aumentar a concentração atmosférica de H2O, molécula capaz de absorver grande quantidade de calor. ",
+        "remover moléculas orgânicas polares da atmosfera, diminuindo a capacidade delas de reter calor. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_3",
+    "question_number": 3,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Estima-se que haja atualmente no mundo 40 milhões de pessoas infectadas pelo HIV (o vírus que causa a AIDS), sendo que as taxas de novas infecções continuam crescendo, principalmente na África, Ásia e Rússia. Nesse cenário de pandemia, uma vacina contra o HIV teria imenso impacto, pois salvaria milhões de vidas. Certamente seria um marco na história planetária e também uma esperança para as populações carentes de tratamento antiviral e de acompanhamento médico. TANURI, A.; FERREIRA JUNIOR, O. C. Vacina contra Aids: desafios e esperanças. Ciência Hoje (44) 26, 2009 (adaptado). \nUma vacina eficiente contra o HIV deveria ",
+    "choices": {
+      "text": [
+        "induzir a imunidade, para proteger o organismo da contaminação viral. ",
+        "ser capaz de alterar o genoma do organismo portador, induzindo a síntese de enzimas protetoras. ",
+        "produzir antígenos capazes de se ligarem ao vírus, impedindo que este entre nas células do organismo humano. ",
+        "ser amplamente aplicada em animais, visto que esses são os principais transmissores do vírus para os seres humanos. ",
+        "estimular a imunidade, minimizando a transmissão do vírus por gotículas de saliva. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_4",
+    "question_number": 4,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Em um experimento, preparou-se um conjunto de plantas por técnica de clonagem a partir de uma planta original que apresentava folhas verdes. Esse conjunto foi dividido em dois grupos, que foram tratados de maneira idêntica, com exceção das condições de iluminação, sendo um grupo exposto a ciclos de iluminação solar natural e outro mantido no escuro. Após alguns dias, observou-se que o grupo exposto à luz apresentava folhas verdes como a planta original e o grupo cultivado no escuro apresentava folhas amareladas. \nAo final do experimento, os dois grupos de plantas apresentaram ",
+    "choices": {
+      "text": [
+        "os genótipos e os fenótipos idênticos. ",
+        "os genótipos idênticos e os fenótipos diferentes. ",
+        "diferenças nos genótipos e fenótipos. ",
+        "o mesmo fenótipo e apenas dois genótipos diferentes. ",
+        "o mesmo fenótipo e grande variedade de genótipos. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_5",
+    "question_number": 5,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Na linha de uma tradição antiga, o astrônomo grego Ptolomeu (100-170 d.C.) afirmou a tese do geocentrismo, segundo a qual a Terra seria o centro do universo, sendo que o Sol, a Lua e os planetas girariam em seu redor em órbitas circulares. A teoria de Ptolomeu resolvia de modo razoável os problemas astronômicos da sua época. Vários séculos mais tarde, o clérigo e astrônomo polonês Nicolau Copérnico (1473-1543), ao encontrar inexatidões na teoria de Ptolomeu, formulou a teoria do heliocentrismo, segundo a qual o Sol deveria ser considerado o centro do universo, com a Terra, a Lua e os planetas girando circularmente em torno dele. Por fim, o astrônomo e matemático alemão Johannes Kepler (1571- 1630), depois de estudar o planeta Marte por cerca de trinta anos, verificou que a sua órbita é elíptica. Esse resultado generalizou-se para os demais planetas. \nA respeito dos estudiosos citados no texto, é correto afirmar que ",
+    "choices": {
+      "text": [
+        "Ptolomeu apresentou as ideias mais valiosas, por serem mais antigas e tradicionais. ",
+        "Copérnico desenvolveu a teoria do heliocentrismo inspirado no contexto político do Rei Sol. ",
+        "Copérnico viveu em uma época em que a pesquisa científica era livre e amplamente incentivada pelas autoridades. ",
+        "Kepler estudou o planeta Marte para atender às necessidades de expansão econômica e científica da Alemanha. ",
+        "Kepler apresentou uma teoria científica que, graças testada e aos métodos aplicados, pôde ser generalizada. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_6",
+    "question_number": 6,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O ciclo biogeoquímico do carbono compreende diversos compartimentos, entre os quais a Terra, a atmosfera e os oceanos, e diversos processos que permitem a transferência de compostos entre esses reservatórios. Os estoques de carbono armazenados na forma de recursos não renováveis, por exemplo, o petróleo, são limitados, sendo de grande relevância que se perceba a importância da substituição de combustíveis fósseis por combustíveis de fontes renováveis. \nA utilização de combustíveis fósseis interfere no ciclo do carbono, pois provoca ",
+    "choices": {
+      "text": [
+        "aumento da porcentagem de carbono contido na Terra. ",
+        "redução na taxa de fotossíntese dos vegetais superiores. ",
+        "aumento da produção de carboidratos de origem vegetal. ",
+        "aumento na quantidade de carbono presente na atmosfera. ",
+        "redução da quantidade global de carbono armazenado nos oceanos. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_7",
+    "question_number": 7,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Um novo método para produzir insulina artificial que utiliza tecnologia de DNA recombinante foi desenvolvido por pesquisadores do Departamento de Biologia Celular da Universidade de Brasília (UnB) em parceria com a iniciativa privada. Os pesquisadores modificaram geneticamente a bactéria Escherichia coli para torná-la capaz de sintetizar o hormônio. O processo permitiu fabricar insulina em maior quantidade e em apenas 30 dias, um terço do tempo necessário para obtê-la pelo método tradicional, que consiste na extração do hormônio a partir do pâncreas de animais abatidos. Ciência Hoje, 24 abr. 2001. Disponível em: http://cienciahoje.uol.com.br (adaptado). \nA produção de insulina pela técnica do DNA recombinante tem, como consequência, ",
+    "choices": {
+      "text": [
+        "o aperfeiçoamento do processo de extração de insulina a partir do pâncreas suíno. ",
+        "a seleção de microrganismos resistentes a antibióticos. ",
+        "o progresso na técnica da síntese química de hormônios. ",
+        "impacto favorável na saúde de indivíduos diabéticos. ",
+        "a criação de animais transgênicos. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_8",
+    "question_number": 8,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A economia moderna depende da disponibilidade de muita energia em diferentes formas, para funcionar e crescer. No Brasil, o consumo total de energia pelas indústrias cresceu mais de quatro vezes no período entre 1970 e 2005. Enquanto os investimentos em energias limpas e renováveis, como solar e eólica, ainda são incipientes, ao se avaliar a possibilidade de instalação de usinas geradoras de energia elétrica, diversos fatores devem ser levados em consideração, tais como os impactos causados ao ambiente e às populações locais. RICARDO, B.; CAMPANILI, M. Almanaque Brasil Socioambiental. São Paulo: Instituto Socioambiental, 2007 (adaptado). \nEm uma situação hipotética, optou-se por construir uma usina hidrelétrica em região que abrange diversas quedas d’água em rios cercados por mata, alegando-se que causaria impacto ambiental muito menor que uma usina termelétrica. Entre os possíveis impactos da instalação de uma usina hidrelétrica nessa região, inclui-se ",
+    "choices": {
+      "text": [
+        "a poluição da água por metais da usina. ",
+        "a destruição do habitat de animais terrestres. ",
+        "o aumento expressivo na liberação de CO2 para a atmosfera. ",
+        "o consumo não renovável de toda água que passa pelas turbinas. ",
+        "o aprofundamento no leito do rio, com a menor deposição de resíduos no trecho de rio anterior à represa. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_9",
+    "question_number": 9,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "As mudanças climáticas e da vegetação ocorridas nos trópicos da América do Sul têm sido bem documentadas por diversos autores, existindo um grande acúmulo de evidências geológicas ou paleoclimatológicas que evidenciam essas mudanças ocorridas durante o Quaternário nessa região. Essas mudanças resultaram em restrição da distribuição das florestas pluviais, com expansões concomitantes de habitats não-florestais durante períodos áridos (glaciais), seguido da expansão das florestas pluviais e restrição das áreas não-florestais durante períodos úmidos (interglaciais). Disponível em: http://zoo.bio.ufpr.br. Acesso em: 1 maio 2009. \nDurante os períodos glaciais, ",
+    "choices": {
+      "text": [
+        "as áreas não-florestais ficam restritas a refúgios ecológicos devido à baixa adaptabilidade de espécies não-florestais a ambientes áridos. ",
+        "grande parte da diversidade de espécies vegetais é reduzida, uma vez que necessitam de condições semelhantes a dos períodos interglaciais. ",
+        "a vegetação comum ao cerrado deve ter se limitado a uma pequena região do centro do Brasil, da qual se expandiu até atingir a atual distribuição. ",
+        "plantas com adaptações ao clima árido, como o desenvolvimento de estruturas que reduzem a perda de água, devem apresentar maior área de distribuição. ",
+        "florestas tropicais como a amazônica apresentam distribuição geográfica mais ampla, uma vez que são densas e diminuem a ação da radiação solar sobre o solo e reduzem os efeitos da aridez. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_10",
+    "question_number": 10,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A fotossíntese é importante para a vida na Terra. Nos cloroplastos dos organismos fotossintetizantes, a energia solar é convertida em energia química que, juntamente com água e gás carbônico (CO2), é utilizada para a síntese de compostos orgânicos (carboidratos). A fotossíntese é o único processo de importância biológica capaz de realizar essa conversão. Todos os organismos, incluindo os produtores, aproveitam a energia armazenada nos carboidratos para impulsionar os processos celulares, liberando CO2 para a atmosfera e água para a célula por meio da respiração celular. Além disso, grande fração dos recursos energéticos do planeta, produzidos tanto no presente (biomassa) como em tempos remotos (combustível fóssil), é resultante da atividade fotossintética. \nAs informações sobre obtenção e transformação dos recursos naturais por meio dos processos vitais de fotossíntese e respiração, descritas no texto, permitem concluir que ",
+    "choices": {
+      "text": [
+        "o CO2 e a água são moléculas de alto teor energético. ",
+        "os carboidratos convertem energia solar em energia química. ",
+        "a vida na Terra depende, em última análise, da energia proveniente do Sol. ",
+        "o processo respiratório é responsável pela retirada de carbono da atmosfera. ",
+        "a produção de biomassa e de combustível fóssil, por si, é responsável pelo aumento de CO2 atmosférico. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_11",
+    "question_number": 11,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Para que todos os órgãos do corpo humano funcionem em boas condições, é necessário que a temperatura do corpo fique sempre entre 36 ºC e 37 ºC. Para manter-se dentro dessa faixa, em dias de muito calor ou durante intensos exercícios físicos, uma série de mecanismos fisiológicos é acionada. \nPode-se citar como o principal responsável pela manutenção da temperatura corporal humana o sistema ",
+    "choices": {
+      "text": [
+        "digestório, pois produz enzimas que atuam na quebra de alimentos calóricos. ",
+        "imunológico, pois suas células agem no sangue, diminuindo a condução do calor. ",
+        "nervoso, pois promove a sudorese, que permite perda de calor por meio da evaporação da água. ",
+        "reprodutor, pois secreta hormônios que alteram a temperatura, principalmente durante a menopausa. ",
+        "endócrino, pois fabrica anticorpos que, por sua vez, atuam na variação do diâmetro dos vasos periféricos. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_13",
+    "question_number": 13,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A abertura e a pavimentação de rodovias em zonas rurais e regiões afastadas dos centros urbanos, por um lado, possibilita melhor acesso e maior integração entre as comunidades, contribuindo com o desenvolvimento social e urbano de populações isoladas. Por outro lado, a construção de rodovias pode trazer impactos indesejáveis ao meio ambiente, visto que a abertura de estradas pode resultar na fragmentação de habitats, comprometendo o fluxo gênico e as interações entre espécies silvestres, além de prejudicar o fluxo natural de rios e riachos, possibilitar o ingresso de espécies exóticas em ambientes naturais e aumentar a pressão antrópica sobre os ecossistemas nativos. BARBOSA, N. P. U.; FERNANDES, G. W. A destruição do jardim. Scientific American Brasil. Ano 7, número 80, dez. 2008 (adaptado). \nNesse contexto, para conciliar os interesses aparentemente contraditórios entre o progresso social e urbano e a conservação do meio ambiente, seria razoável ",
+    "choices": {
+      "text": [
+        "impedir a abertura e a pavimentação de rodovias em áreas rurais e em regiões preservadas, pois a qualidade de vida e as tecnologias encontradas nos centros urbanos são prescindíveis às populações rurais. ",
+        "impedir a abertura e a pavimentação de rodovias em áreas rurais e em regiões preservadas, promovendo a migração das populações rurais para os centros urbanos, onde a qualidade de vida é melhor. ",
+        "permitir a abertura e a pavimentação de rodovias apenas em áreas rurais produtivas, haja vista que nas demais áreas o retorno financeiro necessário para produzir uma melhoria na qualidade de vida da região não é garantido. ",
+        "permitir a abertura e a pavimentação de rodovias, desde que comprovada a sua real necessidade e após a realização de estudos que demonstrem ser possível contornar ou compensar seus impactos ambientais. ",
+        "permitir a abertura e a pavimentação de rodovias, haja vista que os impactos ao meio ambiente são temporários e podem ser facilmente revertidos com as tecnologias existentes para recuperação de áreas degradadas. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_17",
+    "question_number": 17,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O Brasil pode se transformar no primeiro país das Américas a entrar no seleto grupo das nações que dispõem de trens-bala. O Ministério dos Transportes prevê o lançamento do edital de licitação internacional para a construção da ferrovia de alta velocidade Rio-São Paulo. A viagem ligará os 403 quilômetros entre a Central do Brasil, no Rio, e a Estação da Luz, no centro da capital paulista, em uma hora e 25 minutos. Disponível em: http://oglobo.globo.com. Acesso em: 14 jul. 2009. \nDevido à alta velocidade, um dos problemas a ser enfrentado na escolha do trajeto que será percorrido pelo trem é o dimensionamento das curvas. Considerando-se que uma aceleração lateral confortável para os passageiros e segura para o trem seja de 0,1 g, em que g é a aceleração da gravidade (considerada igual a 10 m/s²), e que a velocidade do trem se mantenha constante em todo o percurso, seria correto prever que as curvas existentes no trajeto deveriam ter raio de curvatura mínimo de, aproximadamente, ",
+    "choices": {
+      "text": [
+        "80 m. ",
+        "430 m. ",
+        "800 m. ",
+        "1.600 m. ",
+        "6.400 m. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_23",
+    "question_number": 23,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Cerca de 1% do lixo urbano é constituído por resíduos sólidos contendo elementos tóxicos. Entre esses elementos estão metais pesados como o cádmio, o chumbo e o mercúrio, componentes de pilhas e baterias, que são perigosos à saúde humana e ao meio ambiente. Quando descartadas em lixos comuns, pilhas e baterias vão para aterros sanitários ou lixões a céu aberto, e o vazamento de seus componentes contamina o solo, os rios e o lençol freático, atingindo a flora e a fauna. Por serem bioacumulativos e não biodegradáveis, esses metais chegam de forma acumulada aos seres humanos, por meio da cadeia alimentar. A legislação vigente (Resolução CONAMA no 257/1999) regulamenta o destino de pilhas e baterias após seu esgotamento energético e determina aos fabricantes e/ou importadores a quantidade máxima permitida desses metais em cada tipo de pilha/bateria, porém o problema ainda persiste. Disponível em: http://www.mma.gov.br. Acesso em: 11 jul. 2009 (adaptado). \nUma medida que poderia contribuir para acabar definitivamente com o problema da poluição ambiental por metais pesados relatado no texto seria ",
+    "choices": {
+      "text": [
+        "deixar de consumir aparelhos elétricos que utilizem pilha ou bateria como fonte de energia. ",
+        "usar apenas pilhas ou baterias recarregáveis e de vida útil longa e evitar ingerir alimentos contaminados, especialmente peixes. ",
+        "devolver pilhas e baterias, após o esgotamento da energia armazenada, à rede de assistência técnica especializada para repasse a fabricantes e/ou importadores. ",
+        "criar nas cidades, especialmente naquelas com mais de 100 mil habitantes, pontos estratégicos de coleta de baterias e pilhas, para posterior repasse a fabricantes e/ou importadores. ",
+        "exigir que fabricantes invistam em pesquisa para a substituição desses metais tóxicos por substâncias menos nocivas ao homem e ao ambiente, e que não sejam bioacumulativas. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_27",
+    "question_number": 27,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O ônibus espacial Atlantis foi lançado ao espaço com cinco astronautas a bordo e uma câmera nova, que iria substituir uma outra danificada por um curto-circuito no telescópio Hubble. Depois de entrarem em órbita a 560 km de altura, os astronautas se aproximaram do Hubble. Dois astronautas saíram da Atlantis e se dirigiram ao telescópio. Ao abrir a porta de acesso, um deles exclamou: “Esse telescópio tem a massa grande, mas o peso é pequeno.” \nConsiderando o texto e as leis de Kepler, pode-se afirmar que a frase dita pelo astronauta ",
+    "choices": {
+      "text": [
+        "se justifica porque o tamanho do telescópio determina a sua massa, enquanto seu pequeno peso decorre da falta de ação da aceleração da gravidade. ",
+        "se justifica ao verificar que a inércia do telescópio é grande comparada à dele próprio, e que o peso do telescópio é pequeno porque a atração gravitacional criada por sua massa era pequena. ",
+        "não se justifica, porque a avaliação da massa e do peso de objetos em órbita tem por base as leis de Kepler, que não se aplicam a satélites artificiais. ",
+        "não se justifica, porque a força-peso é a força exercida pela gravidade terrestre, neste caso, sobre o telescópio e é a responsável por manter o próprio telescópio em órbita. ",
+        "não se justifica, pois a ação da força-peso implica a ação de uma força de reação contrária, que não existe naquele ambiente. A massa do telescópio poderia ser avaliada simplesmente pelo seu volume. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_30",
+    "question_number": 30,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "É possível, com 1 litro de gasolina, usando todo o calor produzido por sua combustão direta, aquecer 200 litros de água de 20 °C a 55 °C. Pode-se efetuar esse mesmo aquecimento por um gerador de eletricidade, que consome 1 litro de gasolina por hora e fornece 110 V a um resistor de 11 Ω, imerso na água, durante um certo intervalo de tempo. Todo o calor liberado pelo resistor é transferido à água. \nConsiderando que o calor específico da água é igual a <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>4</mn><mo>,</mo><mn>19</mn><msup><mtext>Jg</mtext><mrow><mo>-</mo><mn>1</mn></mrow></msup><msup><mtext>&#xB0;C</mtext><mrow><mo>-</mo><mn>1</mn></mrow></msup></math>, aproximadamente qual a quantidade de gasolina consumida para o aquecimento de água obtido pelo gerador, quando comparado ao obtido a partir da combustão? ",
+    "choices": {
+      "text": [
+        "A quantidade de gasolina consumida é igual para os dois casos. ",
+        "A quantidade de gasolina consumida pelo gerador é duas vezes maior que a consumida na combustão. ",
+        "A quantidade de gasolina consumida pelo gerador é duas vezes menor que a consumida na combustão. ",
+        "A quantidade de gasolina consumida pelo gerador é sete vezes maior que a consumida na combustão. ",
+        "A quantidade de gasolina consumida pelo gerador é sete vezes menor que a consumida na combustão. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_31",
+    "question_number": 31,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O progresso da tecnologia introduziu diversos artefatos geradores de campos eletromagnéticos. Uma das mais empregadas invenções nessa área são os telefones celulares e smartphones. As tecnologias de transmissão de celular atualmente em uso no Brasil contemplam dois sistemas. O primeiro deles é operado entre as frequências de 800 MHz e 900 MHz e constitui os chamados sistemas TDMA/CDMA. Já a tecnologia GSM, ocupa a frequência de 1.800 MHz. \nConsiderando que a intensidade de transmissão e o nível de recepção “celular” sejam os mesmos para as tecnologias de transmissão TDMA/CDMA ou GSM, se um engenheiro tiver de escolher entre as duas tecnologias para obter a mesma cobertura, levando em consideração apenas o número de antenas em uma região, ele deverá escolher: ",
+    "choices": {
+      "text": [
+        "a tecnologia GSM, pois é a que opera com ondas de maior comprimento de onda. ",
+        "a tecnologia TDMA/CDMA, pois é a que apresenta Efeito Doppler mais pronunciado. ",
+        "a tecnologia GSM, pois é a que utiliza ondas que se propagam com maior velocidade. ",
+        "qualquer uma das duas, pois as diferenças nas frequências são compensadas pelas diferenças nos comprimentos de onda. ",
+        "qualquer uma das duas, pois nesse caso as intensidades decaem igualmente da mesma forma, independentemente da frequência. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_33",
+    "question_number": 33,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Os ratos Peromyscus polionotus encontram-se distribuídos em ampla região na América do Norte. A pelagem de ratos dessa espécie varia do marrom claro até o escuro, sendo que os ratos de uma mesma população têm coloração muito semelhante. Em geral, a coloração da pelagem também é muito parecida à cor do solo da região em que se encontram, que também apresenta a mesma variação de cor, distribuída ao longo de um gradiente sul-norte. Na figura, encontram-se representadas sete diferentes populações de P. polionotus. Cada população é representada pela pelagem do rato, por uma amostra de solo e por sua posição geográfica no mapa. MULLEN, L. M.; HOEKSTRA, H. E. Natural selection along an environmental gradient: a classic cline in mouse pigmentation. Evolution, 2008. \nO mecanismo evolutivo envolvido na associação entre cores de pelagem e de substrato é ",
+    "choices": {
+      "text": [
+        "a alimentação, pois pigmentos de terra são absorvidos e alteram a cor da pelagem dos roedores. ",
+        "o fluxo gênico entre as diferentes populações, que mantém constante a grande diversidade interpopulacional. ",
+        "a seleção natural, que, nesse caso, poderia ser entendida como a sobrevivência diferenciada de indivíduos com características distintas. ",
+        "a mutação genética, que, em certos ambientes, como os de solo mais escuro, têm maior ocorrência e capacidade de alterar significativamente a cor da pelagem dos animais. ",
+        "a herança de caracteres adquiridos, capacidade de organismos se adaptarem a diferentes ambientes e transmitirem suas características genéticas aos descendentes. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_34",
+    "question_number": 34,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O lixo orgânico de casa – constituído de restos de verduras, frutas, legumes, cascas de ovo, aparas de grama, entre outros –, se for depositado nos lixões, pode contribuir para o aparecimento de animais e de odores indesejáveis. Entretanto, sua reciclagem gera um excelente adubo orgânico, que pode ser usado no cultivo de hortaliças, frutíferas e plantas ornamentais. A produção do adubo ou composto orgânico se dá por meio da compostagem, um processo simples que requer alguns cuidados especiais. O material que é acumulado diariamente em recipientes próprios deve ser revirado com auxílio de ferramentas adequadas, semanalmente, de forma a homogeneizá-lo. É preciso também umedecê-lo periodicamente. O material de restos de capina pode ser intercalado entre uma camada e outra de lixo da cozinha. Por meio desse método, o adubo orgânico estará pronto em aproximadamente dois a três meses. \nComo usar o lixo orgânico em casa? Ciência Hoje, v. 42, jun. 2008 (adaptado). Suponha que uma pessoa, desejosa de fazer seu próprio adubo orgânico, tenha seguido o procedimento descrito no texto, exceto no que se refere ao umedecimento periódico do composto. Nessa situação, ",
+    "choices": {
+      "text": [
+        "o processo de compostagem iria produzir intenso mau cheiro. ",
+        "o adubo formado seria pobre em matéria orgânica que não foi transformada em composto. ",
+        "a falta de água no composto vai impedir que microrganismos decomponham a matéria orgânica. ",
+        "a falta de água no composto iria elevar a temperatura da mistura, o que resultaria na perda de nutrientes essenciais. ",
+        "apenas microrganismos que independem de oxigênio poderiam agir sobre a matéria orgânica e transformá-la em adubo. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_35",
+    "question_number": 35,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O Sol representa uma fonte limpa e inesgotável de energia para o nosso planeta. Essa energia pode ser captada por aquecedores solares, armazenada e convertida posteriormente em trabalho útil. Considere determinada região cuja insolação — potência solar incidente na superfície da Terra — seja de 800 watts/m². Uma usina termossolar utiliza concentradores solares parabólicos que chegam a dezenas de quilômetros de extensão. Nesses coletores solares parabólicos, a luz refletida pela superfície parabólica espelhada é focalizada em um receptor em forma de cano e aquece o óleo contido em seu interior a 400 °C. O calor desse óleo é transferido para a água, vaporizando-a em uma caldeira. O vapor em alta pressão movimenta uma turbina acoplada a um gerador de energia elétrica. \nConsiderando que a distância entre a borda inferior e a borda superior da superfície refletora tenha 6 m de largura e que focaliza no receptor os 800 watts/m² de radiação provenientes do Sol, e que o calor específico da água é <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>1</mn><msup><mtext>g</mtext><mrow><mo>-</mo><mn>1</mn></mrow></msup><msup><mtext>&#xB0;C</mtext><mrow><mo>-</mo><mn>1</mn></mrow></msup><mo>=</mo><mn>4200</mn><msup><mtext>Jkg</mtext><mrow><mo>-</mo><mn>1</mn></mrow></msup><msup><mtext>&#xB0;C</mtext><mrow><mo>-</mo><mn>1</mn></mrow></msup></math>, então o comprimento linear do refletor parabólico necessário para elevar a temperatura de 1 m³ (equivalente a 1 t) de água de 20 °C para 100 °C, em uma hora, estará entre ",
+    "choices": {
+      "text": [
+        "15 m e 21 m. ",
+        "22 m e 30 m. ",
+        "105 m e 125 m. ",
+        "680 m e 710 m. ",
+        "6.700 m e 7.150 m. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_37",
+    "question_number": 37,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Sabe-se que o olho humano não consegue diferenciar componentes de cores e vê apenas a cor resultante, diferentemente do ouvido, que consegue distinguir, por exemplo, dois instrumentos diferentes tocados simultaneamente. Os raios luminosos do espectro visível, que têm comprimento de onda entre 380 nm e 780 nm, incidem na córnea, passam pelo cristalino e são projetados na retina. Na retina, encontram-se dois tipos de fotorreceptores, os cones e os bastonetes, que convertem a cor e a intensidade da luz recebida em impulsos nervosos. Os cones distinguem as cores primárias: vermelho, verde e azul, e os bastonetes diferenciam apenas níveis de intensidade, sem separar comprimentos de onda. Os impulsos nervosos produzidos são enviados ao cérebro por meio do nervo óptico, para que se dê a percepção da imagem. \nUm indivíduo que, por alguma deficiência, não consegue captar as informações transmitidas pelos cones, perceberá um objeto branco, iluminado apenas por luz vermelha, como ",
+    "choices": {
+      "text": [
+        "um objeto indefinido, pois as células que captam a luz estão inativas. ",
+        "um objeto rosa, pois haverá mistura da luz vermelha com o branco do objeto. ",
+        "um objeto verde, pois o olho não consegue diferenciar componentes de cores. ",
+        "um objeto cinza, pois os bastonetes captam luminosidade, porém não diferenciam cor. ",
+        "um objeto vermelho, pois a retina capta a luz refletida pelo objeto, transformando-a em vermelho. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_38",
+    "question_number": 38,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Durante uma ação de fiscalização em postos de combustíveis, foi encontrado um mecanismo inusitado para enganar o consumidor. Durante o inverno, o responsável por um posto de combustível compra álcool por R$ 0,50 por litro, a uma temperatura de 5 °C. Para revender o líquido aos motoristas, instalou um mecanismo na bomba de combustível para aquecê-lo, para que atinja a temperatura de 35 °C, sendo o litro de álcool revendido a R$ 1,60. Diariamente o posto compra 20 mil litros de álcool a 5 ºC e os revende. \nCom relação à situação hipotética descrita no texto e dado que o coeficiente de dilatação volumétrica do álcool é de 1×10-3 ºC-1, desprezando-se o custo da energia gasta no aquecimento do combustível, o ganho financeiro que o dono do posto teria obtido devido ao aquecimento do álcool após uma semana de vendas estaria entre ",
+    "choices": {
+      "text": [
+        "R$ 500,00 e R$ 1.000,00. ",
+        "R$ 1.050,00 e R$ 1.250,00. ",
+        "R$ 4.000,00 e R$ 5.000,00. ",
+        "R$ 6.000,00 e R$ 6.900,00. ",
+        "R$ 7.000,00 e R$ 7.950,00. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_39",
+    "question_number": 39,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A invenção da geladeira proporcionou uma revolução no aproveitamento dos alimentos, ao permitir que fossem armazenados e transportados por longos períodos. A figura apresentada ilustra o processo cíclico de funcionamento de uma geladeira, em que um gás no interior de uma tubulação é forçado a circular entre o congelador e a parte externa da geladeira. É por meio dos processos de compressão, que ocorre na parte externa, e de expansão, que ocorre na parte interna, que o gás proporciona a troca de calor entre o interior e o exterior da geladeira. Disponível em: http://home.howstuffworks.com. Acesso em: 19 out. 2008 (adaptado). \nNos processos de transformação de energia envolvidos no funcionamento da geladeira, ",
+    "choices": {
+      "text": [
+        "a expansão do gás é um processo que cede a energia necessária ao resfriamento da parte interna da geladeira. ",
+        "o calor flui de forma não-espontânea da parte mais fria, no interior, para a mais quente, no exterior da geladeira. ",
+        "a quantidade de calor cedida ao meio externo é igual ao calor retirado da geladeira. ",
+        "a eficiência é tanto maior quanto menos isolado termicamente do ambiente externo for o seu compartimento interno. ",
+        "a energia retirada do interior pode ser devolvida à geladeira abrindo-se a sua porta, o que reduz seu consumo de energia. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_40",
+    "question_number": 40,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Na manipulação em escala nanométrica, os átomos revelam características peculiares, podendo apresentar tolerância à temperatura, reatividade química, condutividade elétrica, ou mesmo exibir força de intensidade extraordinária. Essas características explicam o interesse industrial pelos nanomateriais que estão sendo muito pesquisados em diversas áreas, desde o desenvolvimento de cosméticos, tintas e tecidos, até o de terapias contra o câncer. LACAVA, Z. G. M; MORAIS, P. C. Nanobiotecnologia e Saúde. Disponível em: http://www.comciencia.br (adaptado). \nA utilização de nanopartículas na indústria e na medicina requer estudos mais detalhados, pois ",
+    "choices": {
+      "text": [
+        "as partículas, quanto menores, mais potentes e radiativas se tornam. ",
+        "as partículas podem ser manipuladas, mas não caracterizadas com a atual tecnologia. ",
+        "as propriedades biológicas das partículas somente o que podem ser testadas em microrganismos. ",
+        "as partículas podem atravessar poros e canais celulares, poderia causar impactos desconhecidos aos seres vivos e, até mesmo, aos ecossistemas. ",
+        "o organismo humano apresenta imunidade contra partículas tão pequenas, já que apresentam a mesma dimensão das bactérias (um bilionésimo de metro). "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_41",
+    "question_number": 41,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Uma vítima de acidente de carro foi encontrada carbonizada devido a uma explosão. Indícios, como certos adereços de metal usados pela vítima, sugerem que a mesma seja filha de um determinado casal. Uma equipe policial de perícia teve acesso ao material biológico carbonizado da vítima, reduzido, praticamente, a fragmentos de ossos. Sabe-se que é possível obter DNA em condições para análise genética de parte do tecido interno de ossos. Os peritos necessitam escolher, entre cromossomos autossômicos, cromossomos sexuais (X e Y) ou DNAmt (DNA mitocondrial), a melhor opção para identificação do parentesco da vítima com o referido casal. Sabe-se que, entre outros aspectos, o número de cópias de um mesmo cromossomo por célula maximiza a chance de se obter moléculas não degradadas pelo calor da explosão. \nCom base nessas informações e tendo em vista os diferentes padrões de herança de cada fonte de DNA citada, a melhor opção para a perícia seria a utilização ",
+    "choices": {
+      "text": [
+        "do DNAmt, transmitido ao longo da linhagem materna, pois, em cada célula humana, há várias cópias dessa molécula. ",
+        "do cromossomo X, pois a vítima herdou duas cópias desse cromossomo, estando assim em número superior aos demais. ",
+        "do cromossomo autossômico, pois esse cromossomo apresenta maior quantidade de material genético quando comparado aos nucleares, como, por exemplo, o DNAmt. ",
+        "do cromossomo Y, pois, em condições normais, este é transmitido integralmente do pai para toda a prole e está presente em duas cópias em células de indivíduos do sexo feminino. ",
+        "de marcadores genéticos em cromossomos autossômicos, pois estes, além de serem transmitidos pelo pai e pela mãe, estão presentes em 44 cópias por célula, e os demais, em apenas uma. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_42",
+    "question_number": 42,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O cultivo de camarões de água salgada vem se desenvolvendo muito nos últimos anos na região Nordeste do Brasil e, em algumas localidades, passou a ser a principal atividade econômica. Uma das grandes preocupações dos impactos negativos dessa atividade está relacionada à descarga, sem nenhum tipo de tratamento, dos efluentes dos viveiros diretamente no ambiente marinho, em estuários ou em manguezais. Esses efluentes possuem matéria orgânica particulada e dissolvida, amônia, nitrito, nitrato, fosfatos, partículas de sólidos em suspensão e outras substâncias que podem ser consideradas contaminantes potenciais. CASTRO, C. B.; ARAGÃO, J. S.; COSTA-LOTUFO, L. V. Monitoramento da toxicidade de efluentes de uma fazenda de cultivo de camarão marinho. Anais do IX Congresso Brasileiro de Ecotoxicologia, 2006 (adaptado). \nSuponha que tenha sido construída uma fazenda de carcinicultura próximo a um manguezal. Entre as perturbações ambientais causadas pela fazenda, espera-se que ",
+    "choices": {
+      "text": [
+        "a atividade microbiana se torne responsável pela reciclagem do fósforo orgânico excedente no ambiente marinho. ",
+        "a relativa instabilidade das condições marinhas torne as alterações de fatores físico-químicos pouco críticas à vida no mar. ",
+        "a amônia excedente seja convertida em nitrito, por meio do processo de nitrificação, e em nitrato, formado como produto intermediário desse processo. ",
+        "os efluentes promovam o crescimento excessivo de plantas aquáticas devido à alta diversidade de espécies vegetais permanentes no manguezal. ",
+        "o impedimento da penetração da luz pelas partículas em suspensão venha a comprometer a produtividade primária do ambiente marinho, que resulta da atividade metabólica do fitoplâncton. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_44",
+    "question_number": 44,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O álcool hidratado utilizado como combustível veicular é obtido por meio da destilação fracionada de soluções aquosas geradas a partir da fermentação de biomassa. Durante a destilação, o teor de etanol da mistura é aumentado, até o limite de 96% em massa. \nConsidere que, em uma usina de produção de etanol, 800 kg de uma mistura etanol/água com concentração 20% em massa de etanol foram destilados, sendo obtidos 100 kg de álcool hidratado 96% em massa de etanol. A partir desses dados, é correto concluir que a destilação em questão gerou um resíduo com uma concentração de etanol em massa ",
+    "choices": {
+      "text": [
+        "de 0%. ",
+        "de 8,0%. ",
+        "entre 8,4% e 8,6%. ",
+        "entre 9,0% e 9,2%. ",
+        "entre 13% e 14%. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_46",
+    "question_number": 46,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O Egito é visitado anualmente por milhões de turistas de todos os quadrantes do planeta, desejosos de ver com os próprios olhos a grandiosidade do poder esculpida em pedra há milênios: as pirâmides de Gizeh, as tumbas do Vale dos Reis e os numerosos templos construídos ao longo do Nilo. \nO que hoje se transformou em atração turística era, no passado, interpretado de forma muito diferente, pois ",
+    "choices": {
+      "text": [
+        "significava, entre outros aspectos, o poder que os faraós tinham para escravizar grandes contingentes populacionais que trabalhavam nesses monumentos. ",
+        "representava para as populações do alto Egito a possibilidade de migrar para o sul e encontrar trabalho nos canteiros faraônicos. ",
+        "significava a solução para os problemas econômicos, uma vez que os faraós sacrificavam aos deuses suas riquezas, construindo templos. ",
+        "representava a possibilidade de o faraó ordenar a sociedade, obrigando os desocupados a trabalharem em obras públicas, que engrandeceram o próprio Egito. ",
+        "significava um peso para a população egípcia, que condenava o luxo faraônico e a religião baseada em crenças e superstições. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_47",
+    "question_number": 47,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O que se entende por Corte do antigo regime é, em primeiro lugar, a casa de habitação dos reis de França, de suas famílias, de todas as pessoas que, de perto ou de longe, dela fazem parte. As despesas da Corte, da imensa casa dos reis, são consignadas no registro das despesas do reino da França sob a rubrica significativa de Casas Reais. ELIAS, N. A sociedade de corte. Lisboa: Estampa, 1987. \nAlgumas casas de habitação dos reis tiveram grande efetividade política e terminaram por se transformar em patrimônio artístico e cultural, cujo exemplo é ",
+    "choices": {
+      "text": [
+        "o palácio de Versalhes. ",
+        "o Museu Britânico. ",
+        "a catedral de Colônia. ",
+        "a Casa Branca. ",
+        "a pirâmide do faraó Quéops. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_48",
+    "question_number": 48,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Hoje em dia, nas grandes cidades, enterrar os mortos é uma prática quase íntima, que diz respeito apenas à família. A menos, é claro, que se trate de uma personalidade conhecida. Entretanto, isso nem sempre foi assim. Para um historiador, os sepultamentos são uma fonte de informações importantes para que se compreenda, por exemplo, a vida política das sociedades. \nNo que se refere às práticas sociais ligadas aos sepultamentos, ",
+    "choices": {
+      "text": [
+        "na Grécia Antiga, as cerimônias fúnebres eram desvalorizadas, porque o mais importante era a democracia experimentada pelos vivos. ",
+        "na Idade Média, a Igreja tinha pouca influência sobre os rituais fúnebres, preocupando-se mais com a salvação da alma. ",
+        "no Brasil colônia, o sepultamento dos mortos nas igrejas era regido pela observância da hierarquia social. ",
+        "na época da Reforma, o catolicismo condenou os excessos de gastos que a burguesia fazia para sepultar seus mortos. ",
+        "no período posterior à Revolução Francesa, devido as grandes perturbações sociais, abandona-se a prática do luto. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_49",
+    "question_number": 49,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A Idade Média é um extenso período da História do Ocidente cuja memória é construída e reconstruída segundo as circunstâncias das épocas posteriores. Assim, desde o Renascimento, esse período vem sendo alvo de diversas interpretações que dizem mais sobre o contexto histórico em que são produzidas do que propriamente sobre o Medievo. \nUm exemplo acerca do que está exposto no texto acima é ",
+    "choices": {
+      "text": [
+        "a associação que Hitler estabeleceu entre o III Reich e o Sacro Império Romano Germânico. ",
+        "o retorno dos valores cristãos medievais, presentes nos documentos do Concílio Vaticano II. ",
+        "a luta dos negros sul-africanos contra o apartheid inspirada por valores dos primeiros cristãos. ",
+        "o fortalecimento político de Napoleão Bonaparte, que se justificava na amplitude de poderes que tivera Carlos Magno. ",
+        "a tradição heroica da cavalaria medieval, que foi afetada negativamente pelas produções cinematográficas de Hollywood. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_50",
+    "question_number": 50,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A primeira metade do século XX foi marcada por conflitos e processos que a inscreveram como um dos mais violentos períodos da história humana. \nEntre os principais fatores que estiveram na origem dos conflitos ocorridos durante a primeira metade do século XX estão ",
+    "choices": {
+      "text": [
+        "a crise do colonialismo, a ascensão do nacionalismo e do totalitarismo. ",
+        "o enfraquecimento do império britânico, a Grande Depressão e a corrida nuclear. ",
+        "o declínio britânico, o fracasso da Liga das Nações e a Revolução Cubana. ",
+        "a corrida armamentista, o terceiro-mundismo e o expansionismo soviético. ",
+        "a Revolução Bolchevique, o imperialismo e a unificação da Alemanha. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_51",
+    "question_number": 51,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Os regimes totalitários da primeira metade do século XX apoiaram-se fortemente na mobilização da juventude em torno da defesa de ideias grandiosas para o futuro da nação. Nesses projetos, os jovens deveriam entender que só havia uma pessoa digna de ser amada e obedecida, que era o líder. Tais movimentos sociais juvenis contribuíram para a implantação e a sustentação do nazismo, na Alemanha, e do fascismo, na Itália, Espanha e Portugal. \nA atuação desses movimentos juvenis caracterizava-se ",
+    "choices": {
+      "text": [
+        "pelo sectarismo e pela forma violenta e radical com que enfrentavam os opositores ao regime. ",
+        "pelas propostas de conscientização da população acerca dos seus direitos como cidadãos. ",
+        "pela promoção de um modo de vida saudável, que mostrava os jovens como exemplos a seguir. ",
+        "pelo diálogo, ao organizar debates que opunham jovens idealistas e velhas lideranças conservadoras. ",
+        "pelos métodos políticos populistas e pela organização de comícios multitudinários. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_52",
+    "question_number": 52,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Do ponto de vista geopolítico, a Guerra Fria dividiu a Europa em dois blocos. Essa divisão propiciou a formação de alianças antagônicas de caráter militar, como a OTAN, que aglutinava os países do bloco ocidental, e o Pacto de Varsóvia, que concentrava os do bloco oriental. É importante destacar que, na formação da OTAN, estão presentes, além dos países do oeste europeu, os EUA e o Canadá. Essa divisão histórica atingiu igualmente os âmbitos político e econômico que se refletia pela opção entre os modelos capitalista e socialista. \nEssa divisão europeia ficou conhecida como ",
+    "choices": {
+      "text": [
+        "Cortina de Ferro. ",
+        "Muro de Berlim. ",
+        "União Europeia. ",
+        "Convenção de Ramsar. ",
+        "Conferência de Estocolmo. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_53",
+    "question_number": 53,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O ano de 1968 ficou conhecido pela efervescência social, tal como se pode comprovar pelo seguinte trecho, retirado de texto sobre propostas preliminares para uma revolução cultural: “É preciso discutir em todos os lugares e com todos. O dever de ser responsável e pensar politicamente diz respeito a todos, não é privilégio de uma minoria de iniciados. Não devemos nos surpreender com o caos das ideias, pois essa é a condição para a emergência de novas ideias. Os pais do regime devem compreender que autonomia não é uma palavra vã; ela supõe a partilha do poder, ou seja, a mudança de sua natureza. Que ninguém tente rotular o movimento atual; ele não tem etiquetas e não precisa delas”. Journal de la comune étudiante. Textes et documents. Paris: Seuil, 1969 (adaptado). \nOs movimentos sociais, que marcaram o ano de 1968, ",
+    "choices": {
+      "text": [
+        "foram manifestações desprovidas de conotação política, que tinham o objetivo de questionar a rigidez dos padrões de comportamento social fundados em valores tradicionais da moral religiosa. ",
+        "restringiram-se às sociedades de países desenvolvidos, onde a industrialização avançada, a penetração dos meios de comunicação de massa e a alienação cultural que deles resultava eram mais evidentes. ",
+        "resultaram no fortalecimento do conservadorismo político, social e religioso que prevaleceu nos países ocidentais durante as décadas de 70 e 80. ",
+        "tiveram baixa repercussão no plano político, apesar de seus fortes desdobramentos nos planos social e cultural, expressos na mudança de costumes e na contracultura. ",
+        "inspiraram futuras mobilizações, como o pacifismo, o ambientalismo, a promoção da equidade de gêneros e a defesa dos direitos das minorias. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_54",
+    "question_number": 54,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Os Yanomami constituem uma sociedade indígena do norte da Amazônia e formam um amplo conjunto linguístico e cultural. Para os Yanomami, urihi, a “terra- floresta”, não é um mero cenário inerte, objeto de exploração econômica, e sim uma entidade viva, animada por uma dinâmica de trocas entre os diversos seres que a povoam. A floresta possui um sopro vital, wixia, que é muito longo. Se não a desmatarmos, ela não morrerá. Ela não se decompõe, isto é, não se desfaz. É graças ao seu sopro úmido que as plantas crescem. A floresta não está morta pois, se fosse assim, as florestas não teriam folhas. Tampouco se veria água. Segundo os Yanomami, se os brancos os fizerem desaparecer para desmatá-la e morar no seu lugar, ficarão pobres e acabarão tendo fome e sede. ALBERT, B. Yanomami, o espírito da floresta. Almanaque Brasil Socioambiental. São Paulo: ISA, 2007 (adaptado). \nDe acordo com o texto, os Yanomami acreditam que ",
+    "choices": {
+      "text": [
+        "a floresta não possui organismos decompositores. ",
+        "o potencial econômico da floresta deve ser explorado. ",
+        "o homem branco convive harmonicamente com urihi. ",
+        "as folhas e a água são menos importantes para a floresta que seu sopro vital. ",
+        "Wixia é a capacidade que tem a floresta de se sustentar por meio de processos vitais. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_55",
+    "question_number": 55,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O fim da Guerra Fria e da bipolaridade, entre as décadas de 1980 e 1990, gerou expectativas de que seria instaurada uma ordem internacional marcada pela redução de conflitos e pela multipolaridade. \nO panorama estratégico do mundo pós-Guerra Fria apresenta ",
+    "choices": {
+      "text": [
+        "o aumento de conflitos internos associados ao nacionalismo, às disputas étnicas, ao extremismo religioso e ao fortalecimento de ameaças como o terrorismo, o tráfico de drogas e o crime organizado. ",
+        "o fim da corrida armamentista e a redução dos gastos militares das grandes potências, o que se traduziu em maior estabilidade nos continentes europeu e asiático, que tinham sido palco da Guerra Fria. ",
+        "o desengajamento das grandes potências, pois as intervenções militares em regiões assoladas por conflitos passaram a ser realizadas pela Organização das Nações Unidas (ONU), com maior envolvimento de países emergentes. ",
+        "a plena vigência do Tratado de Não Proliferação, que afastou a possibilidade de um conflito nuclear como ameaça global, devido à crescente consciência política internacional acerca desse perigo. ",
+        "a condição dos EUA como única superpotência, mas que se submetem às decisões da ONU no que concerne às ações militares. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_56",
+    "question_number": 56,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Na democracia estado-unidense, os cidadãos são incluídos na sociedade pelo exercício pleno dos direitos políticos e também pela ideia geral de direito de propriedade. Compete ao governo garantir que esse direito não seja violado. Como consequência, mesmo aqueles que possuem uma pequena propriedade sentem-se cidadãos de pleno direito. \nNa tradição política dos EUA, uma forma de incluir socialmente os cidadãos é ",
+    "choices": {
+      "text": [
+        "submeter o indivíduo à proteção do governo. ",
+        "hierarquizar os indivíduos segundo suas posses. ",
+        "estimular a formação de propriedades comunais. ",
+        "vincular democracia e possibilidades econômicas individuais. ",
+        "defender a obrigação de que todos os indivíduos tenham propriedades. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_57",
+    "question_number": 57,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Na década de 30 do século XIX, Tocqueville escreveu as seguintes linhas a respeito da moralidade nos EUA: “A opinião pública norte-americana é particularmente dura com a falta de moral, pois esta desvia a atenção frente à busca do bem-estar e prejudica a harmonia doméstica, que é tão essencial ao sucesso dos negócios. Nesse sentido, pode-se dizer que ser casto é uma questão de honra”. TOCQUEVILLE, A. Democracy in America. Chicago: Encyclopædia Britannica, Inc., Great Books 44, 1990 (adaptado). \nDo trecho, infere-se que, para Tocqueville, os norte- americanos do seu tempo ",
+    "choices": {
+      "text": [
+        "buscavam o êxito, descurando as virtudes cívicas. ",
+        "tinham na vida moral uma garantia de enriquecimento rápido. ",
+        "valorizavam um conceito de honra dissociado do comportamento ético. ",
+        "relacionavam a conduta moral dos indivíduos com o progresso econômico. ",
+        "acreditavam que o comportamento casto perturbava a harmonia doméstica. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_58",
+    "question_number": 58,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Segundo Aristóteles, “na cidade com o melhor conjunto de normas e naquela dotada de homens absolutamente justos, os cidadãos não devem viver uma vida de trabalho trivial ou de negócios — esses tipos de vida são desprezíveis e incompatíveis com as qualidades morais —, tampouco devem ser agricultores os aspirantes à cidadania, pois o lazer é indispensável ao desenvolvimento das qualidades morais e à prática das atividades políticas”. VAN ACKER, T. Grécia. A vida cotidiana na cidade-Estado. São Paulo: Atual, 1994. \nO trecho, retirado da obra Política, de Aristóteles, permite compreender que a cidadania ",
+    "choices": {
+      "text": [
+        "possui uma dimensão histórica que deve ser criticada, pois é condenável que os políticos de qualquer época fiquem entregues à ociosidade, enquanto o resto dos cidadãos tem de trabalhar. ",
+        "era entendida como uma dignidade própria dos grupos sociais superiores, fruto de uma concepção política profundamente hierarquizada da sociedade. ",
+        "estava vinculada, na Grécia Antiga, a uma percepção política democrática, que levava todos os habitantes da pólis a participarem da vida cívica. ",
+        "tinha profundas conexões com a justiça, razão pela qual o tempo livre dos cidadãos deveria ser dedicado às atividades vinculadas aos tribunais. ",
+        "vivida pelos atenienses era, de fato, restrita àqueles que se dedicavam à política e que tinham tempo para resolver os problemas da cidade. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_59",
+    "question_number": 59,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Para Caio Prado Jr., a formação brasileira se completaria no momento em que fosse superada a nossa herança de inorganicidade social ― o oposto da interligação com objetivos internos ― trazida da colônia. Este momento alto estaria, ou esteve, no futuro. Se passarmos a Sérgio Buarque de Holanda, encontraremos algo análogo. O país será moderno e estará formado quando superar a sua herança portuguesa, rural e autoritária, quando então teríamos um país democrático. Também aqui o ponto de chegada está mais adiante, na dependência das decisões do presente. Celso Furtado, por seu turno, dirá que a nação não se completa enquanto as alavancas do comando, principalmente do econômico, não passarem para dentro do país. Como para os outros dois, a conclusão do processo encontra-se no futuro, que agora parece remoto. SCHWARZ, R. Os sete fôlegos de um livro. Sequências brasileiras. São Paulo: Cia. das Letras,1999 (adaptado). \nAcerca das expectativas quanto à formação do Brasil, a sentença que sintetiza os pontos de vista apresentados no texto é: ",
+    "choices": {
+      "text": [
+        "Brasil, um país que vai pra frente. ",
+        "Brasil, a eterna esperança. ",
+        "Brasil, glória no passado, grandeza no presente. ",
+        "Brasil, terra bela, pátria grande. ",
+        "Brasil, gigante pela própria natureza. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_60",
+    "question_number": 60,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A definição de eleitor foi tema de artigos nas Constituições brasileiras de 1891 e de 1934. Diz a Constituição da República dos Estados Unidos do Brasil de 1891: Art. 70. São eleitores os cidadãos maiores de 21 anos que se alistarem na forma da lei. A Constituição da República dos Estados Unidos do Brasil de 1934, por sua vez, estabelece que: Art. 180. São eleitores os brasileiros de um e de outro sexo, maiores de 18 anos, que se alistarem na forma da lei. \nAo se comparar os dois artigos, no que diz respeito ao gênero dos eleitores, depreende-se que ",
+    "choices": {
+      "text": [
+        "a Constituição de 1934 avançou ao reduzir a idade mínima para votar. ",
+        "a Constituição de 1891, ao se referir a cidadãos, referia-se também às mulheres. ",
+        "os textos de ambas as Cartas permitiam que qualquer cidadão fosse eleitor. ",
+        "o texto da carta de 1891 já permitia o voto feminino. ",
+        "a Constituição de 1891 considerava eleitores apenas indivíduos do sexo masculino. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_61",
+    "question_number": 61,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O autor da constituição de 1937, Francisco Campos, afirma no seu livro, O Estado Nacional, que o eleitor seria apático; a democracia de partidos conduziria à desordem; a independência do Poder Judiciário acabaria em injustiça e ineficiência; e que apenas o Poder Executivo, centralizado em Getúlio Vargas, seria capaz de dar racionalidade imparcial ao Estado, pois Vargas teria providencial intuição do bem e da verdade, além de ser um gênio político. CAMPOS, F. O Estado nacional. Rio de Janeiro: José Olympio, 1940 (adaptado). \nSegundo as ideias de Francisco Campos, ",
+    "choices": {
+      "text": [
+        "os eleitores, políticos e juízes seriam mal-intencionados. ",
+        "o governo Vargas seria um mal necessário, mas transitório. ",
+        "Vargas seria o homem adequado para implantar a democracia de partidos. ",
+        "a Constituição de 1937 seria a preparação para uma futura democracia liberal. ",
+        "Vargas seria o homem capaz de exercer o poder de modo inteligente e correto. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_62",
+    "question_number": 62,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A partir de 1942 e estendendo-se até o final do Estado Novo, o Ministro do Trabalho, Indústria e Comércio de Getúlio Vargas falou aos ouvintes da Rádio Nacional semanalmente, por dez minutos, no programa “Hora do Brasil”. O objetivo declarado do governo era esclarecer os trabalhadores acerca das inovações na legislação de proteção ao trabalho. GOMES, A. C. A invenção do trabalhismo. Rio de Janeiro: IUPERJ / Vértice. São Paulo: Revista dos Tribunais, 1988 (adaptado). \nOs programas “Hora do Brasil” contribuíram para ",
+    "choices": {
+      "text": [
+        "conscientizar os trabalhadores de que os direitos sociais foram conquistados por seu esforço, após anos de lutas sindicais. ",
+        "promover a autonomia dos grupos sociais, por meio de uma linguagem simples e de fácil entendimento. ",
+        "estimular os movimentos grevistas, que reivindicavam um aprofundamento dos direitos trabalhistas. ",
+        "consolidar a imagem de Vargas como um governante protetor das massas. ",
+        "aumentar os grupos de discussão política dos trabalhadores, estimulados pelas palavras do ministro. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_63",
+    "question_number": 63,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "No final do século XVI, na Bahia, Guiomar de Oliveira denunciou Antônia Nóbrega à Inquisição. Segundo o depoimento, esta lhe dava “uns pós não sabe de quê, e outros pós de osso de finado, os quais pós ela confessante deu a beber em vinho ao dito seu marido para ser seu amigo e serem bem-casados, e que todas estas coisas fez tendo-lhe dito a dita Antônia e ensinado que eram coisas diabólicas e que os diabos lha ensinaram”. ARAÚJO, E. O teatro dos vícios. Transgressão e transigência na sociedade urbana colonial. Brasília: UnB/José Olympio, 1997. \nDo ponto de vista da Inquisição, ",
+    "choices": {
+      "text": [
+        "o problema dos métodos citados no trecho residia na dissimulação, que acabava por enganar o enfeitiçado. ",
+        "o diabo era um concorrente poderoso da autoridade da Igreja e somente a justiça do fogo poderia eliminá-lo. ",
+        "os ingredientes em decomposição das poções mágicas eram condenados porque afetavam a saúde da população. ",
+        "as feiticeiras representavam séria ameaça à sociedade, pois eram perceptíveis suas tendências feministas. ",
+        "os cristãos deviam preservar a instituição do casamento recorrendo exclusivamente aos ensinamentos da Igreja. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_64",
+    "question_number": 64,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A formação dos Estados foi certamente distinta na Europa, na América Latina, na África e na Ásia. Os Estados atuais, em especial na América Latina — onde as instituições das populações locais existentes à época da conquista ou foram eliminadas, como no caso do México e do Peru, ou eram frágeis, como no caso do Brasil —, são o resultado, em geral, da evolução do transplante de instituições europeias feito pelas metrópoles para suas colônias. Na África, as colônias tiveram fronteiras arbitrariamente traçadas, separando etnias, idiomas e tradições, que, mais tarde, sobreviveram ao processo de descolonização, dando razão para conflitos que, muitas vezes, têm sua verdadeira origem em disputas pela exploração de recursos naturais. Na Ásia, a colonização europeia se fez de forma mais indireta e encontrou sistemas políticos e administrativos mais sofisticados, aos quais se superpôs. Hoje, aquelas formas anteriores de organização, ou pelo menos seu espírito, sobrevivem nas organizações políticas do Estado asiático. GUIMARÃES, S. P. Nação, nacionalismo, Estado. Estudos Avançados. São Paulo: EdUSP, v. 22, n.º 62, jan.- abr. 2008 (adaptado). \nRelacionando as informações ao contexto histórico e geográfico por elas evocado, assinale a opção correta acerca do processo de formação socioeconômica dos continentes mencionados no texto. ",
+    "choices": {
+      "text": [
+        "Devido à falta de recursos naturais a serem explorados no Brasil, conflitos étnicos e culturais como os ocorridos na África estiveram ausentes no período da independência e formação do Estado brasileiro. ",
+        "A maior distinção entre os processos histórico- formativos dos continentes citados é a que se estabelece entre colonizador e colonizado, ou seja, entre a Europa e os demais. ",
+        "À época das conquistas, a América Latina, a África e a Ásia tinham sistemas políticos e administrativos muito mais sofisticados que aqueles que lhes foram impostos pelo colonizador. ",
+        "Comparadas ao México e ao Peru, as instituições brasileiras, por terem sido eliminadas à época da conquista, sofreram mais influência dos modelos institucionais europeus. ",
+        "O modelo histórico da formação do Estado asiático equipara-se ao brasileiro, pois em ambos se manteve o espírito das formas de organização anteriores à conquista. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_65",
+    "question_number": 65,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "No tempo da independência do Brasil, circulavam nas classes populares do Recife trovas que faziam alusão à revolta escrava do Haiti: Marinheiros e caiados Todos devem se acabar, Porque só pardos e pretos O país hão de habitar. AMARAL, F. P. do. Apud CARVALHO, A. Estudos pernambucanos. Recife: Cultura Acadêmica, 1907. \nO período da independência do Brasil registra conflitos raciais, como se depreende ",
+    "choices": {
+      "text": [
+        "dos rumores acerca da revolta escrava do Haiti, que circulavam entre a população escrava e entre os mestiços pobres, alimentando seu desejo por mudanças. ",
+        "da rejeição aos portugueses, brancos, que significava a rejeição à opressão da Metrópole, como ocorreu na Noite das Garrafadas. ",
+        "do apoio que escravos e negros forros deram à receber sua monarquia, com a perspectiva de proteção contra as injustiças do sistema escravista. ",
+        "do repúdio que os escravos trabalhadores dos portos demonstravam contra os marinheiros, porque estes representavam a elite branca opressora. ",
+        "da expulsão de vários líderes negros independentistas, que defendiam a implantação de uma república negra, a exemplo do Haiti. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_66",
+    "question_number": 66,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Colhe o Brasil, após esforço contínuo dilatado no tempo, o que plantou no esforço da construção de sua inserção internacional. Há dois séculos formularam-se os pilares da política externa. Teve o país inteligência de longo prazo e cálculo de oportunidade no mundo difuso da transição da hegemonia britânica para o século americano. Engendrou concepções, conceitos e teoria própria no século XIX, de José Bonifácio ao Visconde do Rio Branco. Buscou autonomia decisória no século XX. As elites se interessaram, por meio de calorosos debates, pelo destino do Brasil. O país emergiu, de Vargas aos militares, como ator responsável e previsível nas ações externas do Estado. A mudança de regime político para a democracia não alterou o pragmatismo externo, mas o aperfeiçoou. SARAIVA, J. F. S. O lugar do Brasil e o silêncio do parlamento. Correio Braziliense, Brasília, 28 maio 2009 (adaptado). \nSob o ponto de vista da política externa brasileira no século XX, conclui-se que ",
+    "choices": {
+      "text": [
+        "o Brasil é um país periférico na ordem mundial, devido às diferentes conjunturas de inserção internacional. ",
+        "as possibilidades de fazer prevalecer ideias e conceitos próprios, no que tange aos temas do comércio internacional e dos países em desenvolvimento, são mínimas. ",
+        "as brechas do sistema internacional não foram bem aproveitadas para avançar posições voltadas para a criação de uma área de cooperação e associação integrada a seu entorno geográfico. ",
+        "os grandes debates nacionais acerca da inserção internacional do Brasil foram embasados pelas elites do Império e da República por meio de consultas aos diversos setores da população. ",
+        "a atuação do Brasil em termos de política externa evidencia que o país tem capacidade decisória própria, mesmo diante dos constrangimentos internacionais. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_67",
+    "question_number": 67,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A prosperidade induzida pela emergência das máquinas de tear escondia uma acentuada perda de prestígio. Foi nessa idade de ouro que os artesãos, ou os tecelões temporários, passaram a ser denominados, de modo genérico, tecelões de teares manuais. Exceto em alguns ramos especializados, os velhos artesãos foram colocados lado a lado com novos imigrantes, enquanto pequenos fazendeiros-tecelões abandonaram suas pequenas propriedades para se concentrar na atividade de tecer. Reduzidos à completa dependência dos teares mecanizados ou dos fornecedores de matéria-prima, os tecelões ficaram expostos a sucessivas reduções dos rendimentos. THOMPSON, E. P. The making of the english working class. Harmondsworth: Penguin Books, 1979 (adaptado). \nCom a mudança tecnológica ocorrida durante a Revolução Industrial, a forma de trabalhar alterou-se porque ",
+    "choices": {
+      "text": [
+        "a invenção do tear propiciou o surgimento de novas relações sociais. ",
+        "os tecelões mais hábeis prevaleceram sobre os inexperientes. ",
+        "os novos teares exigiam treinamento especializado para serem operados. ",
+        "os artesãos, no período anterior, combinavam a tecelagem com o cultivo de subsistência. ",
+        "os trabalhadores não especializados se apropriaram dos lugares dos antigos artesãos nas fábricas. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_68",
+    "question_number": 68,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Até o século XVII, as paisagens rurais eram marcadas por atividades rudimentares e de baixa produtividade. A partir da Revolução Industrial, porém, sobretudo com o advento da revolução tecnológica, houve um desenvolvimento contínuo do setor agropecuário. \nSão, portanto, observadas consequências econômicas, sociais e ambientais inter-relacionadas no período posterior à Revolução Industrial, as quais incluem ",
+    "choices": {
+      "text": [
+        "a erradicação da fome no mundo. ",
+        "o aumento das áreas rurais e a diminuição das áreas urbanas. ",
+        "a maior demanda por recursos naturais, entre os quais os recursos energéticos. ",
+        "a menor necessidade de utilização de adubos e corretivos na agricultura. ",
+        "o contínuo aumento da oferta de emprego no setor primário da economia, em face da mecanização. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_69",
+    "question_number": 69,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Como se assistisse à demonstração de um espetáculo mágico, ia revendo aquele ambiente tão característico de família, com seus pesados móveis de vinhático ou de jacarandá, de qualidade antiga, e que denunciavam um passado ilustre, gerações de Meneses talvez mais singelos e mais calmos; agora, uma espécie de desordem, de relaxamento, abastardava aquelas qualidades primaciais. Mesmo assim era fácil perceber o que haviam sido, esses nobres da roça, com seus cristais que brilhavam mansamente na sombra, suas pratas semi- empoeiradas que atestavam o esplendor esvanecido, seus marfins e suas opalinas – ah, respirava-se ali conforto, não havia dúvida, mas era apenas uma sobrevivência de coisas idas. Dir-se-ia, ante esse mundo que se ia desagregando, que um mal oculto o roía, como um tumor latente em suas entranhas. CARDOSO, L. Crônica da casa assassinada. Rio de Janeiro: Civilização Brasileira, 2002 (adaptado). \nO mundo narrado nesse trecho do romance de Lúcio Cardoso, acerca da vida dos Meneses, família da aristocracia rural de Minas Gerais, apresenta não apenas a história da decadência dessa família, mas é, ainda, a representação literária de uma fase de desagregação política, social e econômica do país. O recurso expressivo que formula literariamente essa desagregação histórica é o de descrever a casa dos Meneses como ",
+    "choices": {
+      "text": [
+        "ambiente de pobreza e privação, que carece de conforto mínimo para a sobrevivência da família. ",
+        "mundo mágico, capaz de recuperar o encantamento perdido durante o período de decadência da aristocracia rural mineira. ",
+        "cena familiar, na qual o calor humano dos habitantes da casa ocupa o primeiro plano, compensando a frieza e austeridade dos objetos antigos. ",
+        "símbolo de um passado ilustre que, apesar de superado, ainda resiste à sua total dissolução graças ao cuidado e asseio que a família dispensa à conservação da casa. ",
+        "espaço arruinado, onde os objetos perderam seu esplendor e sobre os quais a vida repousa como lembrança de um passado que está em vias de desaparecer completamente. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_70",
+    "question_number": 70,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O suíço Thomas Davatz chegou a São Paulo em 1855 para trabalhar como colono na fazenda de café Ibicaba, em Campinas. A perspectiva de prosperidade que o atraiu para o Brasil deu lugar a insatisfação e revolta, que ele registrou em livro. Sobre o percurso entre o porto de Santos e o planalto paulista, escreveu Davatz: “As estradas do Brasil, salvo em alguns trechos, são péssimas. Em quase toda parte, falta qualquer espécie de calçamento ou mesmo de saibro. Constam apenas de terra simples, sem nenhum benefício. É fácil prever que nessas estradas não se encontram estalagens e hospedarias como as da Europa. Nas cidades maiores, o viajante pode naturalmente encontrar aposento sofrível; nunca, porém, qualquer coisa de comparável à comodidade que proporciona na Europa qualquer estalagem rural. Tais cidades são, porém, muito poucas na distância que vai de Santos a Ibicaba e que se percorre em cinquenta horas no mínimo”. Em 1867 foi inaugurada a ferrovia ligando Santos a Jundiaí, o que abreviou o tempo de viagem entre o litoral e o planalto para menos de um dia. Nos anos seguintes, foram construídos outros ramais ferroviários que articularam o interior cafeeiro ao porto de exportação, Santos. DAVATZ, T. Memórias de um colono no Brasil. São Paulo: Livraria Martins, 1941 (adaptado). \nO impacto das ferrovias na promoção de projetos de colonização com base em imigrantes europeus foi importante, porque ",
+    "choices": {
+      "text": [
+        "o percurso dos imigrantes até o interior, antes das ferrovias, era feito a pé ou em muares; no entanto, o tempo de viagem era aceitável, uma vez que o café era plantado nas proximidades da capital, São Paulo. ",
+        "a expansão da malha ferroviária pelo interior de São Paulo permitiu que mão-de-obra estrangeira fosse contratada para trabalhar em cafezais de regiões cada vez mais distantes do porto de Santos. ",
+        "o escoamento da produção de café se viu beneficiado pelos aportes de capital, principalmente de colonos italianos, que desejavam melhorar sua situação econômica. ",
+        "os fazendeiros puderam prescindir da mão-de-obra europeia e contrataram trabalhadores brasileiros provenientes de outras regiões para trabalhar em suas plantações. ",
+        "as notícias de terras acessíveis atraíram para São Paulo grande quantidade de imigrantes, que adquiriram vastas propriedades produtivas. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_71",
+    "question_number": 71,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Além dos inúmeros eletrodomésticos e bens eletrônicos, o automóvel produzido pela indústria fordista promoveu, a partir dos anos 50, mudanças significativas no modo de vida dos consumidores e também na habitação e nas cidades. Com a massificação do consumo dos bens modernos, dos eletroeletrônicos e também do automóvel, mudaram radicalmente o modo de vida, os valores, a cultura e o conjunto do ambiente construído. Da ocupação do solo urbano até o interior da moradia, a transformação foi profunda. MARICATO, E. Urbanismo na periferia do mundo globalizado: metrópoles brasileiras. Disponível em: http://www.scielo.br. Acesso em: 12 ago. 2009 (adaptado). \nUma das consequências das inovações tecnológicas das últimas décadas, que determinaram diferentes formas de uso e ocupação do espaço geográfico, é a instituição das chamadas cidades globais, que se caracterizam por ",
+    "choices": {
+      "text": [
+        "possuírem o mesmo nível de influência no cenário mundial. ",
+        "fortalecerem os laços de cidadania e solidariedade entre os membros das diversas comunidades. ",
+        "constituírem um passo importante para a diminuição das desigualdades sociais causadas pela polarização social e pela segregação urbana. ",
+        "terem sido diretamente impactadas pelo processo de internacionalização da economia, desencadeado a partir do final dos anos 1970. ",
+        "terem sua origem diretamente relacionadas ao processo de colonização ocidental do século XIX. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_72",
+    "question_number": 72,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Populações inteiras, nas cidades e na zona rural, dispõem da parafernália digital global como fonte de educação e de formação cultural. Essa simultaneidade de cultura e informação eletrônica com as formas tradicionais e orais é um desafio que necessita ser discutido. A exposição, via mídia eletrônica, com estilos e valores culturais de outras sociedades, pode inspirar apreço, mas também distorções e ressentimentos. Tanto quanto há necessidade de uma cultura tradicional de posse da educação letrada, também é necessário criar estratégias de alfabetização eletrônica, que passam a ser o grande canal de informação das culturas segmentadas no interior dos grandes centros urbanos e das zonas rurais. Um novo modelo de educação. BRIGAGÃO, C. E.; RODRIGUES, G. A globalização a olho nu: o mundo conectado. São Paulo: Moderna, 1998 (adaptado). \nCom base no texto e considerando os impactos culturais da difusão das tecnologias de informação no marco da globalização, depreende-se que ",
+    "choices": {
+      "text": [
+        "a ampla difusão das tecnologias de informação nos centros urbanos e no meio rural suscita o contato entre diferentes culturas e, ao mesmo tempo, traz a necessidade de reformular as concepções tradicionais de educação. ",
+        "a apropriação, por parte de um grupo social, de valores e ideias de outras culturas para benefício próprio é fonte de conflitos e ressentimentos. ",
+        "as mudanças sociais e culturais que acompanham o processo de globalização, ao mesmo tempo em que refletem a preponderância da cultura urbana, tornam obsoletas as formas de educação tradicionais próprias do meio rural. ",
+        "as populações nos grandes centros urbanos e no meio rural recorrem aos instrumentos e tecnologias de informação basicamente como meio de comunicação mútua, e não os veem como fontes de educação e cultura. ",
+        "a intensificação do fluxo de comunicação por meios eletrônicos, característica do processo de globalização, está dissociada do desenvolvimento social e cultural que ocorre no meio rural. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_74",
+    "question_number": 74,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "No período 750-338 a. C., a Grécia antiga era composta por cidades-Estado, como por exemplo Atenas, Esparta, Tebas, que eram independentes umas das outras, mas partilhavam algumas características culturais, como a língua grega. No centro da Grécia, Delfos era um lugar de culto religioso frequentado por habitantes de todas as cidades-Estado. No período 1200-1600 d. C., na parte da Amazônia brasileira onde hoje está o Parque Nacional do Xingu, há vestígios de quinze cidades que eram cercadas por muros de madeira e que tinham até dois mil e quinhentos habitantes cada uma. Essas cidades eram ligadas por estradas a centros cerimoniais com grandes praças. Em torno delas havia roças, pomares e tanques para a criação de tartarugas. Aparentemente, epidemias dizimaram grande parte da população que lá vivia. Folha de S. Paulo, ago. 2008 (adaptado). \nApesar das diferenças históricas e geográficas existentes entre as duas civilizações elas são semelhantes pois ",
+    "choices": {
+      "text": [
+        "as ruínas das cidades mencionadas atestam que grandes epidemias dizimaram suas populações. ",
+        "as cidades do Xingu desenvolveram a democracia, tal como foi concebida em Tebas. ",
+        "as duas civilizações tinham cidades autônomas e independentes entre si. ",
+        "os povos do Xingu falavam uma mesma língua, tal como nas cidades-Estado da Grécia. ",
+        "as cidades do Xingu dedicavam-se à arte e à filosofia tal como na Grécia. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_75",
+    "question_number": 75,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O movimento migratório no Brasil é significativo, principalmente em função do volume de pessoas que saem de uma região com destino a outras regiões. Um desses movimentos ficou famoso nos anos 80, quando muitos nordestinos deixaram a região Nordeste em direção ao Sudeste do Brasil. Segundo os dados do IBGE de 2000, este processo continuou crescente no período seguinte, os anos 90, com um acréscimo de 7,6% nas migrações deste mesmo fluxo. A Pesquisa de Padrão de Vida, feita pelo IBGE, em 1996, aponta que, entre os nordestinos que chegam ao Sudeste, 48,6% exercem trabalhos manuais não qualificados, 18,5% são trabalhadores manuais qualificados, enquanto 13,5%, embora não sejam trabalhadores manuais, se encontram em áreas que não exigem formação profissional. O mesmo estudo indica também que esses migrantes possuem, em média, condição de vida e nível educacional acima dos de seus conterrâneos e abaixo dos de cidadãos estáveis do Sudeste. Disponível em: http://www.ibge.gov.br. Acesso em: 30 jul. 2009 (adaptado). \nCom base nas informações contidas no texto, depreende-se que ",
+    "choices": {
+      "text": [
+        "o processo migratório foi desencadeado por ações de governo para viabilizar a produção industrial no Sudeste. ",
+        "os governos estaduais do Sudeste priorizaram a qualificação da mão-de-obra migrante. ",
+        "o processo de migração para o Sudeste contribui para o fenômeno conhecido como inchaço urbano. ",
+        "as migrações para o sudeste desencadearam a valorização do trabalho manual, sobretudo na década de 80. ",
+        "a falta de especialização dos migrantes é positiva para os empregadores, pois significa maior versatilidade profissional. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_76",
+    "question_number": 76,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Apesar do aumento da produção no campo e da integração entre a indústria e a agricultura, parte da população da América do Sul ainda sofre com a subalimentação, o que gera conflitos pela posse de terra que podem ser verificados em várias áreas e que frequentemente chegam a provocar mortes. \nUm dos fatores que explica a subalimentação na América do Sul é ",
+    "choices": {
+      "text": [
+        "a baixa inserção de sua agricultura no comércio mundial. ",
+        "a quantidade insuficiente de mão-de-obra para o trabalho agrícola. ",
+        "a presença de estruturas agrárias arcaicas formadas por latifúndios improdutivos. ",
+        "a situação conflituosa vivida no campo, que impede o crescimento da produção agrícola. ",
+        "os sistemas de cultivo mecanizado voltados para o abastecimento do mercado interno. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_79",
+    "question_number": 79,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Entre 2004 e 2008, pelo menos 8 mil brasileiros foram libertados de fazendas onde trabalhavam como se fossem escravos. O governo criou uma lista em que ficaram expostos os nomes dos fazendeiros flagrados pela fiscalização. No Norte, Nordeste e Centro-Oeste, regiões que mais sofrem com a fraqueza do poder público, o bloqueio dos canais de financiamento agrícola para tais fazendeiros tem sido a principal arma de combate a esse problema, mas os governos ainda sofrem com a falta de informações, provocada pelas distâncias e pelo poder intimidador dos proprietários. Organizações não governamentais e grupos como a Pastoral da Terra têm agido corajosamente, acionando as autoridades públicas e ministrando aulas sobre direitos sociais e trabalhistas. “Plano Nacional para Erradicação do Trabalho Escravo”. Disponível em: http://www.mte.gov.br. Acesso em: 17 mar. 2009 (adaptado). \nNos lugares mencionados no texto, o papel dos grupos de defesa dos direitos humanos tem sido fundamental, porque eles ",
+    "choices": {
+      "text": [
+        "negociam com os fazendeiros o reajuste dos honorários e a redução da carga horária de trabalho. ",
+        "defendem os direitos dos consumidores junto aos armazéns e mercados das fazendas e carvoarias. ",
+        "substituem as autoridades policiais e jurídicas na resolução dos conflitos entre patrões e empregados. ",
+        "encaminham denúncias ao Ministério Público e promovem ações de conscientização dos trabalhadores. ",
+        "fortalecem a administração pública ao ministrarem aulas aos seus servidores. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_80",
+    "question_number": 80,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O homem construiu sua história por meio do constante processo de ocupação e transformação do espaço natural. Na verdade, o que variou, nos diversos momentos da experiência humana, foi a intensidade dessa exploração. Disponível em: http://www.simposioreformaagraria.propp.ufu.br. Acesso em: 09 jul. 2009 (adaptado). \nUma das consequências que pode ser atribuída à crescente intensificação da exploração de recursos naturais, facilitada pelo desenvolvimento tecnológico ao longo da história, é ",
+    "choices": {
+      "text": [
+        "a diminuição do comércio entre países e regiões, que se tornaram autossuficientes na produção de bens e serviços. ",
+        "a ocorrência de desastres ambientais de grandes proporções, como no caso de derramamento de óleo por navios petroleiros. ",
+        "a melhora generalizada das condições de vida da população mundial, a partir da eliminação das desigualdades econômicas na atualidade. ",
+        "o desmatamento, que eliminou grandes extensões de diversos biomas improdutivos, cujas áreas passaram a ser ocupadas por centros industriais modernos. ",
+        "o aumento demográfico mundial, sobretudo nos países mais desenvolvidos, que apresentam altas taxas de crescimento vegetativo. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_81",
+    "question_number": 81,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "No presente, observa-se crescente atenção aos efeitos da atividade humana, em diferentes áreas, sobre o meio ambiente, sendo constante, nos fóruns internacionais e nas instâncias nacionais, a referência à sustentabilidade como princípio orientador de ações e propostas que deles emanam. \nA sustentabilidade explica-se pela ",
+    "choices": {
+      "text": [
+        "incapacidade de se manter uma atividade econômica ao longo do tempo sem causar danos ao meio ambiente. ",
+        "incompatibilidade entre crescimento econômico acelerado e preservação de recursos naturais e de fontes não renováveis de energia. ",
+        "interação de todas as dimensões do bem-estar humano com o crescimento econômico, sem a preocupação com a conservação dos recursos naturais que estivera presente desde a Antiguidade. ",
+        "proteção da biodiversidade em face das ameaças de destruição que sofrem as florestas tropicais devido ao avanço de atividades como a mineração, a monocultura, o tráfico de madeira e de espécies selvagens. ",
+        "necessidade de se satisfazer as demandas atuais colocadas pelo desenvolvimento sem comprometer a capacidade de as gerações futuras atenderem suas próprias necessidades nos campos econômico, social e ambiental. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_82",
+    "question_number": 82,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Com a perspectiva do desaparecimento das geleiras no Polo Norte, grandes reservas de petróleo e minérios, hoje inacessíveis, poderão ser exploradas. E já atiçam a cobiça das potências. KOPP, D. Guerra Fria sobre o Ártico. Le monde diplomatique Brasil. Setembro, n. 2, 2007 (adaptado). \nNo cenário de que trata o texto, a exploração de jazidas de petróleo, bem como de minérios – diamante, ouro, prata, cobre, chumbo, zinco – torna-se atraente não só em função de seu formidável potencial, mas também por ",
+    "choices": {
+      "text": [
+        "situar-se em uma zona geopolítica mais estável que o Oriente Médio. ",
+        "possibilitar o povoamento de uma região pouco habitada, além de promover seu desenvolvimento econômico. ",
+        "garantir, aos países em desenvolvimento, acesso a matérias-primas e energia, necessárias ao crescimento econômico. ",
+        "contribuir para a redução da poluição em áreas ambientalmente já degradadas devido ao grande volume da produção industrial, como ocorreu na Europa. ",
+        "promover a participação dos combustíveis fósseis na matriz energética mundial, dominada, majoritariamente, pelas fontes renováveis, de maior custo. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_88",
+    "question_number": 88,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "À medida que a demanda por água aumenta, as reservas desse recurso vão se tornando imprevisíveis. Modelos matemáticos que analisam os efeitos das mudanças climáticas sobre a disponibilidade de água no futuro indicam que haverá escassez em muitas regiões do planeta. \nSão esperadas mudanças nos padrões de precipitação, pois ",
+    "choices": {
+      "text": [
+        "o maior aquecimento implica menor formação de nuvens e, consequentemente, a eliminação de áreas úmidas e subúmidas do globo. ",
+        "as chuvas frontais ficarão restritas ao tempo de permanência da frente em uma determinada localidade, o que limitará a produtividade das atividades agrícolas. ",
+        "as modificações decorrentes do aumento da temperatura do ar diminuirão a umidade e, portanto, aumentarão a aridez em todo o planeta. ",
+        "a elevação do nível dos mares pelo derretimento das geleiras acarretará redução na ocorrência de chuvas nos continentes, o que implicará a escassez de água para abastecimento. ",
+        "a origem da chuva está diretamente relacionada com a temperatura do ar, sendo que atividades antropogênicas são capazes de provocar interferências em escala local e global. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_89",
+    "question_number": 89,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A mais profunda objeção que se faz à ideia da criação de uma cidade, como Brasília, é que o seu desenvolvimento não poderá jamais ser natural. É uma objeção muito séria, pois provém de uma concepção de vida fundamental: a de que a atividade social e cultural não pode ser uma construção. Esquecem-se, porém, aqueles que fazem tal crítica, que o Brasil, como praticamente toda a América, é criação do homem ocidental. PEDROSA, M. Utopia: obra de arte. Vis – Revista do Programa de Pós-graduação em Arte (UnB), Vol. 5, n. 1, 2006 (adaptado). \nAs ideias apontadas no texto estão em oposição, porque ",
+    "choices": {
+      "text": [
+        "a cultura dos povos é reduzida a exemplos esquemáticos que não encontram respaldo na história do Brasil ou da América. ",
+        "as cidades, na primeira afirmação, têm um papel mais fraco na vida social, enquanto a América é mostrada como um exemplo a ser evitado. ",
+        "a objeção inicial, de que as cidades não podem ser inventadas, é negada logo em seguida pelo exemplo utópico da colonização da América. ",
+        "a concepção fundamental da primeira afirmação defende a construção de cidades e a segunda mostra, historicamente, que essa estratégia acarretou sérios problemas. ",
+        "a primeira entende que as cidades devem ser organismos vivos, que nascem de forma espontânea, e a segunda mostra que há exemplos históricos que demonstram o contrário. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_90",
+    "question_number": 90,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "As áreas do planalto do cerrado – como a chapada dos Guimarães, a serra de Tapirapuã e a serra dos Parecis, no Mato Grosso, com altitudes que variam de 400 m a 800 m – são importantes para a planície pantaneira mato-grossense (com altitude média inferior a 200 m), no que se refere à manutenção do nível de água, sobretudo durante a estiagem. Nas cheias, a inundação ocorre em função da alta pluviosidade nas cabeceiras dos rios, do afloramento de lençóis freáticos e da baixa declividade do relevo, entre outros fatores. Durante a estiagem, a grande biodiversidade é assegurada pelas águas da calha dos principais rios, cujo volume tem diminuído, principalmente nas cabeceiras. Cabeceiras ameaçadas. Ciência Hoje. Rio de Janeiro: SBPC. Vol. 42, jun. 2008 (adaptado). \nA medida mais eficaz a ser tomada, visando à conservação da planície pantaneira e à preservação de sua grande biodiversidade, é a conscientização da sociedade e a organização de movimentos sociais que exijam ",
+    "choices": {
+      "text": [
+        "a criação de parques ecológicos na área do pantanal mato-grossense. ",
+        "a proibição da pesca e da caça, que tanto ameaçam a biodiversidade. ",
+        "o aumento das pastagens na área da planície, para que a cobertura vegetal, composta de gramíneas, evite a erosão do solo. ",
+        "o controle do desmatamento e da erosão, principalmente nas nascentes dos rios responsáveis pelo nível das águas durante o período de cheias. ",
+        "a construção de barragens, para que o nível das águas dos rios seja mantido, sobretudo na estiagem, sem prejudicar os ecossistemas. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_92",
+    "question_number": 92,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Gerente – Boa tarde. Em que eu posso ajudá-lo? Cliente – Estou interessado em financiamento para compra de veículo. Gerente – Nós dispomos de várias modalidades de crédito. O senhor é nosso cliente? Cliente – Sou Júlio César Fontoura, também sou funcionário do banco. Gerente – Julinho, é você, cara? Aqui é a Helena! Cê tá em Brasília? Pensei que você inda tivesse na agência de Uberlândia! Passa aqui pra gente conversar com calma. BORTONI-RICARDO, S. M. Educação em língua materna. São Paulo: Parábola, 2004 (adaptado). \nNa representação escrita da conversa telefônica entre a gerente do banco e o cliente, observa-se que a maneira de falar da gerente foi alterada de repente devido ",
+    "choices": {
+      "text": [
+        "à adequação de sua fala à conversa com um amigo, caracterizada pela informalidade. ",
+        "à iniciativa do cliente em se apresentar como funcionário do banco. ",
+        "ao fato de ambos terem nascido em Uberlândia (Minas Gerais). ",
+        "à intimidade forçada pelo cliente ao fornecer seu nome completo. ",
+        "ao seu interesse profissional em financiar o veículo de Júlio. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_95",
+    "question_number": 95,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "No programa do balé Parade, apresentado em 18 de maio de 1917, foi empregada publicamente, pela primeira vez, a palavra sur-realisme. Pablo Picasso desenhou o cenário e a indumentária, cujo efeito foi tão surpreendente que se sobrepôs à coreografia. A música de Erik Satie era uma mistura de jazz, música popular e sons reais tais como tiros de pistola, combinados com as imagens do balé de Charlie Chaplin, caubóis e vilões, mágica chinesa e Ragtime. Os tempos não eram propícios para receber a nova mensagem cênica demasiado provocativa devido ao repicar da máquina de escrever, aos zumbidos de sirene e dínamo e aos rumores de aeroplano previstos por Cocteau para a partitura de Satie. Já a ação coreográfica confirmava a tendência marcadamente teatral da gestualidade cênica, dada pela justaposição, colagem de ações isoladas seguindo um estímulo musical. SILVA, S. M. O surrealismo e a dança. GUINSBURG, J.; LEIRNER (Org.). O surrealismo. São Paulo: Perspectiva, 2008 (adaptado). \nAs manifestações corporais na história das artes da cena muitas vezes demonstram as condições cotidianas de um determinado grupo social, como se pode observar na descrição acima do balé Parade, o qual reflete ",
+    "choices": {
+      "text": [
+        "a falta de diversidade cultural na sua proposta estética. ",
+        "a alienação dos artistas em relação às tensões da Segunda Guerra Mundial. ",
+        "uma disputa cênica entre as linguagens das artes visuais, do figurino e da música. ",
+        "as inovações tecnológicas nas partes cênicas, musicais, coreográficas e de figurino. ",
+        "uma narrativa com encadeamentos claramente lógicos e lineares. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_98",
+    "question_number": 98,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Para o Mano Caetano O que fazer do ouro de tolo Quando um doce bardo brada a toda brida, Em velas pandas, suas esquisitas rimas? Geografia de verdades, Guanabaras postiças Saudades banguelas, tropicais preguiças? A boca cheia de dentes De um implacável sorriso Morre a cada instante Que devora a voz do morto, e com isso, Ressuscita vampira, sem o menor aviso [...] E eu soy lobo-bolo? lobo-bolo Tipo pra rimar com ouro de tolo? Oh, Narciso Peixe Ornamental! Tease me, tease me outra vez 1 Ou em banto baiano Ou em português de Portugal Se quiser, até mesmo em americano De Natal [...] 1 Tease me (caçoe de mim, importune-me). LOBÃO. Disponível em: http://vagalume.uol.com.br. Acesso em: 14 ago. 2009 (adaptado). \nNa letra da canção apresentada, o compositor Lobão explora vários recursos da língua portuguesa, a fim de conseguir efeitos estéticos ou de sentido. Nessa letra, o autor explora o extrato sonoro do idioma e o uso de termos coloquiais na seguinte passagem: ",
+    "choices": {
+      "text": [
+        "“Quando um doce bardo brada a toda brida” (v. 2) ",
+        "“Em velas pandas, suas esquisitas rimas?” (v. 3) ",
+        "“Que devora a voz do morto” (v. 9) ",
+        "“lobo-bolo//Tipo pra rimar com ouro de tolo? (v. 11-12) ",
+        "“Tease me, tease me outra vez” (v. 14) "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_99",
+    "question_number": 99,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Cárcere das almas Ah! Toda a alma num cárcere anda presa, Soluçando nas trevas, entre as grades Do calabouço olhando imensidades, Mares, estrelas, tardes, natureza. Tudo se veste de uma igual grandeza Quando a alma entre grilhões as liberdades Sonha e, sonhando, as imortalidades Rasga no etéreo o Espaço da Pureza. Ó almas presas, mudas e fechadas Nas prisões colossais e abandonadas, Da Dor no calabouço, atroz, funéreo! Nesses silêncios solitários, graves, que chaveiro do Céu possui as chaves para abrir-vos as portas do Mistério?! CRUZ E SOUSA, J. Poesia completa. Florianópolis: Fundação Catarinense de Cultura / Fundação Banco do Brasil, 1993. \nOs elementos formais e temáticos relacionados ao contexto cultural do Simbolismo encontrados no poema Cárcere das almas, de Cruz e Sousa, são ",
+    "choices": {
+      "text": [
+        "a opção pela abordagem, em linguagem simples e direta, de temas filosóficos. ",
+        "a prevalência do lirismo amoroso e intimista em relação à temática nacionalista. ",
+        "o refinamento estético da forma poética e o tratamento metafísico de temas universais. ",
+        "a evidente preocupação do eu lírico com a realidade social expressa em imagens poéticas inovadoras. ",
+        "a liberdade formal da estrutura poética que dispensa a rima e a métrica tradicionais em favor de temas do cotidiano. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_102",
+    "question_number": 102,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Gênero dramático é aquele em que o artista usa como intermediária entre si e o público a representação. A palavra vem do grego drao (fazer) e quer dizer ação. A peça teatral é, pois, uma composição literária destinada à apresentação por atores em um palco, atuando e dialogando entre si. O texto dramático é complementado pela atuação dos atores no espetáculo teatral e possui uma estrutura específica, caracterizada: 1) pela presença de personagens que devem estar ligados com lógica uns aos outros e à ação; 2) pela ação dramática (trama, enredo), que é o conjunto de atos dramáticos, maneiras de ser e de agir das personagens encadeadas à unidade do efeito e segundo uma ordem composta de exposição, conflito, complicação, clímax e desfecho; 3) pela situação ou ambiente, que é o conjunto de circunstâncias físicas, sociais, espirituais em que se situa a ação; 4) pelo tema, ou seja, a ideia que o autor (dramaturgo) deseja expor, ou sua interpretação real por meio da representação. COUTINHO, A. Notas de teoria literária. Rio de Janeiro: Civilização Brasileira, 1973 (adaptado). \nConsiderando o texto e analisando os elementos que constituem um espetáculo teatral, conclui-se que ",
+    "choices": {
+      "text": [
+        "a criação do espetáculo teatral apresenta-se como um fenômeno de ordem individual, pois não é possível sua concepção de forma coletiva. ",
+        "o cenário onde se desenrola a ação cênica é concebido e construído pelo cenógrafo de modo autônomo e independente do tema da peça e do trabalho interpretativo dos atores. ",
+        "o texto cênico pode originar-se dos mais variados gêneros textuais, como contos, lendas, romances, poesias, crônicas, notícias, imagens e fragmentos textuais, entre outros. ",
+        "o corpo do ator na cena tem pouca importância na comunicação teatral, visto que o mais importante é a expressão verbal, base da comunicação cênica em toda a trajetória do teatro até os dias atuais. ",
+        "a iluminação e o som de um espetáculo cênico independem do processo de produção/recepção do espetáculo teatral, já que se trata de linguagens artísticas diferentes, agregadas posteriormente à cena teatral. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_103",
+    "question_number": 103,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Saúde, no modelo atual de qualidade de vida, é o resultado das condições de alimentação, habitação, educação, renda, trabalho, transporte, lazer, serviços médicos e acesso à atividade física regular. Quanto ao acesso à atividade física, um dos elementos essenciais é a aptidão física, entendida como a capacidade de a pessoa utilizar seu corpo — incluindo músculos, esqueleto, coração, enfim, todas as partes —, de forma eficiente em suas atividades cotidianas; logo, quando se avalia a saúde de uma pessoa, a aptidão física deve ser levada em conta. \nA partir desse contexto, considera-se que uma pessoa tem boa aptidão física quando ",
+    "choices": {
+      "text": [
+        "apresenta uma postura regular. ",
+        "pode se exercitar por períodos curtos de tempo. ",
+        "pode desenvolver as atividades físicas do dia-a-dia, independentemente de sua idade. ",
+        "pode executar suas atividades do dia a dia com vigor, atenção e uma fadiga de moderada a intensa. ",
+        "pode exercer atividades físicas no final do dia, mas suas reservas de energia são insuficientes para atividades intelectuais. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_104",
+    "question_number": 104,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Diferentemente do texto escrito, que em geral compele os leitores a lerem numa onda linear – da esquerda para a direita e de cima para baixo, na página impressa – hipertextos encorajam os leitores a moverem- se de um bloco de texto a outro, rapidamente e não sequencialmente. Considerando que o hipertexto oferece uma multiplicidade de caminhos a seguir, podendo ainda o leitor incorporar seus caminhos e suas decisões como novos caminhos, inserindo informações novas, o leitor- navegador passa a ter um papel mais ativo e uma oportunidade diferente da de um leitor de texto impresso. Dificilmente dois leitores de hipertextos farão os mesmos caminhos e tomarão as mesmas decisões. MARCUSCHI, L. A. Cognição, linguagem e práticas interacionais. Rio: Lucerna, 2007. \nNo que diz respeito à relação entre o hipertexto e o conhecimento por ele produzido, o texto apresentado deixa claro que o hipertexto muda a noção tradicional de autoria, porque ",
+    "choices": {
+      "text": [
+        "é o leitor que constrói a versão final do texto. ",
+        "o autor detém o controle absoluto do que escreve. ",
+        "aclara os limites entre o leitor e o autor. ",
+        "propicia um evento textual-interativo em que apenas o autor é ativo. ",
+        "só o autor conhece o que eletronicamente se dispõe para o leitor. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_106",
+    "question_number": 106,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A partir da metade do século XX, ocorreu um conjunto de transformações econômicas e sociais cuja dimensão é difícil de ser mensurada: a chamada explosão da informação. Embora essa expressão tenha surgido no contexto da informação científica e tecnológica, seu significado, hoje, em um contexto mais geral, atinge proporções gigantescas. Por estabelecerem novas formas de pensamento e mesmo de lógica, a informática e a Internet vêm gerando impactos sociais e culturais importantes. A disseminação do microcomputador e a expansão da Internet vêm acelerando o processo de globalização tanto no sentido do mercado quanto no sentido das trocas simbólicas possíveis entre sociedades e culturas diferentes, o que tem provocado e acelerado o fenômeno de hibridização amplamente caracterizado como próprio da pós-modernidade. FERNANDES, M. F.; PARÁ, T. A contribuição das novas tecnologias da informação na geração de conhecimento. Disponível em: http://www.coep.ufrj.br. Acesso em: 11 ago. 2009 (adaptado). \nConsiderando-se o novo contexto social e econômico aludido no texto apresentado, as novas tecnologias de informação e comunicação ",
+    "choices": {
+      "text": [
+        "desempenham importante papel, porque sem elas não seria possível registrar os acontecimentos históricos. ",
+        "facilitam os processos educacionais para ensino de tecnologia, mas não exercem influência nas ciências humanas. ",
+        "limitam-se a dar suporte aos meios de comunicação, facilitando sobretudo os trabalhos jornalísticos. ",
+        "contribuem para o desenvolvimento social, pois permitem o registro e a disseminação do conhecimento de forma mais democrática e interativa. ",
+        "estão em estágio experimental, particularmente na educação, área em que ainda não demonstraram potencial produtivo. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_107",
+    "question_number": 107,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Texto I É praticamente impossível imaginarmos nossas vidas sem o plástico. Ele está presente em embalagens de alimentos, bebidas e remédios, além de eletrodomésticos, automóveis etc. Esse uso ocorre devido à sua atoxicidade e à inércia, isto é: quando em contato com outras substâncias, o plástico não as contamina; ao contrário, protege o produto embalado. Outras duas grandes vantagens garantem o uso dos plásticos em larga escala: são leves, quase não alteram o peso do material embalado, e são 100% recicláveis, fato que, infelizmente, não é aproveitado, visto que, em todo o mundo, a percentagem de plástico reciclado, quando comparado ao total produzido, ainda é irrelevante. Revista Mãe Terra. Minuano, ano I, n. 6 (adaptado). Texto II Sacolas plásticas são leves e voam ao vento. Por isso, elas entopem esgotos e bueiros, causando enchentes. São encontradas até no estômago de tartarugas marinhas, baleias, focas e golfinhos, mortos por sufocamento. Sacolas plásticas descartáveis são gratuitas para os consumidores, mas têm um custo incalculável para o meio ambiente. Veja, 8 jul. 2009. Fragmentos de texto publicitário do Instituto Akatu pelo Consumo Consciente. \nEm contraste com o texto I, no texto II são empregadas, predominantemente, estratégias argumentativas que ",
+    "choices": {
+      "text": [
+        "atraem o leitor por meio de previsões para o futuro. ",
+        "apelam à emoção do leitor, mencionando a morte de animais. ",
+        "orientam o leitor a respeito dos modos de usar conscientemente as sacolas plásticas. ",
+        "intimidam o leitor com as nocivas consequências do uso indiscriminado de sacolas plásticas. ",
+        "recorrem à informação, por meio de constatações, para convencer o leitor a evitar o uso de sacolas plásticas. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_108",
+    "question_number": 108,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Texto I É praticamente impossível imaginarmos nossas vidas sem o plástico. Ele está presente em embalagens de alimentos, bebidas e remédios, além de eletrodomésticos, automóveis etc. Esse uso ocorre devido à sua atoxicidade e à inércia, isto é: quando em contato com outras substâncias, o plástico não as contamina; ao contrário, protege o produto embalado. Outras duas grandes vantagens garantem o uso dos plásticos em larga escala: são leves, quase não alteram o peso do material embalado, e são 100% recicláveis, fato que, infelizmente, não é aproveitado, visto que, em todo o mundo, a percentagem de plástico reciclado, quando comparado ao total produzido, ainda é irrelevante. Revista Mãe Terra. Minuano, ano I, n. 6 (adaptado). Texto II Sacolas plásticas são leves e voam ao vento. Por isso, elas entopem esgotos e bueiros, causando enchentes. São encontradas até no estômago de tartarugas marinhas, baleias, focas e golfinhos, mortos por sufocamento. Sacolas plásticas descartáveis são gratuitas para os consumidores, mas têm um custo incalculável para o meio ambiente. Veja, 8 jul. 2009. Fragmentos de texto publicitário do Instituto Akatu pelo Consumo Consciente. \nNa comparação dos textos, observa-se que ",
+    "choices": {
+      "text": [
+        "o texto I apresenta um alerta a respeito do efeito da reciclagem de materiais plásticos; o texto II justifica o uso desse material reciclado. ",
+        "o texto I tem como objetivo precípuo apresentar a versatilidade e as vantagens do uso do plástico na contemporaneidade; o texto II objetiva alertar os consumidores sobre os problemas ambientais decorrentes de embalagens plásticas não recicladas. ",
+        "o texto I expõe vantagens, sem qualquer ressalva, do uso do plástico; o texto II busca convencer o leitor a evitar o uso de embalagens plásticas. ",
+        "o texto I ilustra o posicionamento de fabricantes de embalagens plásticas, mostrando por que elas devem ser usadas; o texto II ilustra o posicionamento de consumidores comuns, que buscam praticidade e conforto. ",
+        "o texto I apresenta um alerta a respeito da possibilidade de contaminação de produtos orgânicos e industrializados decorrente do uso de plástico em suas embalagens; o texto II apresenta vantagens do consumo de sacolas plásticas: leves, descartáveis e gratuitas. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_110",
+    "question_number": 110,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "O \"Portal Domínio Público\", lançado em novembro de 2004, propõe o compartilhamento de conhecimentos de forma equânime e gratuita, colocando à disposição de todos os usuários da Internet, uma biblioteca virtual que deverá constituir referência para professores, alunos, pesquisadores e para a população em geral. Esse portal constitui um ambiente virtual que permite a coleta, a integração, a preservação e o compartilhamento de conhecimentos, sendo seu principal objetivo o de promover o amplo acesso às obras literárias, artísticas e científicas (na forma de textos, sons, imagens e vídeos), já em domínio público ou que tenham a sua divulgação devidamente autorizada. BRASIL. Ministério da Educação. Disponível em: http://www.dominiopublico.gov.br. Acesso em: 29 jul. 2009 (adaptado). \nConsiderando a função social das informações geradas nos sistemas de comunicação e informação, o ambiente virtual descrito no texto exemplifica ",
+    "choices": {
+      "text": [
+        "a dependência das escolas públicas quanto ao uso de sistemas de informação. ",
+        "a ampliação do grau de interação entre as pessoas, a partir de tecnologia convencional. ",
+        "a democratização da informação, por meio da disponibilização de conteúdo cultural e científico à sociedade. ",
+        "a comercialização do acesso a diversas produções culturais nacionais e estrangeiras via tecnologia da informação e da comunicação. ",
+        "a produção de repertório cultural direcionado a acadêmicos e educadores. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_111",
+    "question_number": 111,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Cuitelinho Cheguei na bera do porto Onde as onda se espaia. As garça dá meia volta, Senta na bera da praia. E o cuitelinho não gosta Que o botão da rosa caia. Quando eu vim da minha terra, Despedi da parentaia. Eu entrei em Mato Grosso, Dei em terras paraguaia. Lá tinha revolução, Enfrentei fortes bataia. A tua saudade corta Como o aço de navaia. O coração fica aflito, Bate uma e outra faia. E os oio se enche d´água Que até a vista se atrapaia. Folclore recolhido por Paulo Vanzolini e Antônio Xandó. BORTONI-RICARDO, S. M. Educação em língua materna. São Paulo: Parábola, 2004. \nTransmitida por gerações, a canção Cuitelinho manifesta aspectos culturais de um povo, nos quais se inclui sua forma de falar, além de registrar um momento histórico. Depreende-se disso que a importância em preservar a produção cultural de uma nação consiste no fato de que produções como a canção Cuitelinho evidenciam a ",
+    "choices": {
+      "text": [
+        "recriação da realidade brasileira de forma ficcional. ",
+        "criação neológica na língua portuguesa. ",
+        "formação da identidade nacional por meio da tradição oral. ",
+        "incorreção da língua portuguesa que é falada por pessoas do interior do Brasil. ",
+        "padronização de palavras que variam regionalmente, mas possuem mesmo significado. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_113",
+    "question_number": 113,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "As tecnologias de informação e comunicação (TIC) vieram aprimorar ou substituir meios tradicionais de comunicação e armazenamento de informações, tais como o rádio e a TV analógicos, os livros, os telégrafos, o fax etc. As novas bases tecnológicas são mais poderosas e versáteis, introduziram fortemente a possibilidade de comunicação interativa e estão presentes em todos os meios produtivos da atualidade. As novas TIC vieram acompanhadas da chamada Digital Divide, Digital Gap ou Digital Exclusion, traduzidas para o português como Divisão Digital ou Exclusão Digital, sendo, às vezes, também usados os termos Brecha Digital ou Abismo Digital. \nNesse contexto, a expressão Divisão Digital refere-se a ",
+    "choices": {
+      "text": [
+        "uma classificação que caracteriza cada uma das áreas nas quais as novas TIC podem ser aplicadas, relacionando os padrões de utilização e exemplificando o uso dessas TIC no mundo moderno. ",
+        "uma relação das áreas ou subáreas de conhecimento que ainda não foram contempladas com o uso das novas tecnologias digitais, o que caracteriza uma brecha tecnológica que precisa ser minimizada. ",
+        "uma enorme diferença de desempenho entre os empreendimentos que utilizam as tecnologias digitais e aqueles que permaneceram usando métodos e técnicas analógicas. ",
+        "um aprofundamento das diferenças sociais já existentes, uma vez que se torna difícil a aquisição de conhecimentos e habilidades fundamentais pelas populações menos favorecidas nos novos meios produtivos. ",
+        "uma proposta de educação para o uso de novas pedagogias com a finalidade de acompanhar a evolução das mídias e orientar a produção de material pedagógico com apoio de computadores e outras técnicas digitais. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_115",
+    "question_number": 115,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A dança é importante para o índio preparar o corpo e a garganta e significa energia para o corpo, que fica robusto. Na aldeia, para preparo físico, dançamos desde cinco horas da manhã até seis horas da tarde, passa-se o dia inteiro dançando quando os padrinhos planejam a dança dos adolescentes. O padrinho é como um professor, um preparador físico dos adolescentes. Por exemplo, o padrinho sonha com um determinado canto e planeja para todos entoarem. Todos os tipos de dança vêm dos primeiros xavantes: Wamarĩdzadadzeiwawẽ, Butséwawẽ, Tseretomodzatsewawẽ, que foram descobrindo através da sabedoria como iria ser a cultura Xavante. Até hoje existe essa cultura, essa celebração. Quando o adolescente fura a orelha é obrigatório ele dançar toda a noite, tem de acordar meia-noite para dançar e cantar, é obrigatório, eles vão chamando um ao outro com um grito especial. WÉRÉ' É TSI'RÓBÓ, E. A dança e o canto-celebração da existência xavante. VIS-Revista do Programa de Pós-Graduação em Arte da UnB. V. 5, n. 2, dez. 2006. \nA partir das informações sobre a dança Xavante, conclui-se que o valor da diversidade artística e da tradição cultural apresentados originam-se da ",
+    "choices": {
+      "text": [
+        "iniciativa individual do indígena para a prática da dança e do canto. ",
+        "excelente forma física apresentada pelo povo Xavante. ",
+        "multiculturalidade presente na sua manifestação cênica. ",
+        "inexistência de um planejamento da estética da dança, caracterizada pelo ineditismo. ",
+        "preservação de uma identidade entre a gestualidade ancestral e a novidade dos cantos a serem entoados. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_116",
+    "question_number": 116,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Canção do vento e da minha vida O vento varria as folhas, O vento varria os frutos, O vento varria as flores... E a minha vida ficava Cada vez mais cheia De frutos, de flores, de folhas. [...] O vento varria os sonhos E varria as amizades... O vento varria as mulheres... O vento varria os meses E varria os teus sorrisos... O vento varria tudo! E a minha vida ficava Cada vez mais cheia De tudo. E a minha vida ficava Cada vez mais cheia De afetos e de mulheres. BANDEIRA, M. Poesia completa e prosa. Rio de Janeiro: José Aguilar, 1967. \nPredomina no texto a função da linguagem ",
+    "choices": {
+      "text": [
+        "fática, porque o autor procura testar o canal de comunicação. ",
+        "metalinguística, porque há explicação do significado das expressões. ",
+        "conativa, uma vez que o leitor é provocado a participar de uma ação. ",
+        "referencial, já que são apresentadas informações sobre acontecimentos e fatos reais. ",
+        "poética, pois chama-se a atenção para a elaboração especial e artística da estrutura do texto. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_117",
+    "question_number": 117,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Canção do vento e da minha vida O vento varria as folhas, O vento varria os frutos, O vento varria as flores... E a minha vida ficava Cada vez mais cheia De frutos, de flores, de folhas. [...] O vento varria os sonhos E varria as amizades... O vento varria as mulheres... O vento varria os meses E varria os teus sorrisos... O vento varria tudo! E a minha vida ficava Cada vez mais cheia De tudo. E a minha vida ficava Cada vez mais cheia De afetos e de mulheres. BANDEIRA, M. Poesia completa e prosa. Rio de Janeiro: José Aguilar, 1967. \nNa estruturação do texto, destaca-se ",
+    "choices": {
+      "text": [
+        "a construção de oposições semânticas. ",
+        "a apresentação de ideias de forma objetiva. ",
+        "o emprego recorrente de figuras de linguagem, como o eufemismo. ",
+        "a repetição de sons e de construções sintáticas semelhantes. ",
+        "a inversão da ordem sintática das palavras. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_118",
+    "question_number": 118,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Teatro do Oprimido é um método teatral que sistematiza exercícios, jogos e técnicas teatrais elaboradas pelo teatrólogo brasileiro Augusto Boal, recentemente falecido, que visa à desmecanização física e intelectual de seus praticantes. Partindo do princípio de que a linguagem teatral não deve ser diferenciada da que é usada cotidianamente pelo cidadão comum (oprimido), ele propõe condições práticas para que o oprimido se aproprie dos meios do fazer teatral e, assim, amplie suas possibilidades de expressão. Nesse sentido, todos podem desenvolver essa linguagem e, consequentemente, fazer teatro. Trata- se de um teatro em que o espectador é convidado a substituir o protagonista e mudar a condução ou mesmo o fim da história, conforme o olhar interpretativo e contextualizado do receptor. Companhia Teatro do Oprimido. Disponível em: www.ctorio.org.br. Acesso em: 1 jul. 2009 (adaptado). \nConsiderando-se as características do Teatro do Oprimido apresentadas, conclui-se que ",
+    "choices": {
+      "text": [
+        "esse modelo teatral é um método tradicional de fazer teatro que usa, nas suas ações cênicas, a linguagem rebuscada e hermética falada normalmente pelo cidadão comum. ",
+        "a forma de recepção desse modelo teatral se destaca pela separação entre atores e público, na qual os atores representam seus personagens e a plateia assiste passivamente ao espetáculo. ",
+        "sua linguagem teatral pode ser democratizada e apropriada pelo cidadão comum, no sentido de proporcionar-lhe autonomia crítica para compreensão e interpretação do mundo em que vive. ",
+        "o convite ao espectador para substituir o protagonista e mudar o fim da história evidencia que a proposta de Boal se aproxima das regras do teatro tradicional para a preparação de atores. ",
+        "a metodologia teatral do Teatro do Oprimido segue a concepção do teatro clássico aristotélico, que visa à desautomação física e intelectual de seus praticantes. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_119",
+    "question_number": 119,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Texto I O professor deve ser um guia seguro, muito senhor de sua língua; se outra for a orientação, vamos cair na “língua brasileira”, refúgio nefasto e confissão nojenta de ignorância do idioma pátrio, recurso vergonhoso de homens de cultura falsa e de falso patriotismo. Como havemos de querer que respeitem a nossa nacionalidade se somos os primeiros a descuidar daquilo que exprime e representa o idioma pátrio? ALMEIDA, N. M. Gramática metódica da língua portuguesa. Prefácio. São Paulo: Saraiva, 1999 (adaptado). Texto II Alguns leitores poderão achar que a linguagem desta Gramática se afasta do padrão estrito usual neste tipo de livro. Assim, o autor escreve tenho que reformular, e não tenho de reformular; pode-se colocar dois constituintes, e não podem-se colocar dois constituintes; e assim por diante. Isso foi feito de caso pensado, com a preocupação de aproximar a linguagem da gramática do padrão atual brasileiro presente nos textos técnicos e jornalísticos de nossa época. REIS, N. Nota do editor. PERINI, M. A. Gramática descritiva do português. São Paulo: Ática, 1996. \nConfrontando-se as opiniões defendidas nos dois textos, conclui-se que ",
+    "choices": {
+      "text": [
+        "ambos os textos tratam da questão do uso da língua com o objetivo de criticar a linguagem do brasileiro. ",
+        "os dois textos defendem a ideia de que o estudo da gramática deve ter o objetivo de ensinar as regras prescritivas da língua. ",
+        "a questão do português falado no Brasil é abordada nos dois textos, que procuram justificar como é correto e aceitável o uso coloquial do idioma. ",
+        "o primeiro texto enaltece o padrão estrito da língua, ao passo que o segundo defende que a linguagem jornalística deve criar suas próprias regras gramaticais. ",
+        "o primeiro texto prega a rigidez gramatical no uso da língua, enquanto o segundo defende uma adequação da língua escrita ao padrão atual brasileiro. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_120",
+    "question_number": 120,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "No decênio de 1870, Franklin Távora defendeu a tese de que no Brasil havia duas literaturas independentes dentro da mesma língua: uma do Norte e outra do Sul, regiões segundo ele muito diferentes por formação histórica, composição étnica, costumes, modismos linguísticos etc. Por isso, deu aos romances regionais que publicou o título geral de Literatura do Norte. Em nossos dias, um escritor gaúcho, Viana Moog, procurou mostrar com bastante engenho que no Brasil há, em verdade, literaturas setoriais diversas, refletindo as características locais. CANDIDO, A. A nova narrativa. A educação pela noite e outros ensaios. São Paulo: Ática, 2003. \nCom relação à valorização, no romance regionalista brasileiro, do homem e da paisagem de determinadas regiões nacionais, sabe-se que ",
+    "choices": {
+      "text": [
+        "o romance do Sul do Brasil se caracteriza pela temática essencialmente urbana, colocando em relevo a formação do homem por meio da mescla de características locais e dos aspectos culturais trazidos de fora pela imigração europeia. ",
+        "José de Alencar, representante, sobretudo, do romance urbano, retrata a temática da urbanização das cidades brasileiras e das relações conflituosas entre as raças. ",
+        "o romance do Nordeste caracteriza-se pelo acentuado realismo no uso do vocabulário, pelo temário local, expressando a vida do homem em face da natureza agreste, e assume frequentemente o ponto de vista dos menos favorecidos. ",
+        "a literatura urbana brasileira, da qual um dos expoentes é Machado de Assis, põe em relevo a formação do homem brasileiro, o sincretismo religioso, as raízes africanas e indígenas que caracterizam o nosso povo. ",
+        "Érico Veríssimo, Rachel de Queiroz, Simões Lopes Neto e Jorge Amado são romancistas das décadas de 30 e 40 do século XX, cuja obra retrata a problemática do homem urbano em confronto com a modernização do país promovida pelo Estado Novo. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_121",
+    "question_number": 121,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Quando eu falo com vocês, procuro usar o código de vocês. A figura do índio no Brasil de hoje não pode ser aquela de 500 anos atrás, do passado, que representa aquele primeiro contato. Da mesma forma que o Brasil de hoje não é o Brasil de ontem, tem 160 milhões de pessoas com diferentes sobrenomes. Vieram para cá asiáticos, europeus, africanos, e todo mundo quer ser brasileiro. A importante pergunta que nós fazemos é: qual é o pedaço de índio que vocês têm? O seu cabelo? São seus olhos? Ou é o nome da sua rua? O nome da sua praça? Enfim, vocês devem ter um pedaço de índio dentro de vocês. Para nós, o importante é que vocês olhem para a gente como seres humanos, como pessoas que nem precisam de paternalismos, nem precisam ser tratadas com privilégios. Nós não queremos tomar o Brasil de vocês, nós queremos compartilhar esse Brasil com vocês. TERENA, M. Debate. MORIN, E. Saberes globais e saberes locais. Rio de Janeiro: Garamond, 2000 (adaptado). \nOs procedimentos argumentativos utilizados no texto permitem inferir que o ouvinte/leitor, no qual o emissor foca o seu discurso, pertence ",
+    "choices": {
+      "text": [
+        "ao mesmo grupo social do falante/autor. ",
+        "a um grupo de brasileiros considerados como não índios. ",
+        "a um grupo étnico que representa a maioria europeia que vive no país. ",
+        "a um grupo formado por estrangeiros que falam português. ",
+        "a um grupo sociocultural formado por brasileiros naturalizados e imigrantes. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_122",
+    "question_number": 122,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Quando eu falo com vocês, procuro usar o código de vocês. A figura do índio no Brasil de hoje não pode ser aquela de 500 anos atrás, do passado, que representa aquele primeiro contato. Da mesma forma que o Brasil de hoje não é o Brasil de ontem, tem 160 milhões de pessoas com diferentes sobrenomes. Vieram para cá asiáticos, europeus, africanos, e todo mundo quer ser brasileiro. A importante pergunta que nós fazemos é: qual é o pedaço de índio que vocês têm? O seu cabelo? São seus olhos? Ou é o nome da sua rua? O nome da sua praça? Enfim, vocês devem ter um pedaço de índio dentro de vocês. Para nós, o importante é que vocês olhem para a gente como seres humanos, como pessoas que nem precisam de paternalismos, nem precisam ser tratadas com privilégios. Nós não queremos tomar o Brasil de vocês, nós queremos compartilhar esse Brasil com vocês. TERENA, M. Debate. MORIN, E. Saberes globais e saberes locais. Rio de Janeiro: Garamond, 2000 (adaptado). \nNa situação de comunicação da qual o texto foi retirado, a norma padrão da língua portuguesa é empregada com a finalidade de ",
+    "choices": {
+      "text": [
+        "demonstrar a clareza e a complexidade da nossa língua materna. ",
+        "situar os dois lados da interlocução em posições simétricas. ",
+        "comprovar a importância da correção gramatical nos diálogos cotidianos. ",
+        "mostrar como as línguas indígenas foram incorporadas à língua portuguesa. ",
+        "ressaltar a importância do código linguístico que adotamos como língua nacional. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  },
+  {
+    "id": "2009_123",
+    "question_number": 123,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Se os tubarões fossem homens Se os tubarões fossem homens, eles seriam mais gentis com os peixes pequenos? Certamente, se os tubarões fossem homens, fariam construir resistentes gaiolas no mar para os peixes pequenos, com todo o tipo de alimento, tanto animal como vegetal. Cuidariam para que as gaiolas tivessem sempre água fresca e adotariam todas as providências sanitárias. Naturalmente haveria também escolas nas gaiolas. Nas aulas, os peixinhos aprenderiam como nadar para a goela dos tubarões. Eles aprenderiam, por exemplo, a usar a geografia para localizar os grandes tubarões deitados preguiçosamente por aí. A aula principal seria, naturalmente, a formação moral dos peixinhos. A eles seria ensinado que o ato mais grandioso e mais sublime é o sacrifício alegre de um peixinho e que todos deveriam acreditar nos tubarões, sobretudo quando estes dissessem que cuidavam de sua felicidade futura. Os peixinhos saberiam que este futuro só estaria garantido se aprendessem a obediência. Cada peixinho que na guerra matasse alguns peixinhos inimigos seria condecorado com uma pequena Ordem das Algas e receberia o título de herói. BRECHT, B. Histórias do Sr. Keuner. São Paulo: Ed. 34, 2006 (adaptado). \nComo produção humana, a literatura veicula valores que nem sempre estão representados diretamente no texto, mas são transfigurados pela linguagem literária e podem até entrar em contradição com as convenções sociais e revelar o quanto a sociedade perverteu os valores humanos que ela própria criou. É o que ocorre na narrativa do dramaturgo alemão Bertolt Brecht mostrada. Por meio da hipótese apresentada, o autor ",
+    "choices": {
+      "text": [
+        "demonstra o quanto a literatura pode ser alienadora ao retratar, de modo positivo, as relações de opressão existentes na sociedade. ",
+        "revela a ação predatória do homem no mar, questionando a utilização dos recursos naturais pelo homem ocidental. ",
+        "defende que a força colonizadora e civilizatória do homem ocidental valorizou a organização das sociedades africanas e asiáticas, elevando-as ao modo de organização cultural e social da sociedade moderna. ",
+        "questiona o modo de organização das sociedades ocidentais capitalistas, que se desenvolveram fundamentadas nas relações de opressão em que os mais fortes exploram os mais fracos. ",
+        "evidencia a dinâmica social do trabalho coletivo em que os mais fortes colaboram com os mais fracos, de modo a guiá-los na realização de tarefas. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_124",
+    "question_number": 124,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Oximoro, ou paradoxismo, é uma figura de retórica em que se combinam palavras de sentido oposto que parecem excluir-se mutuamente, mas que, no contexto, reforçam a expressão. Dicionário Eletrônico Houaiss da Língua Portuguesa. \nConsiderando a definição apresentada, o fragmento poético da obra Cantares, de Hilda Hilst, publicada em 2004, em que pode ser encontrada a referida figura de retórica é: ",
+    "choices": {
+      "text": [
+        "“Dos dois contemplo rigor e fixidez. Passado e sentimento me contemplam” (p. 91). ",
+        "“De sol e lua De fogo e vento Te enlaço” (p. 101). ",
+        "“Areia, vou sorvendo A água do teu rio” (p. 93). ",
+        "“Ritualiza a matança de quem só te deu vida. E me deixa viver nessa que morre” (p. 62). ",
+        "“O bisturi e o verso. Dois instrumentos entre as minhas mãos” (p. 95). "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_128",
+    "question_number": 128,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "A partida Acordei pela madrugada. A princípio com tranquilidade, e logo com obstinação, quis novamente dormir. Inútil, o sono esgotara-se. Com precaução, acendi um fósforo: passava das três. Restava-me, portanto, menos de duas horas, pois o trem chegaria às cinco. Veio-me então o desejo de não passar mais nem uma hora naquela casa. Partir, sem dizer nada, deixar quanto antes minhas cadeias de disciplina e de amor. Com receio de fazer barulho, dirigi-me à cozinha, lavei o rosto, os dentes, penteei-me e, voltando ao meu quarto, vesti-me. Calcei os sapatos, sentei-me um instante à beira da cama. Minha avó continuava dormindo. Deveria fugir ou falar com ela? Ora, algumas palavras... Que me custava acordá-la, dizer-lhe adeus? LINS, O. A partida. Melhores contos. Seleção e prefácio de Sandra Nitrini. São Paulo: Global, 2003. \nNo texto, o personagem narrador, na iminência da partida, descreve a sua hesitação em separar-se da avó. Esse sentimento contraditório fica claramente expresso no trecho: ",
+    "choices": {
+      "text": [
+        "“A princípio com tranquilidade, e logo com obstinação, quis novamente dormir” (ℓ. 1-3). ",
+        "“Restava-me, portanto, menos de duas horas, pois o trem chegaria às cinco” (ℓ. 4-6). ",
+        "“Calcei os sapatos, sentei-me um instante à beira da cama” (ℓ. 12-13). ",
+        "“Partir, sem dizer nada, deixar quanto antes minhas cadeias de disciplina e amor” (ℓ. 7-9). ",
+        "“Deveria fugir ou falar com ela? Ora, algumas palavras...” (ℓ. 14-15). "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_129",
+    "question_number": 129,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Serafim da Silva Neto defendia a tese da unidade da língua portuguesa no Brasil, entrevendo que no Brasil as delimitações dialetais espaciais não eram tão marcadas como as isoglossas1 da România Antiga. Mas Paul Teyssier, na sua História da Língua Portuguesa, reconhece que na diversidade socioletal essa pretensa unidade se desfaz. Diz Teyssier: “A realidade, porém, é que as divisões ‘dialetais’ no Brasil são menos geográficas que socioculturais. As diferenças na maneira de falar são maiores, num determinado lugar, entre um homem culto e o vizinho analfabeto que entre dois brasileiros do mesmo nível cultural originários de duas regiões distantes uma da outra.” SILVA, R. V. M. O português brasileiro e o português europeu contemporâneo: alguns aspectos da diferença. Disponível em: www.uniroma.it. Acesso em: 23 jun. 2008. 1 isoglossa – linha imaginária que, em um mapa, une os pontos de ocorrência de traços e fenômenos linguísticos idênticos. FERREIRA, A. B. H. Novo dicionário Aurélio da língua portuguesa. Rio de Janeiro: Nova Fronteira, 1986. \nDe acordo com as informações presentes no texto, os pontos de vista de Serafim da Silva Neto e de Paul Teyssier convergem em relação ",
+    "choices": {
+      "text": [
+        "à influência dos aspectos socioculturais nas diferenças dos falares entre indivíduos, pois ambos consideram que pessoas de mesmo nível sociocultural falam de forma semelhante. ",
+        "à delimitação dialetal no Brasil assemelhar-se ao que ocorria na România Antiga, pois ambos consideram a variação linguística no Brasil como decorrente de aspectos geográficos. ",
+        "à variação sociocultural entre brasileiros de diferentes regiões, pois ambos consideram o fator sociocultural de bastante peso na constituição das variedades linguísticas no Brasil. ",
+        "à diversidade da língua portuguesa na România Antiga, que até hoje continua a existir, manifestando- se nas variantes linguísticas do português atual no Brasil. ",
+        "à existência de delimitações dialetais geográficas pouco marcadas no Brasil, embora cada um enfatize aspectos diferentes da questão. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_130",
+    "question_number": 130,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Nestes últimos anos, a situação mudou bastante e o Brasil, normalizado, já não nos parece tão mítico, no bem e no mal. Houve um mútuo reconhecimento entre os dois países de expressão portuguesa de um lado e do outro do Atlântico: o Brasil descobriu Portugal e Portugal, em um retorno das caravelas, voltou a descobrir o Brasil e a ser, por seu lado, colonizado por expressões linguísticas, as telenovelas, os romances, a poesia, a comida e as formas de tratamento brasileiros. O mesmo, embora em nível superficial, dele excluído o plano da língua, aconteceu com a Europa, que, depois da diáspora dos anos 70, depois da inserção na cultura da bossa-nova e da música popular brasileira, da problemática ecológica centrada na Amazônia, ou da problemática social emergente do fenômeno dos meninos de rua, e até do álibi ocultista dos romances de Paulo Coelho, continua todos os dias a descobrir, no bem e no mal, o novo Brasil. Se, no fim do século XIX, Sílvio Romero definia a literatura brasileira como manifestação de um país mestiço, será fácil para nós defini-la como expressão de um país polifônico: em que já não é determinante o eixo Rio-São Paulo, mas que, em cada região, desenvolve originalmente a sua unitária e particular tradição cultural. É esse, para nós, no início do século XXI, o novo estilo brasileiro. STEGAGNO-PICCHIO, L. História da literatura brasileira. Rio de Janeiro: Nova Aguilar, 2004 (adaptado). \nNo texto, a autora mostra como o Brasil, ao longo de sua história, foi, aos poucos, construindo uma identidade cultural e literária frente à relativamente autônoma identidade europeia, em geral, e à portuguesa em particular. Sua análise pressupõe, de modo especial, o papel do patrimônio literário e linguístico, que favoreceu o surgimento daquilo que ela chama de “estilo brasileiro”. Diante desse pressuposto, e levando em consideração o texto e as diferentes etapas de consolidação da cultura brasileira, constata-se que ",
+    "choices": {
+      "text": [
+        "o Brasil redescobriu a cultura portuguesa no século XIX, o que o fez assimilar novos gêneros artísticos e culturais, assim como usos originais do idioma, conforme ilustra o caso do escritor Machado de Assis. ",
+        "a Europa reconheceu a importância da língua portuguesa no mundo, a partir da projeção que poetas brasileiros ganharam naqueles países, a partir do século XX. ",
+        "ocorre, no início do século XXI, promovido pela solidificação da cultura nacional, maior reconhecimento do Brasil por ele mesmo, tanto nos aspectos positivos quanto nos negativos. ",
+        "o Brasil continua sendo, como no século XIX, uma nação culturalmente mestiça, embora a expressão dominante seja aquela produzida no eixo Rio-São Paulo, em especial aquela ligada às telenovelas. ",
+        "o novo estilo cultural brasileiro se caracteriza por uma união bastante significativa entre as diversas matrizes culturais advindas das várias regiões do país, como se pode comprovar na obra de Paulo Coelho. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_131",
+    "question_number": 131,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Compare os textos I e II a seguir, que tratam de aspectos ligados a variedades da língua portuguesa no mundo e no Brasil. Texto I Acompanhando os navegadores, colonizadores e comerciantes portugueses em todas as suas incríveis viagens, a partir do século XV, o português se transformou na língua de um império. Nesse processo, entrou em contato — forçado, o mais das vezes; amigável, em alguns casos — com as mais diversas línguas, passando por processos de variação e de mudança linguística. Assim, contar a história do português do Brasil é mergulhar na sua história colonial e de país independente, já que as línguas não são mecanismos desgarrados dos povos que as utilizam. Nesse cenário, são muitos os aspectos da estrutura linguística que não só expressam a diferença entre Portugal e Brasil como também definem, no Brasil, diferenças regionais e sociais. PAGOTTO, E. P. Línguas do Brasil. Disponível em: http://cienciaecultura.bvs.br. Acesso em: 5 jul. 2009 (adaptado). Texto II Barbarismo é vício que se comete na escritura de cada uma das partes da construção ou na pronunciação. E em nenhuma parte da Terra se comete mais essa figura da pronunciação que nestes reinos, por causa das muitas nações que trouxemos ao jugo do nosso serviço. Porque bem como os Gregos e Romanos haviam por bárbaras todas as outras nações estranhas a eles, por não poderem formar sua linguagem, assim nós podemos dizer que as nações de África, Guiné, Ásia, Brasil barbarizam quando querem imitar a nossa. BARROS, J. Gramática da língua portuguesa. Porto: Porto Editora, 1957 (adaptado). \nOs textos abordam o contato da língua portuguesa com outras línguas e processos de variação e de mudança decorridos desse contato. Da comparação entre os textos, conclui-se que a posição de João de Barros (Texto II), em relação aos usos sociais da linguagem, revela ",
+    "choices": {
+      "text": [
+        "atitude crítica do autor quanto à gramática que as nações a serviço de Portugal possuíam e, ao mesmo tempo, de benevolência quanto ao conhecimento que os povos tinham de suas línguas. ",
+        "atitude preconceituosa relativa a vícios culturais das nações sob domínio português, dado o interesse dos falantes dessa línguas em copiar a língua do império, o que implicou a falência do idioma falado em Portugal. ",
+        "o desejo de conservar, em Portugal, as estruturas da variante padrão da língua grega — em oposição às consideradas bárbaras —, em vista da necessidade de preservação do padrão de correção dessa língua à época. ",
+        "adesão à concepção de língua como entidade homogênea e invariável, e negação da ideia de que a língua portuguesa pertence a outros povos. ",
+        "atitude crítica, que se estende à própria língua portuguesa, por se tratar de sistema que não disporia de elementos necessários para a plena inserção sociocultural de falantes não nativos do português. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_132",
+    "question_number": 132,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Texto I [...] já foi o tempo em que via a convivência como viável, só exigindo deste bem comum, piedosamente, o meu quinhão, já foi o tempo em que consentia num contrato, deixando muitas coisas de fora sem ceder contudo no que me era vital, já foi o tempo em que reconhecia a existência escandalosa de imaginados valores, coluna vertebral de toda ‘ordem’; mas não tive sequer o sopro necessário, e, negado o respiro, me foi imposto o sufoco; é esta consciência que me libera, é ela hoje que me empurra, são outras agora minhas preocupações, é hoje outro o meu universo de problemas; num mundo estapafúrdio — definitivamente fora de foco — cedo ou tarde tudo acaba se reduzindo a um ponto de vista, e você que vive paparicando as ciências humanas, nem suspeita que paparica uma piada: impossível ordenar o mundo dos valores, ninguém arruma a casa do capeta; me recuso pois a pensar naquilo em que não mais acredito, seja o amor, a amizade, a família, a igreja, a humanidade; me lixo com tudo isso! me apavora ainda a existência, mas não tenho medo de ficar sozinho, foi conscientemente que escolhi o exílio, me bastando hoje o cinismo dos grandes indiferentes [...]. NASSAR, R. Um copo de cólera. São Paulo: Companhia das Letras, 1992. Texto II Raduan Nassar lançou a novela Um Copo de Cólera em 1978, fervilhante narrativa de um confronto verbal entre amantes, em que a fúria das palavras cortantes se estilhaçava no ar. O embate conjugal ecoava o autoritário discurso do poder e da submissão de um Brasil que vivia sob o jugo da ditadura militar. COMODO, R. Um silêncio inquietante. IstoÉ. Disponível em: http://www.terra.com.br. Acesso em: 15 jul. 2009. \nNa novela Um Copo de Cólera, o autor lança mão de recursos estilísticos e expressivos típicos da literatura produzida na década de 70 do século passado no Brasil, que, nas palavras do crítico Antonio Candido, aliam “vanguarda estética e amargura política”. Com relação à temática abordada e à concepção narrativa da novela, o texto I ",
+    "choices": {
+      "text": [
+        "é escrito em terceira pessoa, com narrador onisciente, apresentando a disputa entre um homem e uma mulher em linguagem sóbria, condizente com a seriedade da temática político-social do período da ditadura militar. ",
+        "articula o discurso dos interlocutores em torno de uma luta verbal, veiculada por meio de linguagem simples e objetiva, que busca traduzir a situação de exclusão social do narrador. ",
+        "representa a literatura dos anos 70 do século XX e aborda, por meio de expressão clara e objetiva e de ponto de vista distanciado, os problemas da urbanização das grandes metrópoles brasileiras. ",
+        "evidencia uma crítica à sociedade em que vivem os personagens, por meio de fluxo verbal contínuo de tom agressivo. ",
+        "traduz, em linguagem subjetiva e intimista, a partir do ponto de vista interno, os dramas psicológicos da mulher moderna, às voltas com a questão da priorização do trabalho em detrimento da vida familiar e amorosa. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_133",
+    "question_number": 133,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Texto I [...] já foi o tempo em que via a convivência como viável, só exigindo deste bem comum, piedosamente, o meu quinhão, já foi o tempo em que consentia num contrato, deixando muitas coisas de fora sem ceder contudo no que me era vital, já foi o tempo em que reconhecia a existência escandalosa de imaginados valores, coluna vertebral de toda ‘ordem’; mas não tive sequer o sopro necessário, e, negado o respiro, me foi imposto o sufoco; é esta consciência que me libera, é ela hoje que me empurra, são outras agora minhas preocupações, é hoje outro o meu universo de problemas; num mundo estapafúrdio — definitivamente fora de foco — cedo ou tarde tudo acaba se reduzindo a um ponto de vista, e você que vive paparicando as ciências humanas, nem suspeita que paparica uma piada: impossível ordenar o mundo dos valores, ninguém arruma a casa do capeta; me recuso pois a pensar naquilo em que não mais acredito, seja o amor, a amizade, a família, a igreja, a humanidade; me lixo com tudo isso! me apavora ainda a existência, mas não tenho medo de ficar sozinho, foi conscientemente que escolhi o exílio, me bastando hoje o cinismo dos grandes indiferentes [...]. NASSAR, R. Um copo de cólera. São Paulo: Companhia das Letras, 1992. Texto II Raduan Nassar lançou a novela Um Copo de Cólera em 1978, fervilhante narrativa de um confronto verbal entre amantes, em que a fúria das palavras cortantes se estilhaçava no ar. O embate conjugal ecoava o autoritário discurso do poder e da submissão de um Brasil que vivia sob o jugo da ditadura militar. COMODO, R. Um silêncio inquietante. IstoÉ. Disponível em: http://www.terra.com.br. Acesso em: 15 jul. 2009. \nConsiderando-se os textos apresentados e o contexto político e social no qual foi produzida a obra Um Copo de Cólera, verifica-se que o narrador, ao dirigir-se à sua parceira, nessa novela, tece um discurso ",
+    "choices": {
+      "text": [
+        "conformista, que procura defender as instituições nas quais repousava a autoridade do regime militar no Brasil, a saber: a Igreja, a família e o Estado. ",
+        "pacifista, que procura defender os ideais libertários representativos da intelectualidade brasileira opositora à ditadura militar na década de 70 do século passado. ",
+        "desmistificador, escrito em um discurso ágil e contundente, que critica os grandes princípios humanitários supostamente defendidos por sua interlocutora. ",
+        "politizado, pois apela para o engajamento nas causas sociais e para a defesa dos direitos humanos como uma única forma de salvamento para a humanidade. ",
+        "contraditório, ao acusar a sua interlocutora de compactuar com o regime repressor da ditadura militar, por meio da defesa de instituições como a família e a Igreja. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_134",
+    "question_number": 134,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Nunca se falou e se preocupou tanto com o corpo como nos dias atuais. É comum ouvirmos anúncios de uma nova academia de ginástica, de uma nova forma de dieta, de uma nova técnica de autoconhecimento e outras práticas de saúde alternativa, em síntese, vivemos nos últimos anos a redescoberta do prazer, voltando nossas atenções ao nosso próprio corpo. Essa valorização do prazer individualizante se estrutura em um verdadeiro culto ao corpo, em analogia a uma religião, assistimos hoje ao surgimento de novo universo: a corpolatria. CODO, W.; SENNE, W. O que é corpo(latria). Coleção Primeiros Passos. Brasiliense, 1985 (adaptado). \nSobre esse fenômeno do homem contemporâneo presente nas classes sociais brasileiras, principalmente, na classe média, a corpolatria ",
+    "choices": {
+      "text": [
+        "é uma religião pelo avesso, por isso outra religião; inverteram-se os sinais, a busca da felicidade eterna antes carregava em si a destruição do prazer, hoje implica o seu culto. ",
+        "criou outro ópio do povo, levando as pessoas a buscarem cada vez mais grupos igualitários de integração social. ",
+        "é uma tradução dos valores das sociedades subdesenvolvidas, mas em países considerados do primeiro mundo ela não consegue se manifestar porque a população tem melhor educação e senso crítico. ",
+        "tem como um de seus dogmas o narcisismo, significando o “amar o próximo como se ama a si mesmo”. ",
+        "existe desde a Idade Média, entretanto esse acontecimento se intensificou a partir da Revolução Industrial no século XIX e se estendeu até os nossos dias. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_135",
+    "question_number": 135,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Confidência do Itabirano Alguns anos vivi em Itabira. Principalmente nasci em Itabira. Por isso sou triste, orgulhoso: de ferro. Noventa por cento de ferro nas calçadas. Oitenta por cento de ferro nas almas. E esse alheamento do que na vida é porosidade e [comunicação. A vontade de amar, que me paralisa o trabalho, vem de Itabira, de suas noites brancas, sem mulheres e [sem horizontes. E o hábito de sofrer, que tanto me diverte, é doce herança itabirana. De Itabira trouxe prendas diversas que ora te ofereço: esta pedra de ferro, futuro aço do Brasil, este São Benedito do velho santeiro Alfredo Duval; este couro de anta, estendido no sofá da sala de visitas; este orgulho, esta cabeça baixa... Tive ouro, tive gado, tive fazendas. Hoje sou funcionário público. Itabira é apenas uma fotografia na parede. Mas como dói! ANDRADE, C. D. Poesia completa. Rio de Janeiro: Nova Aguilar, 2003. \nCarlos Drummond de Andrade é um dos expoentes do movimento modernista brasileiro. Com seus poemas, penetrou fundo na alma do Brasil e trabalhou poeticamente as inquietudes e os dilemas humanos. Sua poesia é feita de uma relação tensa entre o universal e o particular, como se percebe claramente na construção do poema Confidência do Itabirano. Tendo em vista os procedimentos de construção do texto literário e as concepções artísticas modernistas, conclui-se que o poema acima ",
+    "choices": {
+      "text": [
+        "representa a fase heroica do modernismo, devido ao tom contestatório e à utilização de expressões e usos linguísticos típicos da oralidade. ",
+        "apresenta uma característica importante do gênero lírico, que é a apresentação objetiva de fatos e dados históricos. ",
+        "evidencia uma tensão histórica entre o “eu” e a sua comunidade, por intermédio de imagens que representam a forma como a sociedade e o mundo colaboram para a constituição do indivíduo. ",
+        "critica, por meio de um discurso irônico, a posição de inutilidade do poeta e da poesia em comparação com as prendas resgatadas de Itabira. ",
+        "apresenta influências românticas, uma vez que trata da individualidade, da saudade da infância e do amor pela terra natal, por meio de recursos retóricos pomposos. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "C",
+    "explanation": null
+  },
+  {
+    "id": "2009_141",
+    "question_number": 141,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Uma resolução do Conselho Nacional de Política Energética (CNPE) estabeleceu a obrigatoriedade de adição de biodísel ao óleo dísel comercializado nos postos. A exigência é que, a partir de 1.º de julho de 2009, 4% do volume da mistura final seja formada por biodísel. Até junho de 2009, esse percentual era de 3%. Essa medida estimula a demanda de biodísel, bem como possibilita a redução da importação de dísel de petróleo. Disponível em: http://www1.folha.uol.com.br. Acesso em: 12 jul. 2009 (adaptado). \nEstimativas indicam que, com a adição de 4% de biodísel ao dísel, serão consumidos 925 milhões de litros de biodísel no segundo semestre de 2009. Considerando-se essa estimativa, para o mesmo volume da mistura final dísel/biodísel consumida no segundo semestre de 2009, qual seria o consumo de biodísel com a adição de 3%? ",
+    "choices": {
+      "text": [
+        "27,75 milhões de litros. ",
+        "37,00 milhões de litros. ",
+        "231,25 milhões de litros. ",
+        "693,75 milhões de litros. ",
+        "888,00 milhões de litros. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_151",
+    "question_number": 151,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Um grupo de 50 pessoas fez um orçamento inicial para organizar uma festa, que seria dividido entre elas em cotas iguais. Verificou-se ao final que, para arcar com todas as despesas, faltavam R$ 510,00, e que 5 novas pessoas haviam ingressado no grupo. No acerto foi decidido que a despesa total seria dividida em partes iguais pelas 55 pessoas. Quem não havia ainda contribuído pagaria a sua parte, e cada uma das 50 pessoas do grupo inicial deveria contribuir com mais R$ 7,00. \nDe acordo com essas informações, qual foi o valor da cota calculada no acerto final para cada uma das 55 pessoas? ",
+    "choices": {
+      "text": [
+        "R$ 14,00. ",
+        "R$ 17,00. ",
+        "R$ 22,00. ",
+        "R$ 32,00. ",
+        "R$ 57,00. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_152",
+    "question_number": 152,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Técnicos concluem mapeamento do aquífero Guarani O aquífero Guarani localiza-se no subterrâneo dos territórios da Argentina, Brasil, Paraguai e Uruguai, com extensão total de 1.200.000 quilômetros quadrados, dos quais 840.000 quilômetros quadrados estão no Brasil. O aquífero armazena cerca de 30 mil quilômetros cúbicos de água e é considerado um dos maiores do mundo. Na maioria das vezes em que são feitas referências à água, são usadas as unidades metro cúbico e litro, e não as unidades já descritas. A Companhia de Saneamento Básico do Estado de São Paulo (SABESP) divulgou, por exemplo, um novo reservatório cuja capacidade de armazenagem é de 20 milhões de litros. Disponível em: http://noticias.terra.com.br. Acesso em: 10 jul. 2009 (adaptado). \nComparando as capacidades do aquífero Guarani e desse novo reservatório da SABESP, a capacidade do aquífero Guarani é ",
+    "choices": {
+      "text": [
+        "1,5 x 102 vezes a capacidade do reservatório novo. ",
+        "1,5 x 103 vezes a capacidade do reservatório novo. ",
+        "1,5 x 106 vezes a capacidade do reservatório novo. ",
+        "1,5 x 108 vezes a capacidade do reservatório novo. ",
+        "1,5 x 109 vezes a capacidade do reservatório novo. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "E",
+    "explanation": null
+  },
+  {
+    "id": "2009_155",
+    "question_number": 155,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Um posto de combustível vende 10.000 litros de álcool por dia a R$ 1,50 cada litro. Seu proprietário percebeu que, para cada centavo de desconto que concedia por litro, eram vendidos 100 litros a mais por dia. Por exemplo, no dia em que o preço do álcool foi R$ 1,48, foram vendidos 10.200 litros. \nConsiderando x o valor, em centavos, do desconto dado no preço de cada litro, e V o valor, em R$, arrecadado por dia com a venda do álcool, então a expressão que relaciona V e x é ",
+    "choices": {
+      "text": [
+        "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>V</mi><mo>=</mo><mn>10000</mn><mo>+</mo><mn>50</mn><mi>x</mi><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></math>. ",
+        "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>V</mi><mo>=</mo><mn>10000</mn><mo>+</mo><mn>50</mn><mi>x</mi><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></math>. ",
+        "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>V</mi><mo>=</mo><mn>15000</mn><mo>-</mo><mn>50</mn><mi>x</mi><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></math>. ",
+        "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>V</mi><mo>=</mo><mn>15000</mn><mo>+</mo><mn>50</mn><mi>x</mi><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></math>. ",
+        "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>V</mi><mo>=</mo><mn>15000</mn><mo>-</mo><mn>50</mn><mi>x</mi><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></math>. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "D",
+    "explanation": null
+  },
+  {
+    "id": "2009_156",
+    "question_number": 156,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Para cada indivíduo, a sua inscrição no Cadastro de Pessoas Físicas (CPF) é composto por um número de 9 algarismos e outro número de 2 algarismos, na forma xy, em que os dígitos x e y são denominados dígitos verificadores. Os dígitos verificadores são calculados, a partir da esquerda, da seguinte maneira: os 9 primeiros algarismos são multiplicados pela sequência 10, 9, 8, 7, 6, 5, 4, 3, 2 (o primeiro por 10, o segundo por 9, e assim sucessivamente); em seguida, calcula-se o resto r da divisão da soma dos resultados das multiplicações por 11, e se esse resto r for 0 ou 1, x é zero, caso contrário <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>=</mo><mn>11</mn><mo>-</mo><mi>r</mi></math>. O dígito y é calculado pela mesma regra, na qual os números a serem multiplicados pela sequência dada são contados a partir do segundo algarismo, sendo x o último algarismo, isto é, y é zero se o resto s da divisão por 11 das somas das multiplicações for 0 ou 1, caso contrário, <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>y</mi><mo>=</mo><mn>11</mn><mo>-</mo><mi>s</mi></math>. \nSuponha que João tenha perdido seus documentos, inclusive o cartão de CPF e, ao dar queixa da perda na delegacia, não conseguisse lembrar quais eram os dígitos verificadores, recordando-se apenas que os nove primeiros algarismos eram 123.456.789. Neste caso, os dígitos verificadores x e y esquecidos são, respectivamente, ",
+    "choices": {
+      "text": [
+        "0 e 9. ",
+        "1 e 4. ",
+        "1 e 7. ",
+        "9 e 1. ",
+        "0 e 1. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "A",
+    "explanation": null
+  },
+  {
+    "id": "2009_157",
+    "question_number": 157,
+    "exam_id": "2009",
+    "exam_year": "2009",
+    "nullified": null,
+    "question": "Uma empresa que fabrica esferas de aço, de 6 cm de raio, utiliza caixas de madeira, na forma de um cubo, para transportá-las. \nSabendo que a capacidade da caixa é de 13.824 cm³, então o número máximo de esferas que podem ser transportadas em uma caixa é igual a ",
+    "choices": {
+      "text": [
+        "4. ",
+        "8. ",
+        "16. ",
+        "24. ",
+        "32. "
+      ],
+      "label": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "answerKey": "B",
+    "explanation": null
+  }
+]
