@@ -21,7 +21,7 @@ class QuestionCreate(QuestionBase):
     pass
 
 class Question(QuestionBase):
-    id: int
+    id: str
     options: List[Option] = []
     correct_option_id: Optional[int] = None
 
