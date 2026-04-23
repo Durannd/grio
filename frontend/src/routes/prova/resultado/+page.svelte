@@ -50,19 +50,19 @@
       <section class="ai-analysis-card glass-card">
         <div class="card-header">
           <span class="icon">📊</span>
-          <h2>{report.analysis.title || 'Análise de Proficiência'}</h2>
+          <h2>{report?.analysis?.title || 'Análise de Proficiência'}</h2>
         </div>
         
         <div class="analysis-content">
           <div class="summary-section">
-            <p>{report.analysis.summary}</p>
+            <p>{report?.analysis?.summary || 'Nenhuma análise disponível no momento.'}</p>
           </div>
 
           <div class="insights-grid">
             <div class="insight-col">
               <h4 class="text-success">Pontos de Domínio</h4>
               <ul>
-                {#each report.analysis.strengths as strength}
+                {#each report?.analysis?.strengths || [] as strength}
                   <li>{strength}</li>
                 {/each}
               </ul>
@@ -70,7 +70,7 @@
             <div class="insight-col">
               <h4 class="text-warning">Oportunidades de Melhoria</h4>
               <ul>
-                {#each report.analysis.weaknesses as weakness}
+                {#each report?.analysis?.weaknesses || [] as weakness}
                   <li>{weakness}</li>
                 {/each}
               </ul>
@@ -79,7 +79,7 @@
 
           <div class="action-plan-box">
             <strong>Estratégia Recomendada:</strong>
-            <p>{report.analysis.action_plan}</p>
+            <p>{report?.analysis?.action_plan || 'Continue seus estudos seguindo sua trilha personalizada.'}</p>
           </div>
         </div>
       </section>
@@ -87,11 +87,11 @@
       <div class="stats-grid">
         <div class="stat-item glass-card">
           <span class="label">Habilidades Mapeadas</span>
-          <span class="value">{report.summary_stats.total_skills_mapped}</span>
+          <span class="value">{report?.summary_stats?.total_skills_mapped || 0}</span>
         </div>
         <div class="stat-item glass-card">
           <span class="label">Proficiência Média</span>
-          <span class="value">{(report.summary_stats.average_score * 100).toFixed(0)}%</span>
+          <span class="value">{((report?.summary_stats?.average_score || 0) * 100).toFixed(0)}%</span>
         </div>
       </div>
 

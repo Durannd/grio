@@ -143,6 +143,11 @@
         </p>
       </div>
     {:else if loading}
+      <div class="loading-container" in:fade>
+        <div class="gri-loader"></div>
+        <p class="text-gradient">Carregando jornada diagnóstica...</p>
+      </div>
+    {:else if questions.length > 0}
       <header class="onboarding-header" in:fly={{ y: -20, duration: 600 }}>
         <h1 class="text-gradient">Sua Jornada Personalizada</h1>
         <div class="header-actions">
@@ -164,22 +169,29 @@
       </header>
 
       <main class="question-section">
-        {#key currentQuestionIndex}
-          <div class="glass-card question-card" in:fly={{ x: 30, duration: 500 }} out:fly={{ x: -30, duration: 300 }}>
-            <div class="card-meta">
-              <div class="meta-left">
-                <span class="enem-badge">{formatEnemId(currentQuestion.id)}</span>
-                <span class="concept-tag">{currentQuestion.concept_name}</span>
+        {#if !currentQuestion}
+          <div class="glass-card error-card">
+            <h3>Ops! Não conseguimos carregar as questões.</h3>
+            <p>Verifique sua conexão ou tente recarregar a página.</p>
+            <button class="btn btn-primary" on:click={() => window.location.reload()}>Recarregar</button>
+          </div>
+        {:else}
+          {#key currentQuestionIndex}
+            <div class="glass-card question-card" in:fly={{ x: 30, duration: 500 }} out:fly={{ x: -30, duration: 300 }}>
+              <div class="card-meta">
+                <div class="meta-left">
+                  <span class="enem-badge">{formatEnemId(currentQuestion?.id)}</span>
+                  <span class="concept-tag">{currentQuestion?.concept_name}</span>
+                </div>
+                <div class="difficulty-badge">
+                  <span class="dot {currentQuestion?.difficulty?.toLowerCase()}"></span>
+                  <span>{currentQuestion?.difficulty}</span>
+                </div>
               </div>
-              <div class="difficulty-badge">
-                <span class="dot {currentQuestion.difficulty.toLowerCase()}"></span>
-                <span>{currentQuestion.difficulty}</span>
+              
+              <div class="question-body">
+                <div class="question-text">{@html currentQuestion?.text}</div>
               </div>
-            </div>
-            
-            <div class="question-body">
-              <div class="question-text">{@html currentQuestion.text}</div>
-            </div>
 
             <div class="options-container">
               {#each currentQuestion.options as option}
@@ -195,7 +207,8 @@
             </div>
           </div>
         {/key}
-      </main>
+      {/if}
+    </main>
 
       <footer class="onboarding-footer">
         <button class="btn btn-outline" on:click={prevQuestion} disabled={currentQuestionIndex === 0}>
@@ -219,7 +232,18 @@
             Próximo Passo
           </button>
         {/if}
-      </footer>
+    </footer>
+    {:else}
+      <div class="empty-state-container" in:fade>
+        <div class="glass-card text-center" style="padding: 3rem;">
+          <div class="error-icon" style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+          <h3>Nenhuma questão encontrada</h3>
+          <p>O diagnóstico ainda não está disponível ou houve um erro de conexão.</p>
+          <button class="btn btn-primary" style="margin-top: 1.5rem;" on:click={() => window.location.reload()}>
+            Tentar Novamente
+          </button>
+        </div>
+      </div>
     {/if}
   </div>
 </div>

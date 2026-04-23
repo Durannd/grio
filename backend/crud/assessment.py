@@ -77,28 +77,40 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
         scores = defaultdict(float)
         totals = defaultdict(int)
 
+        print(f"DEBUG: Processando {len(detailed_results)} resultados para auditoria.")
+
         for res in detailed_results:
             q_id = res["question_id"]
             confidence = confidence_map.get(q_id, 1.0)
             
             # GARANTIA: Penalidade absoluta por tempo (Previne o erro de 100% no Auto-Fill)
-            if res["time_seconds"] < 3:
+            is_penalty = False
+            if res["time_seconds"] < 5: # Aumentado para 5s para ser mais rigoroso
                 confidence = 0.1
-            elif res["time_seconds"] < 10 and res["difficulty"] in ["Médio", "Difícil"]:
+                is_penalty = True
+            elif res["time_seconds"] < 12 and res["difficulty"] in ["Médio", "Difícil"]:
                 confidence = min(confidence, 0.4)
+                is_penalty = True
 
             for item_id in res["skills"]:
                 totals[item_id] += 1
                 if res["is_correct"]:
-                    scores[item_id] += (1.0 * confidence)
+                    # Se houver penalidade, o score é limitado a 0.2 mesmo que a IA diga o contrário
+                    val = 1.0 * confidence
+                    if is_penalty:
+                        val = min(val, 0.2)
+                    scores[item_id] += val
 
         proficiencies_data = []
         for item_id, total in totals.items():
             score = scores[item_id] / total if total > 0 else 0
-            proficiencies_data.append({"id": item_id, "score": score})
+            # Cap final de segurança: nada passa de 1.0 (obviamente) mas ajuda a debugar
+            score = min(score, 1.0)
+            proficiencies_data.append({"id": item_id, "score": float(score)})
+            print(f"DEBUG: Skill {item_id} -> Score Final: {score}")
         
         if proficiencies_data:
-            # 1. Limpar proficiências e análises antigas
+            # 1. Limpar proficiências e análises antigas (LIMPEZA TOTAL)
             session.run("""
                 MATCH (u:User {id: $user_id})
                 OPTIONAL MATCH (u)-[r:HAS_PROFICIENCY]->()
