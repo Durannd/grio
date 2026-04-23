@@ -2,6 +2,7 @@
   import '../app.css';
   import { fade } from 'svelte/transition';
   import { page } from '$app/stores';
+  import Chatbot from '$lib/components/Chatbot.svelte';
 </script>
 
 <div class="app-layout">
@@ -22,6 +23,8 @@
       <slot />
     </div>
   {/key}
+
+  <Chatbot />
 </div>
 
 <style>

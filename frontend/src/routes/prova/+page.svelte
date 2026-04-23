@@ -1,12 +1,30 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { fade, fly } from 'svelte/transition';
   import { goto } from '$app/navigation';
-  import type { Question } from '../../lib/types/assessment';
+  import axios from 'axios';
+
+  interface Option {
+    id: number;
+    text: string;
+  }
+
+  interface Question {
+    id: string;
+    text: string;
+    difficulty: string;
+    concept_name: string;
+    options: Option[];
+  }
 
   let questions: Question[] = [];
+  let currentQuestionIndex = 0;
   let loading = true;
   let submitting = false;
-  let answers: Record<string, string> = {};
+  let selectedAnswers: Record<string, number> = {};
+  let answersTime: Record<string, number> = {}; // Tempo gasto por questão em segundos
+  let startTime = Date.now();
+  let progress = 0;
 
   onMount(async () => {
     try {
@@ -17,9 +35,7 @@
       }
 
       const response = await fetch('http://localhost:8000/api/v1/assessment', {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
+        headers: { "Authorization": `Bearer ${token}` }
       });
 
       if (response.status === 401) {
@@ -31,215 +47,463 @@
       if (response.ok) {
         const data = await response.json();
         questions = data.questions;
-      } else {
-        console.error('Failed to fetch questions:', response.statusText);
       }
       loading = false;
     } catch (error) {
-      console.error('An error occurred while fetching questions:', error);
+      console.error('Erro ao buscar questões:', error);
       loading = false;
     }
   });
 
+  $: currentQuestion = questions[currentQuestionIndex];
+  $: progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
+
+  function selectOption(questionId: string, optionId: number) {
+    const timeSpent = (Date.now() - startTime) / 1000;
+    selectedAnswers[questionId] = optionId;
+    answersTime[questionId] = (answersTime[questionId] || 0) + timeSpent;
+    startTime = Date.now();
+  }
+
+  function nextQuestion() {
+    if (currentQuestionIndex < questions.length - 1) {
+      currentQuestionIndex++;
+      startTime = Date.now();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      handleSubmit();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQuestionIndex > 0) {
+      currentQuestionIndex--;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function formatEnemId(id: string) {
+    if (!id) return '';
+    const [year, num] = id.split('_');
+    return `ENEM ${year} • Questão ${num}`;
+  }
+
   async function handleSubmit() {
     submitting = true;
-    // Mocking submission
-    setTimeout(() => {
-      submitting = false;
+    try {
+      const token = localStorage.getItem('token');
+      // Obter usuário do contexto ou localStorage (aqui supomos que temos acesso ao user.id)
+      // Para fins de demo, pegaremos do token decodificado ou de um store
+      await axios.post('http://localhost:8000/api/v1/assessment/submit', {
+        user_id: 0, // O backend sobrescreve isso com o ID real do token
+        answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({
+          question_id: qId,
+          selected_option_id: aId,
+          time_seconds: Math.round(answersTime[qId] || 0)
+        }))
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      goto('/prova/resultado');
+    } catch (e) {
+      console.error(e);
+      alert("Erro ao processar diagnóstico. Redirecionando para o dashboard...");
       goto('/dashboard');
-    }, 2000);
+    } finally {
+      submitting = false;
+    }
+  }
+
+  function debugAutoFill() {
+    questions.forEach(q => {
+      selectedAnswers[q.id] = Math.floor(Math.random() * 5) + 1;
+    });
+    selectedAnswers = { ...selectedAnswers };
+    currentQuestionIndex = questions.length - 1;
   }
 </script>
 
-<div class="assessment-container">
-  {#if loading}
-    <div class="loading-state animate-slide-up">
-      <div class="spinner"></div>
-      <p>Preparando os pergaminhos do conhecimento...</p>
-    </div>
-  {:else}
-    <header class="assessment-header animate-slide-up stagger-1">
-      <h1 class="text-gradient">O Rito de Passagem</h1>
-      <p>Responda com honestidade. Isso moldará a sua jornada.</p>
-    </header>
+<div class="onboarding-page">
+  <div class="background-decor">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+  </div>
 
-    <form on:submit|preventDefault={handleSubmit} class="assessment-form">
-      {#each questions as question, index}
-        <div class="glass-card question-card animate-slide-up" style="animation-delay: {0.1 * (index + 2)}s">
-          <div class="question-header">
-            <span class="question-number">Enigma {index + 1}</span>
-            <span class="question-topic">{question.concept_name}</span>
-          </div>
-          <h2 class="question-text">{question.text}</h2>
-          
-          <div class="form-group">
-            <label for="answer-{question.id}" class="sr-only">Sua Resposta</label>
-            <textarea 
-              id="answer-{question.id}" 
-              placeholder="Descreva seu raciocínio aqui..." 
-              bind:value={answers[question.id]}
-              required
-            ></textarea>
-          </div>
-        </div>
-      {/each}
-
-      <div class="submit-wrapper animate-slide-up" style="animation-delay: {0.1 * (questions.length + 3)}s">
-        <button type="submit" class="btn btn-primary btn-large" disabled={submitting}>
-          {#if submitting}
-            <span class="spinner-small"></span>
-            Avaliando...
+  <div class="content-wrapper">
+    {#if submitting}
+      <div class="loading-container" in:fade>
+        <div class="gri-loader"></div>
+        <p class="text-gradient">
+          {#if progress < 100}
+            Processando suas respostas...
           {:else}
-            Selar Meu Destino
+            Auditoria Pedagógica & Mapeamento de Grafo...
           {/if}
-        </button>
+        </p>
       </div>
-    </form>
-  {/if}
+    {:else if loading}
+      <header class="onboarding-header" in:fly={{ y: -20, duration: 600 }}>
+        <h1 class="text-gradient">Sua Jornada Personalizada</h1>
+        <div class="header-actions">
+          <p class="subtitle">
+          Esta avaliação diagnóstica permite identificar suas principais competências e áreas de melhoria.<br>
+          Com base nos seus acertos, criaremos um plano de estudos focado no seu progresso.
+        </p>
+          {#if import.meta.env.DEV}
+            <button class="btn btn-debug" on:click={debugAutoFill}>Auto-Preencher (Debug)</button>
+          {/if}
+        </div>
+        
+        <div class="progress-wrapper">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: {progress}%"></div>
+          </div>
+          <span class="progress-text">Descoberta {currentQuestionIndex + 1} de {questions.length}</span>
+        </div>
+      </header>
+
+      <main class="question-section">
+        {#key currentQuestionIndex}
+          <div class="glass-card question-card" in:fly={{ x: 30, duration: 500 }} out:fly={{ x: -30, duration: 300 }}>
+            <div class="card-meta">
+              <div class="meta-left">
+                <span class="enem-badge">{formatEnemId(currentQuestion.id)}</span>
+                <span class="concept-tag">{currentQuestion.concept_name}</span>
+              </div>
+              <div class="difficulty-badge">
+                <span class="dot {currentQuestion.difficulty.toLowerCase()}"></span>
+                <span>{currentQuestion.difficulty}</span>
+              </div>
+            </div>
+            
+            <div class="question-body">
+              <div class="question-text">{@html currentQuestion.text}</div>
+            </div>
+
+            <div class="options-container">
+              {#each currentQuestion.options as option}
+                <button 
+                  class="option-item" 
+                  class:selected={selectedAnswers[currentQuestion.id] === option.id}
+                  on:click={() => selectOption(currentQuestion.id, option.id)}
+                >
+                  <div class="option-marker">{String.fromCharCode(64 + option.id)}</div>
+                  <div class="option-content">{@html option.text}</div>
+                </button>
+              {/each}
+            </div>
+          </div>
+        {/key}
+      </main>
+
+      <footer class="onboarding-footer">
+        <button class="btn btn-outline" on:click={prevQuestion} disabled={currentQuestionIndex === 0}>
+          Anterior
+        </button>
+        
+        {#if currentQuestionIndex === questions.length - 1}
+          <button 
+            class="btn btn-primary" 
+            on:click={handleSubmit} 
+            disabled={!selectedAnswers[currentQuestion.id] || submitting}
+          >
+            {#if submitting} Finalizando... {:else} Concluir Jornada {/if}
+          </button>
+        {:else}
+          <button 
+            class="btn btn-primary" 
+            on:click={nextQuestion} 
+            disabled={!selectedAnswers[currentQuestion.id]}
+          >
+            Próximo Passo
+          </button>
+        {/if}
+      </footer>
+    {/if}
+  </div>
 </div>
 
 <style>
-  .assessment-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 4rem 2rem 6rem;
+  .onboarding-page {
+    min-height: 100vh;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    position: relative;
+    padding: 2rem 1rem 6rem;
+    display: flex;
+    justify-content: center;
   }
 
-  .loading-state {
-    text-align: center;
-    padding: 8rem 0;
-    color: var(--primary);
+  .background-decor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
   }
 
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(201, 160, 94, 0.2);
-    border-top-color: var(--primary);
+  .glow {
+    position: absolute;
+    width: 40vw;
+    height: 40vw;
     border-radius: 50%;
-    margin: 0 auto 1.5rem;
-    animation: spin 1s linear infinite;
+    filter: blur(120px);
+    opacity: 0.1;
   }
 
-  .spinner-small {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    border-top-color: #000;
-    border-radius: 50%;
-    margin-right: 0.5rem;
-    animation: spin 1s linear infinite;
+  .glow-1 {
+    top: -10%;
+    right: -10%;
+    background: var(--primary);
   }
 
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-
-  .assessment-header {
-    text-align: center;
-    margin-bottom: 4rem;
+  .glow-2 {
+    bottom: -10%;
+    left: -10%;
+    background: var(--primary-dark);
   }
 
-  .assessment-header h1 {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    margin-bottom: 0.5rem;
-  }
-
-  .assessment-header p {
-    color: var(--text-secondary);
-    font-size: 1.2rem;
-  }
-
-  .assessment-form {
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 850px;
     display: flex;
     flex-direction: column;
     gap: 3rem;
   }
 
-  .question-card {
-    padding: 3rem;
-  }
-
-  .question-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(250, 250, 250, 0.1);
-    padding-bottom: 1rem;
-  }
-
-  .question-number {
-    font-family: var(--font-serif);
-    color: var(--primary);
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-
-  .question-topic {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-secondary);
-    background: rgba(0,0,0,0.4);
-    padding: 0.25rem 0.75rem;
-    border-radius: var(--radius-full);
-  }
-
-  .question-text {
-    font-size: 1.4rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-    font-family: var(--font-sans);
-    font-weight: 400;
-  }
-
-  textarea {
-    width: 100%;
-    min-height: 150px;
-    padding: 1.25rem;
-    border-radius: var(--radius-md);
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(250, 250, 250, 0.1);
-    color: var(--text-primary);
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.6;
-    resize: vertical;
-    transition: all var(--transition-fast);
-  }
-
-  textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 0 2px rgba(201, 160, 94, 0.2);
-  }
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-  }
-
-  .submit-wrapper {
-    display: flex;
-    justify-content: center;
+  .onboarding-header {
+    text-align: center;
     margin-top: 2rem;
   }
 
-  .btn-large {
-    font-size: 1.2rem;
-    padding: 1.25rem 4rem;
+  .onboarding-header h1 {
+    margin-bottom: 0.5rem;
+    font-size: clamp(2.5rem, 6vw, 4rem);
   }
 
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .progress-wrapper {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 2px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .progress-text {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .question-section {
+    width: 100%;
+  }
+
+  .question-card {
+    padding: 3.5rem;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 1.5rem;
+  }
+
+  .meta-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .enem-badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    opacity: 0.7;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    padding-right: 1.5rem;
+  }
+
+  .concept-tag {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--primary);
+    background: rgba(201, 160, 94, 0.1);
+    padding: 0.35rem 1rem;
+    border-radius: 2rem;
+  }
+
+  .difficulty-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .dot.fácil { background: var(--success); }
+  .dot.médio { background: var(--warning); }
+  .dot.difícil { background: var(--danger); }
+
+  .question-text {
+    font-size: 1.4rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+  }
+
+  /* MathML Support */
+  :global(math) {
+    font-family: "Latin Modern Math", "Cambria Math", serif;
+    font-size: 1.1em;
+  }
+
+  .options-container {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 1.25rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    width: 100%;
+    color: var(--text-primary);
+  }
+
+  .option-item:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(201, 160, 94, 0.3);
+  }
+
+  .option-item.selected {
+    background: rgba(201, 160, 94, 0.08);
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(201, 160, 94, 0.1);
+  }
+
+  .option-marker {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.05);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .option-item.selected .option-marker {
+    background: var(--primary);
+    color: var(--text-dark);
+  }
+
+  .option-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .onboarding-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0 4rem;
+  }
+
+  .loading-container {
+    padding: 10rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .btn-debug {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff5555;
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    font-size: 0.7rem;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+  }
+
+  .btn-debug:hover {
+    background: rgba(255, 0, 0, 0.2);
+  }
+
+  .header-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gri-loader {
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(255,255,255,0.05);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+
   @media (max-width: 768px) {
-    .question-card {
-      padding: 2rem 1.5rem;
-    }
+    .question-card { padding: 2rem 1.5rem; }
+    .question-text { font-size: 1.2rem; }
+    .onboarding-page { padding-top: 1rem; }
   }
 </style>
