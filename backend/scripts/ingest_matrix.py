@@ -6,8 +6,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from core.neo4j import get_driver
+from scripts.init_db import ensure_constraints
 
 def ingest_matrix(file_path):
+    # Garantir que o banco está pronto
+    ensure_constraints()
+    
     with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     

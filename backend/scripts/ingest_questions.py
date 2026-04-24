@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 from neo4j import GraphDatabase
 import neo4j
+from scripts.init_db import ensure_constraints
 
 # Carregar variáveis de ambiente
 load_dotenv()
@@ -31,40 +32,7 @@ driver = GraphDatabase.driver(
     auth=(NEO4J_USER, NEO4J_PASSWORD)
 )
 
-def create_vector_index(session, dimension=768):
-    """Cria ou recria o índice vetorial e índices de performance."""
-    print(f"⚙️ Configurando índices de performance e vetor (Dim: {dimension})...")
-    
-    # Índices de Performance (Essenciais para velocidade)
-    indices = [
-        "CREATE CONSTRAINT question_id IF NOT EXISTS FOR (q:Question) REQUIRE q.id IS UNIQUE",
-        "CREATE CONSTRAINT subtopic_name IF NOT EXISTS FOR (s:Subtopic) REQUIRE s.name IS UNIQUE",
-        "CREATE CONSTRAINT topic_name IF NOT EXISTS FOR (t:Topic) REQUIRE t.name IS UNIQUE",
-        "CREATE CONSTRAINT area_name IF NOT EXISTS FOR (a:Area) REQUIRE a.name IS UNIQUE",
-        "CREATE CONSTRAINT skill_id IF NOT EXISTS FOR (sk:Skill) REQUIRE sk.id IS UNIQUE",
-        "CREATE CONSTRAINT comp_id IF NOT EXISTS FOR (c:Competence) REQUIRE c.id IS UNIQUE"
-    ]
-    
-    for cmd in indices:
-        try:
-            session.run(cmd)
-        except:
-            pass
-
-    # Índice Vetorial
-    try:
-        session.run("DROP INDEX question_embeddings IF EXISTS")
-    except:
-        pass
-        
-    session.run(f"""
-    CREATE VECTOR INDEX question_embeddings IF NOT EXISTS
-    FOR (q:Question) ON (q.embedding)
-    OPTIONS {{indexConfig: {{
-      `vector.dimensions`: {dimension},
-      `vector.similarity_function`: 'cosine'
-    }}}}
-    """)
+# A função create_vector_index foi movida para scripts/init_db.py
 
 import re
 
@@ -134,8 +102,8 @@ def ingest_questions(file_path, limit=None):
     print(f"🚀 Iniciando ingestão de {total_questions} questões...")
 
     with driver.session() as session:
-        # Usamos 768 para o modelo text-embedding-004
-        create_vector_index(session, dimension=768)
+        # Garantir que o banco está pronto (constraints e índices)
+        ensure_constraints()
         
         for index, q in enumerate(questions, 1):
             percent = (index / total_questions) * 100
