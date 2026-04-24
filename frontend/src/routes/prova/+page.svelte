@@ -143,6 +143,11 @@
         </p>
       </div>
     {:else if loading}
+      <div class="loading-container" in:fade>
+        <div class="gri-loader"></div>
+        <p class="text-gradient">Preparando seu diagnóstico...</p>
+      </div>
+    {:else if questions.length > 0}
       <header class="onboarding-header" in:fly={{ y: -20, duration: 600 }}>
         <h1 class="text-gradient">Sua Jornada Personalizada</h1>
         <div class="header-actions">

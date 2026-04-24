@@ -19,20 +19,28 @@ NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "password")
 
 driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
-def create_vector_index(session):
-    """Cria o índice vetorial no Neo4j 5.x se não existir."""
-    print("Configurando índice vetorial no Neo4j...")
-    session.run("""
+def create_vector_index(session, dimension=768):
+    """Cria ou recria o índice vetorial com a dimensão correta."""
+    print(f"Verificando índice vetorial (Dimensão: {dimension})...")
+    # Tenta apagar o índice antigo se ele existir (para garantir a dimensão correta)
+    try:
+        session.run("DROP INDEX question_embeddings IF EXISTS")
+    except:
+        pass
+        
+    session.run(f"""
     CREATE VECTOR INDEX question_embeddings IF NOT EXISTS
     FOR (q:Question) ON (q.embedding)
-    OPTIONS {indexConfig: {
-      `vector.dimensions`: 3072,
+    OPTIONS {{indexConfig: {{
+      `vector.dimensions`: {dimension},
       `vector.similarity_function`: 'cosine'
-    }}
+    }}}}
     """)
 
-def get_enrichment(question_text, choices):
-    """Usa o Gemini para explicar a questão e classificar subtópicos e habilidades ENEM."""
+import re
+
+def get_enrichment(question_text, choices, retries=3):
+    """Usa o Gemini para enriquecimento pedagógico com lógica de retry."""
     prompt = f"""
     Analise a seguinte questão do ENEM e forneça um JSON estruturado para enriquecimento pedagógico.
     
@@ -43,69 +51,102 @@ def get_enrichment(question_text, choices):
     {choices}
     
     CRITÉRIOS PARA 'is_diagnostic':
-    - Marque como `true` APENAS se a questão testar um conceito FUNDAMENTAL e ESTRUTURANTE (ex: as 4 operações, leis básicas da física, interpretação central).
-    - Se a questão exigir aplicação complexa ou cruzamento de muitos temas, use `false`.
-    - Meta: Apenas ~15% das questões diagnósticas. Seja RIGOROSO.
-
-    MATRIZ ENEM:
-    - Identifique quais Habilidades (H1 a H30) e Competências de Área (ex: CN_C1, MT_C3) esta questão avalia.
+    - Marque como `true` APENAS se a questão testar um conceito FUNDAMENTAL e ESTRUTURANTE.
+    - Meta: Apenas ~15% das questões diagnósticas.
     
     FORMATO DE RETORNO (JSON APENAS):
     {{
-        "explanation": "Explicação pedagógica passo a passo.",
+        "explanation": "Explicação passo a passo.",
         "subtopics": ["lista", "de", "subtópicos"],
         "difficulty": "Fácil" | "Médio" | "Difícil",
         "is_diagnostic": boolean,
         "skills": ["H1", "H17"],
         "competencies": ["CN_C1", "MT_C3"]
     }}
-    Responda APENAS o JSON puro.
     """
-    try:
-        response = model.generate_content(prompt)
-        return json.loads(response.text.replace('```json', '').replace('```', '').strip())
-    except Exception as e:
-        print(f"Erro no Gemini: {e}")
-        return None
+    for attempt in range(retries):
+        try:
+            response = model.generate_content(prompt)
+            # Limpeza robusta do JSON usando Regex
+            json_match = re.search(r'\{.*\}', response.text, re.DOTALL)
+            if json_match:
+                return json.loads(json_match.group())
+            return json.loads(response.text)
+        except Exception as e:
+            if attempt < retries - 1:
+                print(f"Tentativa {attempt + 1} falhou. Aguardando para tentar novamente...")
+                time.sleep(2 * (attempt + 1))
+            else:
+                print(f"Erro persistente no Gemini após {retries} tentativas: {e}")
+                return None
 
 def ingest_questions(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
         questions = json.load(f)
 
+    total_questions = len(questions)
+    failed_ids = []
+    
+    print(f"🚀 Iniciando ingestão de {total_questions} questões...")
+
     with driver.session() as session:
-        create_vector_index(session)
+        # Usamos 768 para o modelo text-embedding-004
+        create_vector_index(session, dimension=768)
         
-        for q in questions:
-            # Verificar se a questão já foi processada (opcional, para economia de tokens)
+        for index, q in enumerate(questions, 1):
+            percent = (index / total_questions) * 100
+            progress_bar = f"[{index}/{total_questions}] {percent:.1f}%"
+            
+            # 1. Verificar se a questão já foi processada
             result = session.run("MATCH (q:Question {id: $id}) RETURN q.explanation as exp", id=q['id']).single()
             if result and result['exp']:
-                print(f"Questão {q['id']} já processada. Pulando...")
+                # print(f"{progress_bar} - Questão {q['id']} já existe. Pulando...")
                 continue
 
-            print(f"Processando questão {q['id']}...")
+            print(f"{progress_bar} - Processando ID: {q['id']}...")
             
+            # 2. Obter Enriquecimento (com Retries)
             enrichment = get_enrichment(q['question'], q['choices']['text'])
             if not enrichment:
+                print(f"❌ [{index}] Falha crítica no enriquecimento para ID {q['id']}")
+                failed_ids.append(q['id'])
                 continue
             
-            # Aqui geraríamos o embedding real. 
-            # Por enquanto usaremos um vetor fake ou chamaremos o modelo de embedding do Gemini.
-            # O modelo 'text-embedding-004' do Gemini gera 768 dimensões.
-            try:
-                embedding_response = genai.embed_content(
-                    model="models/gemini-embedding-2",
-                    content=q['question'] + " " + enrichment['explanation'],
-                    task_type="retrieval_document"
-                )
-                embedding = embedding_response['embedding']
-            except Exception as e:
-                print(f"Erro no Embedding: {e}")
-                embedding = [0.0] * 3072
+            # 3. Embedding Real (com Retry simples)
+            embedding = None
+            for emb_attempt in range(3):
+                try:
+                    embedding_response = genai.embed_content(
+                        model="models/text-embedding-004",
+                        content=f"{q['question']} {enrichment['explanation']}",
+                        task_type="retrieval_document"
+                    )
+                    embedding = embedding_response['embedding']
+                    break
+                except Exception as e:
+                    print(f"⚠️ [{index}] Tentativa de embedding {emb_attempt + 1} falhou: {e}")
+                    time.sleep(1)
+            
+            if not embedding:
+                print(f"⚠️ [{index}] Usando vetor nulo para {q['id']} após falhas de embedding.")
+                embedding = [0.0] * 768
 
-            # Inserir no Neo4j
-            session.execute_write(ingest_tx, q, enrichment, embedding)
-            print(f"Questão {q['id']} inserida com sucesso.")
-            time.sleep(1) # Rate limit safety
+            # 4. Inserir no Neo4j
+            try:
+                session.execute_write(ingest_tx, q, enrichment, embedding)
+            except Exception as e:
+                print(f"❌ [{index}] Erro no Banco para {q['id']}: {e}")
+                failed_ids.append(q['id'])
+            
+            time.sleep(1) # Delay mais seguro para Rate Limit
+
+    if failed_ids:
+        with open("scripts/failed_ingestions.log", "w") as f_log:
+            f_log.write("\n".join(map(str, failed_ids)))
+        print(f"\n⚠️ Ingestão finalizada com {len(failed_ids)} falhas. Veja scripts/failed_ingestions.log")
+    else:
+        print("\n🏆 Ingestão concluída com 100% de sucesso!")
+
 
 def ingest_tx(tx, q, enrichment, embedding):
     # Extrair opções do formato ENEM
