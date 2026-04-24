@@ -70,7 +70,7 @@ def socratic_mentor(
         """
 
         # 3. Chamar o Gemini
-        model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-2.0-flash"), system_instruction=system_instruction)
+        model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-2.5-flash"), system_instruction=system_instruction)
         
         # Converter histórico para o formato do Gemini
         history = []

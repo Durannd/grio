@@ -14,7 +14,7 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
     # Configurar Auditor
     genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
     model = genai.GenerativeModel(
-        model_name=os.getenv("GEMINI_MODEL", "gemini-2.0-flash"),
+        model_name=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
         generation_config={"response_mime_type": "application/json"}
     )
 

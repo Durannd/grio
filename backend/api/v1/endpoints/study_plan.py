@@ -73,7 +73,7 @@ async def get_study_plan(
         """
         
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-2.0-flash")) # Atualizando para a versão mais rápida e estável
+        model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-2.5-flash")) # Atualizando para a versão mais rápida e estável
         response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
         
         try:

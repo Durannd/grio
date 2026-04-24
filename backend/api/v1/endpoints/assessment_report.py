@@ -83,7 +83,7 @@ def get_diagnostic_report(
         """
         
         model = genai.GenerativeModel(
-            model_name=os.getenv("GEMINI_MODEL", "gemini-2.0-flash"),
+            model_name=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
             generation_config={"response_mime_type": "application/json"}
         )
         ai_response = model.generate_content(prompt)
