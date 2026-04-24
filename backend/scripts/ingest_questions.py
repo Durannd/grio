@@ -20,9 +20,24 @@ NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "password")
 driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
 def create_vector_index(session, dimension=768):
-    """Cria ou recria o índice vetorial com a dimensão correta."""
-    print(f"Verificando índice vetorial (Dimensão: {dimension})...")
-    # Tenta apagar o índice antigo se ele existir (para garantir a dimensão correta)
+    """Cria ou recria o índice vetorial e índices de performance."""
+    print(f"⚙️ Configurando índices de performance e vetor (Dim: {dimension})...")
+    
+    # Índices de Performance (Essenciais para velocidade)
+    indices = [
+        "CREATE CONSTRAINT question_id IF NOT EXISTS FOR (q:Question) REQUIRE q.id IS UNIQUE",
+        "CREATE CONSTRAINT subtopic_name IF NOT EXISTS FOR (s:Subtopic) REQUIRE s.name IS UNIQUE",
+        "CREATE CONSTRAINT skill_code IF NOT EXISTS FOR (sk:Skill) REQUIRE sk.code IS UNIQUE",
+        "CREATE CONSTRAINT comp_id IF NOT EXISTS FOR (c:Competence) REQUIRE c.id IS UNIQUE"
+    ]
+    
+    for cmd in indices:
+        try:
+            session.run(cmd)
+        except:
+            pass
+
+    # Índice Vetorial
     try:
         session.run("DROP INDEX question_embeddings IF EXISTS")
     except:
@@ -39,8 +54,8 @@ def create_vector_index(session, dimension=768):
 
 import re
 
-def get_enrichment(question_text, choices, retries=3):
-    """Usa o Gemini para enriquecimento pedagógico com lógica de retry."""
+def get_enrichment(question_text, choices, retries=7):
+    """Usa o Gemini para enriquecimento pedagógico com alta resiliência."""
     prompt = f"""
     Analise a seguinte questão do ENEM e forneça um JSON estruturado para enriquecimento pedagógico.
     
@@ -73,11 +88,15 @@ def get_enrichment(question_text, choices, retries=3):
                 return json.loads(json_match.group())
             return json.loads(response.text)
         except Exception as e:
-            if attempt < retries - 1:
-                print(f"Tentativa {attempt + 1} falhou. Aguardando para tentar novamente...")
-                time.sleep(2 * (attempt + 1))
+            if "503" in str(e) or "429" in str(e):
+                wait_time = (attempt + 1) * 5 # Espera progressiva: 5s, 10s, 15s...
+                print(f"⚠️ [{attempt+1}/{retries}] API instável (503/429). Aguardando {wait_time}s...")
+                time.sleep(wait_time)
+            elif attempt < retries - 1:
+                print(f"⚠️ [{attempt+1}/{retries}] Erro inesperado. Tentando novamente em 2s...")
+                time.sleep(2)
             else:
-                print(f"Erro persistente no Gemini após {retries} tentativas: {e}")
+                print(f"❌ Falha persistente após {retries} tentativas: {e}")
                 return None
 
 def ingest_questions(file_path):
