@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from core.neo4j import get_driver
 from core.deps import get_current_user
 from models.user import User
+from database import get_db
+from sqlalchemy.orm import Session
 import google.generativeai as genai
 import os
 import json
@@ -9,10 +11,20 @@ import json
 router = APIRouter()
 
 @router.get("/")
-async def get_study_plan(current_user: User = Depends(get_current_user)):
+async def get_study_plan(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    # 1. Verificar Cache no Postgres
+    if current_user.study_plan_cache:
+        try:
+            return json.loads(current_user.study_plan_cache)
+        except:
+            pass
+
     driver = get_driver()
     with driver.session() as session:
-        # 1. Buscar proficiências do usuário
+        # 2. Buscar proficiências do usuário
         result = session.run("""
             MATCH (u:User {id: $user_id})-[r:HAS_PROFICIENCY]->(s:Skill)
             WHERE r.score > 0
@@ -26,7 +38,7 @@ async def get_study_plan(current_user: User = Depends(get_current_user)):
         if not proficiencies:
             return {"status": "pending", "message": "Faça a prova diagnóstica primeiro para gerar seu plano."}
 
-        # 2. Gerar Plano de Estudos com Gemini
+        # 3. Gerar Plano de Estudos com Gemini
         prof_summary = "\n".join([f"- {p['id']}: {p['score']*100:.1f}% - {p['description']}" for p in proficiencies])
         
         prompt = f"""
@@ -61,11 +73,19 @@ async def get_study_plan(current_user: User = Depends(get_current_user)):
         """
         
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-1.5-flash"))
+        model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-2.0-flash")) # Atualizando para a versão mais rápida e estável
         response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
         
         try:
-            return json.loads(response.text)
-        except:
+            plan_data = json.loads(response.text)
+            
+            # 4. Salvar no Cache do Postgres
+            current_user.study_plan_cache = json.dumps(plan_data)
+            db.add(current_user)
+            db.commit()
+            
+            return plan_data
+        except Exception as e:
+            print(f"Erro ao processar IA: {e}")
             # Fallback em caso de erro na resposta da IA
             return {"status": "error", "message": "Não foi possível gerar o plano no momento."}

@@ -2,7 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from core.neo4j import get_driver
 from core.deps import get_current_user
 from models.user import User
+from sqlalchemy.orm import Session
+from database import get_db
 import os
+import json
 import google.generativeai as genai
 
 # Configurar Gemini
@@ -12,7 +15,8 @@ router = APIRouter()
 
 @router.get("/report")
 def get_diagnostic_report(
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
     driver = get_driver()
     with driver.session() as session:
@@ -79,7 +83,7 @@ def get_diagnostic_report(
         """
         
         model = genai.GenerativeModel(
-            model_name=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+            model_name=os.getenv("GEMINI_MODEL", "gemini-2.0-flash"),
             generation_config={"response_mime_type": "application/json"}
         )
         ai_response = model.generate_content(prompt)
@@ -106,5 +110,10 @@ def get_diagnostic_report(
             SET u.latest_analysis = $analysis,
                 u.proficiencies_snapshot = $snapshot
         """, user_id=current_user.id, analysis=json.dumps(response_data), snapshot=current_snapshot)
+
+        # 5. Marcar diagnóstico como concluído no SQL DB
+        current_user.is_diagnostic_completed = 1
+        db.add(current_user)
+        db.commit()
 
         return response_data

@@ -1,3 +1,5 @@
+<script lang="ts">
+  import { browser } from '$app/environment';
   import '../app.css';
   import { fade, slide } from 'svelte/transition';
   import { page } from '$app/stores';
@@ -10,6 +12,7 @@
   let hasDiagnostic = false;
 
   async function loadUser() {
+    if (!browser) return;
     const token = localStorage.getItem("token");
     if (!token) {
       user = null;
@@ -22,7 +25,7 @@
       });
       if (response.ok) {
         user = await response.json();
-        checkDiagnostic(token);
+        hasDiagnostic = user.is_diagnostic_completed === 1;
       } else {
         user = null;
         localStorage.removeItem("token");
@@ -30,18 +33,6 @@
     } catch (error) {
       console.error("Erro ao carregar usuário:", error);
     }
-  }
-
-  async function checkDiagnostic(token: string) {
-    try {
-      const response = await fetch("http://localhost:8000/api/v1/assessment-report/report", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        hasDiagnostic = data.status !== 'pending';
-      }
-    } catch (e) {}
   }
 
   function logout() {
@@ -61,7 +52,7 @@
 
   // Re-check when path changes (optional, but good for login/logout)
   $: if ($page.url.pathname) {
-    if (typeof window !== 'undefined') loadUser();
+    if (browser) loadUser();
   }
 </script>
 
@@ -177,11 +168,18 @@
   }
 
   .btn-highlight {
-    background: var(--primary);
-    color: white !important;
-    padding: 0.4rem 1rem;
-    border-radius: 2rem;
+    background: var(--gradient-primary);
+    color: var(--text-dark) !important;
+    padding: 0.6rem 1.5rem;
+    border-radius: var(--radius-full);
     font-weight: 700;
+    box-shadow: var(--shadow-glow);
+    transition: all var(--transition-fast);
+  }
+
+  .btn-highlight:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(201, 160, 94, 0.4);
   }
 
   .user-profile {

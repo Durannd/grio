@@ -58,7 +58,6 @@ O primeiro passo é construir **todas as funcionalidades** para uma única maté
 | Backend | **Python + FastAPI** | Ecossistema de IA maduro |
 | Banco Relacional | **PostgreSQL** | Dados de usuários e autenticação |
 | Banco em Grafo | **Neo4j** | Grafo de conhecimento e proficiência |
-| Cache | **Redis** | Performance e sessões |
 | IA | **Gemini API** | Tutor inteligente |
 
 ## Roadmap
@@ -129,7 +128,6 @@ The first step is building **all features** for a single subject — Mathematics
 | Backend | **Python + FastAPI** | Mature AI ecosystem |
 | Relational DB | **PostgreSQL** | User data and authentication |
 | Graph DB | **Neo4j** | Knowledge graph and student proficiency |
-| Cache | **Redis** | Performance and sessions |
 | AI | **Gemini API** | Intelligent tutor |
 
 ## Roadmap

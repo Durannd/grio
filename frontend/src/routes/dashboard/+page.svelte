@@ -9,6 +9,7 @@
   let user: any = null;
   let loading = true;
   let loadingPlan = true;
+  let errorMessage = "";
 
   onMount(async () => {
     try {
@@ -38,15 +39,17 @@
         learningPath = data.learning_path;
       }
 
+      loading = false; // Libera a UI básica
+
       // Fetch AI Study Plan
       const planRes = await fetch("http://localhost:8000/api/v1/study-plan", { headers });
       if (planRes.ok) {
         studyPlan = await planRes.json();
       }
       loadingPlan = false;
-      loading = false;
     } catch (error) {
       console.error("Error loading dashboard:", error);
+      errorMessage = "Houve um erro ao carregar seus dados. Por favor, tente novamente mais tarde.";
       loading = false;
       loadingPlan = false;
     }
@@ -66,6 +69,12 @@
         <div class="center-glow"></div>
       </div>
       <p>Sincronizando seus dados...</p>
+    </div>
+  {:else if errorMessage}
+    <div class="status-screen error-state">
+      <div class="error-icon">⚠️</div>
+      <p>{errorMessage}</p>
+      <button class="btn btn-outline" on:click={() => window.location.reload()}>Tentar Novamente</button>
     </div>
   {:else}
     <div class="dashboard-grid">
@@ -529,5 +538,14 @@
     .node-content {
       padding: 1.5rem;
     }
+  }
+
+  .status-screen.error-state {
+    color: var(--danger);
+  }
+
+  .error-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
   }
 </style>

@@ -5,7 +5,9 @@ from typing import Optional
 import os
 
 # JWT Settings
-SECRET_KEY = os.getenv("SECRET_KEY", "super-secret-grio-key-for-dev") # Em prod, isso DEVE vir das variáveis de ambiente
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY não configurada nas variáveis de ambiente.")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 dias para MVP
 
