@@ -47,29 +47,33 @@
   }
 </script>
 
-<div class="dashboard-container">
+<div class="dashboard-page container section-padding">
   {#if loading}
-    <div class="loading-state animate-slide-up stagger-1">
-      <div class="spinner"></div>
-      <p>Consultando o oráculo...</p>
+    <div class="status-screen" out:fade>
+      <div class="loader-visual">
+        <div class="orbit"></div>
+        <div class="center-glow"></div>
+      </div>
+      <p>Consultando o oráculo Griô...</p>
     </div>
   {:else}
     <div class="dashboard-grid">
       <aside class="dashboard-sidebar animate-slide-up stagger-1">
         <header class="dashboard-header">
           <div class="welcome">
+            <span class="eyebrow">Painel do Aluno</span>
             <h1>Olá, <span class="text-gradient">{user.name}</span></h1>
-            <p>Esta é a sua Trilha de Conhecimento.</p>
+            <p>Sua jornada de sabedoria até a universidade.</p>
           </div>
           <div class="sidebar-actions">
-            <button class="btn btn-outline" on:click={logout}>Desconectar</button>
-            <a href="/prova" class="retake-link">Refazer Nivelamento</a>
+            <a href="/prova" class="btn btn-primary">Refazer Diagnóstico</a>
+            <button class="btn btn-outline" on:click={logout}>Sair da Conta</button>
           </div>
         </header>
 
         <div class="glass-card overview-card">
            <h3>Seu Progresso</h3>
-           <p>Continue estudando os módulos recomendados para fortalecer sua base e avançar nos estudos do vestibular.</p>
+           <p>O Mentor Griô mapeou módulos estratégicos com base no seu diagnóstico. Siga a linha do tempo para dominar as competências do ENEM.</p>
         </div>
       </aside>
 
@@ -114,36 +118,59 @@
 </div>
 
 <style>
-  .dashboard-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 4rem 2rem;
+  .status-screen {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .loader-visual {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 2rem;
+  }
+
+  .orbit {
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(201, 160, 94, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1.5s linear infinite;
+  }
+
+  .center-glow {
+    position: absolute;
+    inset: 30%;
+    background: var(--primary);
+    filter: blur(10px);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
   }
 
   .dashboard-grid {
     display: grid;
-    grid-template-columns: 350px 1fr;
+    grid-template-columns: 320px 1fr;
     gap: 4rem;
     align-items: start;
   }
 
-  .loading-state {
-    text-align: center;
-    padding: 6rem 0;
-    color: var(--primary);
-  }
-
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(201, 160, 94, 0.2);
-    border-top-color: var(--primary);
-    border-radius: 50%;
-    margin: 0 auto 1.5rem;
-    animation: spin 1s linear infinite;
-  }
-
   @keyframes spin { 100% { transform: rotate(360deg); } }
+  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  .eyebrow {
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
 
   .dashboard-header {
     margin-bottom: 2rem;

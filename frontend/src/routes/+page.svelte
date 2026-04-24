@@ -1,278 +1,286 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { fade, fly } from 'svelte/transition';
   
   let isLoaded = false;
   
   onMount(() => {
     isLoaded = true;
     
-    // Intersection Observer for scroll animations
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.15 });
     
-    document.querySelectorAll('.story-section').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   });
 </script>
 
-<div class="landing-page {isLoaded ? 'loaded' : ''}">
-  
-  <!-- Hero / Intro Hook -->
-  <section class="hero story-section">
-    <div class="glass-panel text-center max-w-4xl mx-auto hero-content">
-      <h1 class="text-gradient">A Sabedoria Que Transforma</h1>
-      <p class="subtitle">Uma jornada de autodescoberta e nivelamento para conquistar seu espaço na universidade.</p>
-      
-      <div class="cta-group">
-        <a href="/cadastro" class="btn btn-primary">Comece Sua Jornada</a>
-        <a href="/login" class="btn btn-outline">Já sou aluno</a>
-      </div>
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg">
+      <img src="/grio_hero_background_1777003740278.png" alt="Ancestral Wisdom meets Tech" />
+      <div class="overlay"></div>
     </div>
     
-    <div class="scroll-indicator">
-      <span class="mouse"></span>
-      <p>Descubra</p>
-    </div>
-  </section>
-
-  <!-- Chapter 1: Problem -->
-  <section class="chapter story-section">
-    <div class="glass-card chapter-content">
-      <h2 class="text-gradient">O Vestibular Não Precisa Ser Um Abismo.</h2>
-      <p>Muitos estudantes perdem tempo focando no que não importa. O nervosismo, a falta de direção e o excesso de conteúdo criam um bloqueio. Acreditamos que o conhecimento não deve ser um peso, mas sim a sua maior herança.</p>
-    </div>
-  </section>
-
-  <!-- Chapter 2: Journey -->
-  <section class="chapter chapter-alt story-section">
-    <div class="glass-card chapter-content">
-      <h2 class="text-gradient">Uma Trilha Feita Para Você</h2>
-      <p>Assim como o Griô transmite a sabedoria de geração em geração, nossa Inteligência Artificial mapeia suas forças e fraquezas. Você começa com um teste de nivelamento que entende exatamente de onde sua história deve começar.</p>
-      
-      <div class="feature-grid">
-        <div class="feature">
-          <div class="icon">🧭</div>
-          <h3>Diagnóstico Preciso</h3>
-          <p>Descubra suas reais habilidades antes de estudar.</p>
+    <div class="hero-content container">
+      {#if isLoaded}
+        <div in:fly={{ y: 50, duration: 1000 }} class="hero-text">
+          <span class="eyebrow">Bem-vindo ao Futuro do Saber</span>
+          <h1 class="text-gradient">Griô: Onde a Tradição Encontra a Inteligência</h1>
+          <p class="subtitle">Desbloqueie seu potencial acadêmico através de um diagnóstico guiado por IA que entende sua história e acelera seu aprendizado.</p>
+          
+          <div class="cta-actions">
+            <a href="/prova" class="btn btn-primary">Iniciar Diagnóstico</a>
+            <a href="/sobre" class="btn btn-outline">Conheça o Projeto</a>
+          </div>
         </div>
-        <div class="feature">
-          <div class="icon">✨</div>
-          <h3>IA Adaptativa</h3>
-          <p>Questões que se moldam ao seu ritmo de aprendizado.</p>
+      {/if}
+    </div>
+
+    <div class="scroll-hint">
+      <div class="mouse-icon"></div>
+      <span>Descubra a Jornada</span>
+    </div>
+  </section>
+
+  <!-- Manifesto Section -->
+  <section class="manifesto-section reveal">
+    <div class="container grid-two-cols">
+      <div class="manifesto-text">
+        <h2 class="text-gradient">O Manifesto Griô</h2>
+        <p>Na tradição africana, o Griô não é apenas um contador de histórias; ele é o guardião da memória e o arquiteto do futuro. No projeto <strong>Griô</strong>, aplicamos essa essência ao vestibular.</p>
+        <p>Acreditamos que cada erro em uma prova é uma vírgula em sua história de aprendizado. Nossa tecnologia não apenas avalia; ela mentoriza seu progresso.</p>
+      </div>
+      <div class="manifesto-visual glass-panel">
+        <div class="stats-card">
+          <div class="stat-item">
+            <span class="stat-val">30+</span>
+            <span class="stat-label">Habilidades ENEM mapeadas</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val">Gemini</span>
+            <span class="stat-label">IA de Análise Pedagógica</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Chapter 3 & Climax CTA -->
-  <section class="chapter climax story-section">
-    <div class="glass-panel text-center">
-      <h2>Pronto Para Escrever Seu Futuro?</h2>
-      <p>O ouro do saber está ao seu alcance.</p>
-      <a href="/cadastro" class="btn btn-primary cta-large">Desbloquear Meu Nivelamento</a>
+  <!-- Process Section -->
+  <section class="process-section reveal">
+    <div class="container">
+      <h2 class="text-center mb-12">Sua Trilha de Evolução</h2>
+      <div class="process-grid">
+        <div class="glass-card process-step">
+          <div class="step-num">01</div>
+          <h3>Diagnóstico</h3>
+          <p>Um teste adaptativo que identifica lacunas fundamentais em sua base de conhecimento.</p>
+        </div>
+        <div class="glass-card process-step">
+          <div class="step-num">02</div>
+          <h3>Insights</h3>
+          <p>Nossa IA analisa seu desempenho e gera um relatório personalizado com foco em habilidades.</p>
+        </div>
+        <div class="glass-card process-step">
+          <div class="step-num">03</div>
+          <h3>Domínio</h3>
+          <p>Receba recomendações precisas e transforme seus pontos fracos em sua maior força.</p>
+        </div>
+      </div>
     </div>
   </section>
 
+  <!-- Final CTA -->
+  <section class="final-cta reveal container">
+    <div class="glass-panel text-center">
+      <h2 class="text-gradient">Pronto para começar?</h2>
+      <p>Sua jornada universitária começa com um único passo. Descubra sua proficiência agora.</p>
+      <a href="/prova" class="btn btn-primary btn-lg">Começar Agora</a>
+    </div>
+  </section>
 </div>
 
 <style>
-  .landing-page {
-    position: relative;
-    padding-bottom: 4rem;
-  }
-  
-  /* Background glow effects */
-  .landing-page::before, .landing-page::after {
-    content: '';
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(100px);
-    z-index: -1;
-    opacity: 0.15;
-    transition: opacity var(--transition-slow);
-  }
-  
-  .landing-page::before {
-    top: -10%; left: -10%;
-    width: 500px; height: 500px;
-    background: var(--primary);
-  }
-  
-  .landing-page::after {
-    bottom: -10%; right: -10%;
-    width: 600px; height: 600px;
-    background: var(--primary-dark);
-  }
-  
-  .loaded::before, .loaded::after {
-    opacity: 0.3;
+  .home-container {
+    overflow-x: hidden;
   }
 
-  .story-section {
-    min-height: 100vh;
+  /* Hero Section Styles */
+  .hero-section {
+    position: relative;
+    height: 90vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 2rem;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: -2rem; /* Compensate layout padding */
   }
-  
-  .story-section.visible {
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.4);
+  }
+
+  .hero-bg .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  }
+
+  .hero-content {
+    z-index: 1;
+  }
+
+  .hero-text {
+    max-width: 700px;
+  }
+
+  .eyebrow {
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  /* Reveal Animation Utility */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+  }
+
+  :global(.reveal.visible) {
     opacity: 1;
     transform: translateY(0);
   }
 
-  /* Hero Section */
-  .hero {
-    position: relative;
+  /* Manifesto Section */
+  .grid-two-cols {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: center;
+    padding: 8rem 0;
   }
-  
-  .hero-content {
-    max-width: 800px;
-    text-align: center;
-    padding: 4rem 2rem;
-  }
-  
-  .hero h1 {
-    font-size: clamp(3rem, 6vw, 5rem);
+
+  .manifesto-text p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
     margin-bottom: 1.5rem;
   }
-  
-  .subtitle {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    margin-bottom: 3rem;
-    max-width: 600px;
-    margin-inline: auto;
-  }
-  
-  .cta-group {
+
+  .manifesto-visual {
+    padding: 3rem;
     display: flex;
-    gap: 1.5rem;
     justify-content: center;
-    flex-wrap: wrap;
   }
-  
-  /* Scroll Indicator */
-  .scroll-indicator {
+
+  .stat-item {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .stat-val {
+    display: block;
+    font-size: 2.5rem;
+    font-family: var(--font-serif);
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .stat-label {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Process Section */
+  .process-section {
+    padding-bottom: 8rem;
+  }
+
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .process-step {
+    position: relative;
+    padding-top: 3rem;
+  }
+
+  .step-num {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    font-size: 4rem;
+    font-family: var(--font-serif);
+    color: rgba(255, 255, 255, 0.05);
+    font-weight: 900;
+    z-index: -1;
+  }
+
+  .final-cta {
+    padding-bottom: 8rem;
+  }
+
+  .scroll-hint {
     position: absolute;
     bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    color: var(--primary-light);
-    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    animation: bounce 2s infinite ease-in-out;
-  }
-  
-  .mouse {
-    width: 24px;
-    height: 36px;
-    border: 2px solid var(--primary-light);
-    border-radius: 12px;
-    position: relative;
-  }
-  
-  .mouse::after {
-    content: '';
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 8px;
-    background: var(--primary-light);
-    border-radius: 2px;
-    animation: scroll 2s infinite;
   }
 
-  /* Chapters */
-  .chapter-content {
-    max-width: 800px;
-    width: 100%;
-  }
-  
-  .chapter h2 {
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    margin-bottom: 1.5rem;
-  }
-  
-  .chapter p {
-    font-size: 1.15rem;
-    color: var(--text-secondary);
-    line-height: 1.8;
-    margin-bottom: 2rem;
-  }
-  
-  .chapter-alt .chapter-content {
-    margin-left: auto;
+  .mouse-icon {
+    width: 20px;
+    height: 32px;
+    border: 2px solid var(--text-secondary);
+    border-radius: 10px;
   }
 
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-  
-  .feature .icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .feature h3 {
-    font-size: 1.25rem;
-    color: var(--primary-light);
-    margin-bottom: 0.5rem;
-    font-family: var(--font-sans);
-  }
-  
-  .feature p {
-    font-size: 0.95rem;
-    margin-bottom: 0;
-  }
-
-  /* Climax */
-  .climax .glass-panel {
-    padding: 5rem 2rem;
-    max-width: 800px;
-    width: 100%;
-  }
-  
-  .cta-large {
-    font-size: 1.1rem;
-    padding: 1.25rem 3rem;
-    margin-top: 1rem;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(10px); }
-  }
-  
-  @keyframes scroll {
-    0% { transform: translate(-50%, 0); opacity: 1; }
-    100% { transform: translate(-50%, 15px); opacity: 0; }
-  }
-
-  @media (max-width: 768px) {
-    .story-section {
-      min-height: auto;
-      padding: 4rem 1.5rem;
+  @media (max-width: 900px) {
+    .grid-two-cols, .process-grid {
+      grid-template-columns: 1fr;
     }
     
-    .hero {
-      min-height: 100vh;
+    .hero-section {
+      height: 70vh;
     }
   }
 </style>
