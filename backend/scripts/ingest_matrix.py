@@ -50,4 +50,6 @@ def ingest_matrix(file_path):
     print("Matriz de Referência ingerida no Neo4j!")
 
 if __name__ == "__main__":
-    ingest_matrix("scripts/enem_matrix_full.json")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    matrix_path = os.path.join(BASE_DIR, "enem_matrix_full.json")
+    ingest_matrix(matrix_path)

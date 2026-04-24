@@ -16,7 +16,8 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 # Carregar Taxonomia Educacional
-with open("scripts/educational_taxonomy.json", "r", encoding="utf-8") as f:
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(BASE_DIR, "educational_taxonomy.json"), "r", encoding="utf-8") as f:
     EDUCATIONAL_TAXONOMY = json.load(f)
 
 # Configuração Neo4j
@@ -222,9 +223,10 @@ def ingest_tx(tx, q, enrichment, embedding):
            opt_e=option_texts.get('E', ''))
 
 if __name__ == "__main__":
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     parser = argparse.ArgumentParser(description="Ingestão de questões ENEM no Neo4j")
     parser.add_argument("--limit", type=int, help="Limite de questões para processar (Smoke Test)")
-    parser.add_argument("--file", type=str, default="scripts/enem_sample.json", help="Caminho do arquivo JSON")
+    parser.add_argument("--file", type=str, default=os.path.join(BASE_DIR, "enem_sample.json"), help="Caminho do arquivo JSON")
     
     args = parser.parse_args()
     

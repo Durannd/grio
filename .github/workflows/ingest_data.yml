@@ -39,4 +39,7 @@ jobs:
           if [ "${{ github.event.inputs.limit }}" != "" ]; then
             LIMIT_ARG="--limit ${{ github.event.inputs.limit }}"
           fi
+          # 1. Ingerir Matriz de Referência (Idempotente)
+          python backend/scripts/ingest_matrix.py
+          # 2. Ingerir Questões
           python backend/scripts/ingest_questions.py $LIMIT_ARG
