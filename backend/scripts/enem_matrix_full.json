@@ -375,7 +375,176 @@
     },
     {
       "nome": "Ciências da Natureza e suas Tecnologias",
-      "competencias": []
+      "competencias": [
+        {
+          "id": "CN_C1",
+          "descricao": "Compreender as ciências naturais e as tecnologias a elas associadas como construções humanas, percebendo seus papéis nos processos de produção e no desenvolvimento econômico e social da humanidade.",
+          "habilidades": [
+            {
+              "id": "H1",
+              "descricao": "Reconhecer características ou propriedades de fenômenos ondulatórios ou oscilatórios, relacionando-os a seus usos em diferentes contextos."
+            },
+            {
+              "id": "H2",
+              "descricao": "Associar a solução de problemas de comunicação, transporte, saúde ou outro, com o correspondente desenvolvimento científico e tecnológico."
+            },
+            {
+              "id": "H3",
+              "descricao": "Confrontar interpretações científicas com interpretações baseadas no senso comum, ao longo do tempo ou em diferentes culturas."
+            },
+            {
+              "id": "H4",
+              "descricao": "Avaliar propostas de intervenção no ambiente, considerando a qualidade da vida humana ou medidas de conservação, recuperação ou utilização sustentável da biodiversidade."
+            }
+          ]
+        },
+        {
+          "id": "CN_C2",
+          "descricao": "Identificar a presença e aplicar as tecnologias associadas às ciências naturais em diferentes contextos.",
+          "habilidades": [
+            {
+              "id": "H5",
+              "descricao": "Dimensionar circuitos ou dispositivos elétricos de uso cotidiano."
+            },
+            {
+              "id": "H6",
+              "descricao": "Relacionar informações para compreender manuais de instalação ou utilização de aparelhos, ou sistemas tecnológicos de uso comum."
+            },
+            {
+              "id": "H7",
+              "descricao": "Selecionar testes de controle, parâmetros ou critérios para a comparação de materiais e produtos, tendo em vista a defesa do consumidor, a saúde do trabalhador ou a qualidade de vida."
+            }
+          ]
+        },
+        {
+          "id": "CN_C3",
+          "descricao": "Associar intervenções que resultam em degradação ou conservação ambiental a processos produtivos e sociais e a instrumentos ou ações científico-tecnológicos.",
+          "habilidades": [
+            {
+              "id": "H8",
+              "descricao": "Identificar etapas em processos de obtenção, transformação, utilização ou reciclagem de recursos naturais, energéticos ou matérias-primas, considerando processos biológicos, químicos ou físicos neles envolvidos."
+            },
+            {
+              "id": "H9",
+              "descricao": "Compreender a importância dos ciclos biogeoquímicos ou do fluxo energia para a vida, ou da ação de agentes ou fenômenos que podem causar alterações nesses processos."
+            },
+            {
+              "id": "H10",
+              "descricao": "Analisar perturbações ambientais, identificando fontes, transporte e(ou) destino dos poluentes ou prevendo efeitos em sistemas naturais, produtivos ou sociais."
+            },
+            {
+              "id": "H11",
+              "descricao": "Reconhecer benefícios, limitações e aspectos éticos da biotecnologia, considerando estruturas e processos biológicos envolvidos em produtos biotecnológicos."
+            },
+            {
+              "id": "H12",
+              "descricao": "Avaliar impactos em ambientes naturais decorrentes de atividades sociais ou econômicas, considerando interesses contraditórios."
+            }
+          ]
+        },
+        {
+          "id": "CN_C4",
+          "descricao": "Compreender interações entre organismos e ambiente, em particular aquelas relacionadas à saúde humana, relacionando conhecimentos científicos, aspectos culturais e características individuais.",
+          "habilidades": [
+            {
+              "id": "H13",
+              "descricao": "Reconhecer mecanismos de transmissão da vida, prevendo ou explicando a manifestação de características dos seres vivos."
+            },
+            {
+              "id": "H14",
+              "descricao": "Identificar padrões em fenômenos e processos vitais dos organismos, como manutenção do equilíbrio interno, defesa, relações com o ambiente, sexualidade, entre outros."
+            },
+            {
+              "id": "H15",
+              "descricao": "Interpretar modelos e experimentos para explicar fenômenos ou processos biológicos em qualquer nível de organização dos sistemas biológicos."
+            },
+            {
+              "id": "H16",
+              "descricao": "Compreender o papel da evolução na produção de padrões, processos biológicos ou na organização taxonômica dos seres vivos."
+            }
+          ]
+        },
+        {
+          "id": "CN_C5",
+          "descricao": "Entender métodos e procedimentos próprios das ciências naturais e aplicá-los em diferentes contextos.",
+          "habilidades": [
+            {
+              "id": "H17",
+              "descricao": "Relacionar informações apresentadas em diferentes formas de linguagem e representação usadas nas ciências físicas, químicas ou biológicas, como texto discursivo, gráficos, tabelas, relações matemáticas ou linguagem simbólica."
+            },
+            {
+              "id": "H18",
+              "descricao": "Relacionar propriedades físicas, químicas ou biológicas de produtos, sistemas ou procedimentos tecnológicos às finalidades a que se destinam."
+            },
+            {
+              "id": "H19",
+              "descricao": "Avaliar métodos, processos ou procedimentos das ciências naturais que contribuam para diagnosticar ou solucionar problemas de ordem social, econômica ou ambiental."
+            }
+          ]
+        },
+        {
+          "id": "CN_C6",
+          "descricao": "Apropriar-se de conhecimentos da física para, em situações problema, interpretar, avaliar ou planejar intervenções científicotecnológicas.",
+          "habilidades": [
+            {
+              "id": "H20",
+              "descricao": "Caracterizar causas ou efeitos dos movimentos de partículas, substâncias, objetos ou corpos celestes."
+            },
+            {
+              "id": "H21",
+              "descricao": "Utilizar leis físicas e (ou) químicas para interpretar processos naturais ou tecnológicos inseridos no contexto da termodinâmica e(ou) do eletromagnetismo."
+            },
+            {
+              "id": "H22",
+              "descricao": "Compreender fenômenos decorrentes da interação entre a radiação e a matéria em suas manifestações em processos naturais ou tecnológicos, ou em suas implicações biológicas, sociais, econômicas ou ambientais."
+            },
+            {
+              "id": "H23",
+              "descricao": "Avaliar possibilidades de geração, uso ou transformação de energia em ambientes específicos, considerando implicações éticas, ambientais, sociais e/ou econômicas."
+            }
+          ]
+        },
+        {
+          "id": "CN_C7",
+          "descricao": "Apropriar-se de conhecimentos da química para, em situações problema, interpretar, avaliar ou planejar intervenções científicotecnológicas.",
+          "habilidades": [
+            {
+              "id": "H24",
+              "descricao": "Utilizar códigos e nomenclatura da química para caracterizar materiais, substâncias ou transformações químicas."
+            },
+            {
+              "id": "H25",
+              "descricao": "Caracterizar materiais ou substâncias, identificando etapas, rendimentos ou implicações biológicas, sociais, econômicas ou ambientais de sua obtenção ou produção."
+            },
+            {
+              "id": "H26",
+              "descricao": "Avaliar implicações sociais, ambientais e/ou econômicas na produção ou no consumo de recursos energéticos or minerais, identificando transformações químicas ou de energia envolvidas nesses processos."
+            },
+            {
+              "id": "H27",
+              "descricao": "Avaliar propostas de intervenção no meio ambiente aplicando conhecimentos químicos, observando riscos ou benefícios."
+            }
+          ]
+        },
+        {
+          "id": "CN_C8",
+          "descricao": "Apropriar-se de conhecimentos da biologia para, em situações problema, interpretar, avaliar ou planejar intervenções científicotecnológicas.",
+          "habilidades": [
+            {
+              "id": "H28",
+              "descricao": "Associar características adaptativas dos organismos com seu modo de vida ou com seus limites de distribuição em diferentes ambientes, em especial em ambientes brasileiros."
+            },
+            {
+              "id": "H29",
+              "descricao": "Interpretar experimentos ou técnicas que utilizam seres vivos, analisando implicações para o ambiente, a saúde, a produção de alimentos, matérias primas ou produtos industriais."
+            },
+            {
+              "id": "H30",
+              "descricao": "Avaliar propostas de alcance individual ou coletivo, identificando aquelas que visam à preservação e a implementação da saúde individual, coletiva ou do ambiente."
+            }
+          ]
+        }
+      ]
     },
     {
       "nome": "Ciências Humanas e suas Tecnologias",
