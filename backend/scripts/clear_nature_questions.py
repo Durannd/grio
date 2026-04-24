@@ -15,19 +15,17 @@ def clear_nature():
     driver = GraphDatabase.driver(uri, auth=(NEO4J_USER, NEO4J_PASSWORD))
     
     with driver.session() as session:
-        print("🧹 Limpando dados incompletos de 'Ciências da Natureza e suas Tecnologias'...")
+        print("--- Limpando dados incompletos de 'Ciencias da Natureza e suas Tecnologias'...")
         
-        # 1. Deletar questões vinculadas à essa área (e seus relacionamentos)
-        # Primeiro encontramos os tópicos dessa área
+        # 1. Deletar questões vinculadas à essa área
         query = """
         MATCH (a:Area {name: 'Ciências da Natureza e suas Tecnologias'})<-[:BELONGS_TO]-(t:Topic)<-[:PART_OF]-(s:Subtopic)<-[:COVERS_TOPIC]-(q:Question)
         DETACH DELETE q
         """
-        result = session.run(query)
-        print("✅ Questões de Natureza removidas.")
+        session.run(query)
+        print("OK: Questoes de Natureza removidas.")
 
-        # 2. Remover a área, tópicos e subtópicos para garantir que a matriz limpa re-crie tudo
-        # Nota: Se houverem competências/skills órfãs sem nome, elas serão corrigidas pelo MERGE da matriz.
+        # 2. Remover a área, tópicos e subtópicos
         query_meta = """
         MATCH (a:Area {name: 'Ciências da Natureza e suas Tecnologias'})
         OPTIONAL MATCH (a)<-[:BELONGS_TO]-(t:Topic)
@@ -35,10 +33,9 @@ def clear_nature():
         DETACH DELETE a, t, s
         """
         session.run(query_meta)
-        print("✅ Estrutura de metadados de Natureza removida.")
+        print("OK: Estrutura de metadados de Natureza removida.")
         
-        # 3. Remover competências e habilidades que ficaram sem nome (ponto cego da ingestão anterior)
-        # No ENEM elas começam com CN_
+        # 3. Remover competências e habilidades órfãs
         query_orphans = """
         MATCH (c:Competence) WHERE c.id STARTS WITH 'CN_' DETACH DELETE c
         """
@@ -47,10 +44,10 @@ def clear_nature():
         MATCH (sk:Skill) WHERE sk.id STARTS WITH 'CN_' DETACH DELETE sk
         """
         session.run(query_skill_orphans)
-        print("✅ Competências e Habilidades de Natureza (órfãs) removidas.")
+        print("OK: Competencias e Habilidades de Natureza removidas.")
 
     driver.close()
-    print("\n🚀 Pronto! Agora você pode rodar o 'Run Ingestion' no GitHub novamente.")
+    print("\nPronto! Agora você pode rodar o 'Run Ingestion' no GitHub novamente.")
 
 if __name__ == "__main__":
     clear_nature()
