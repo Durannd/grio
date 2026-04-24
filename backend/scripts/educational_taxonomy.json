@@ -1,0 +1,51 @@
+{
+  "Linguagens, Códigos e suas Tecnologias": [
+    "Interpretação de Texto",
+    "Gramática e Sintaxe",
+    "Literatura Brasileira",
+    "Artes e Cultura",
+    "Educação Física e Lazer",
+    "Tecnologias da Informação e Comunicação",
+    "Língua Estrangeira (Inglês/Espanhol)",
+    "Variação Linguística"
+  ],
+  "Matemática e suas Tecnologias": [
+    "Matemática Básica (Razão, Proporção, Porcentagem)",
+    "Álgebra (Funções, Equações, Sequências)",
+    "Geometria Plana",
+    "Geometria Espacial",
+    "Geometria Analítica",
+    "Trigonometria",
+    "Estatística e Probabilidade",
+    "Grandezas e Medidas",
+    "Matemática Financeira",
+    "Combinatória"
+  ],
+  "Ciências da Natureza e suas Tecnologias": [
+    "Biologia: Ecologia e Meio Ambiente",
+    "Biologia: Genética e Biologia Molecular",
+    "Biologia: Citologia",
+    "Biologia: Fisiologia Humana e Saúde",
+    "Biologia: Evolução",
+    "Física: Mecânica",
+    "Física: Termologia",
+    "Física: Óptica",
+    "Física: Ondulatória",
+    "Física: Eletromagnetismo",
+    "Física: Hidrostática",
+    "Química: Química Geral e Atômica",
+    "Química: Físico-Química",
+    "Química: Química Orgânica",
+    "Química: Química Ambiental",
+    "Química: Estequiometria"
+  ],
+  "Ciências Humanas e suas Tecnologias": [
+    "História do Brasil",
+    "História Geral",
+    "Geografia Física e Meio Ambiente",
+    "Geografia Humana e Econômica",
+    "Geopolítica e Atualidades",
+    "Sociologia e Cultura",
+    "Filosofia e Ética"
+  ]
+}

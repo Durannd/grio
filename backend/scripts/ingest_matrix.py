@@ -1,4 +1,10 @@
 import json
+import os
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente ANTES de importar módulos que usam os envs
+load_dotenv()
+
 from core.neo4j import get_driver
 
 def ingest_matrix(file_path):

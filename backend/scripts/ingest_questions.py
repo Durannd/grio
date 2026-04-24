@@ -1,9 +1,11 @@
 import os
 import json
 import time
+import argparse
 from dotenv import load_dotenv
 import google.generativeai as genai
 from neo4j import GraphDatabase
+import neo4j
 
 # Carregar variáveis de ambiente
 load_dotenv()
@@ -12,12 +14,22 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 
+# Carregar Taxonomia Educacional
+with open("scripts/educational_taxonomy.json", "r", encoding="utf-8") as f:
+    EDUCATIONAL_TAXONOMY = json.load(f)
+
 # Configuração Neo4j
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
 NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "password")
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+# Para ignorar erro de SSL em Aura, mudamos o protocolo para +ssc (Self-Signed Certificate)
+uri = NEO4J_URI.replace("neo4j+s://", "neo4j+ssc://").replace("bolt+s://", "bolt+ssc://")
+
+driver = GraphDatabase.driver(
+    uri, 
+    auth=(NEO4J_USER, NEO4J_PASSWORD)
+)
 
 def create_vector_index(session, dimension=768):
     """Cria ou recria o índice vetorial e índices de performance."""
@@ -27,7 +39,9 @@ def create_vector_index(session, dimension=768):
     indices = [
         "CREATE CONSTRAINT question_id IF NOT EXISTS FOR (q:Question) REQUIRE q.id IS UNIQUE",
         "CREATE CONSTRAINT subtopic_name IF NOT EXISTS FOR (s:Subtopic) REQUIRE s.name IS UNIQUE",
-        "CREATE CONSTRAINT skill_code IF NOT EXISTS FOR (sk:Skill) REQUIRE sk.code IS UNIQUE",
+        "CREATE CONSTRAINT topic_name IF NOT EXISTS FOR (t:Topic) REQUIRE t.name IS UNIQUE",
+        "CREATE CONSTRAINT area_name IF NOT EXISTS FOR (a:Area) REQUIRE a.name IS UNIQUE",
+        "CREATE CONSTRAINT skill_id IF NOT EXISTS FOR (sk:Skill) REQUIRE sk.id IS UNIQUE",
         "CREATE CONSTRAINT comp_id IF NOT EXISTS FOR (c:Competence) REQUIRE c.id IS UNIQUE"
     ]
     
@@ -65,19 +79,26 @@ def get_enrichment(question_text, choices, retries=7):
     ALTERNATIVAS:
     {choices}
     
+    TAXONOMIA PERMITIDA (Escolha a Area e o Topic desta lista):
+    {json.dumps(EDUCATIONAL_TAXONOMY, indent=2, ensure_ascii=False)}
+
     CRITÉRIOS PARA 'is_diagnostic':
     - Marque como `true` APENAS se a questão testar um conceito FUNDAMENTAL e ESTRUTURANTE.
     - Meta: Apenas ~15% das questões diagnósticas.
     
     FORMATO DE RETORNO (JSON APENAS):
     {{
-        "explanation": "Explicação passo a passo.",
-        "subtopics": ["lista", "de", "subtópicos"],
+        "explanation": "Explicação passo a passo da resolução.",
+        "area": "Nome exato da Área (ex: Matemática e suas Tecnologias)",
+        "topic": "Nome exato do Tópico da lista acima",
+        "subtopics": ["Subtópico específico 1", "Subtópico específico 2"],
         "difficulty": "Fácil" | "Médio" | "Difícil",
         "is_diagnostic": boolean,
-        "skills": ["H1", "H17"],
-        "competencies": ["CN_C1", "MT_C3"]
+        "skills": ["H1", "H2"],
+        "competencies": ["MT_C1"]
     }}
+    
+    IMPORTANTE: Em 'skills', coloque apenas o código (H1, H2). O script fará o link com a competência.
     """
     for attempt in range(retries):
         try:
@@ -99,9 +120,13 @@ def get_enrichment(question_text, choices, retries=7):
                 print(f"❌ Falha persistente após {retries} tentativas: {e}")
                 return None
 
-def ingest_questions(file_path):
+def ingest_questions(file_path, limit=None):
     with open(file_path, "r", encoding="utf-8") as f:
         questions = json.load(f)
+
+    if limit:
+        questions = questions[:limit]
+        print(f"🔬 Modo Teste: Limitado a {limit} questões.")
 
     total_questions = len(questions)
     failed_ids = []
@@ -186,26 +211,36 @@ def ingest_tx(tx, q, enrichment, embedding):
         q.option_c = $opt_c,
         q.option_d = $opt_d,
         q.option_e = $opt_e
+    
     WITH q
+    MERGE (a:Area {name: $area})
+    MERGE (t:Topic {name: $topic})
+    MERGE (t)-[:BELONGS_TO]->(a)
+    
+    WITH q, t
     UNWIND $subtopics as subtopic_name
     MERGE (s:Subtopic {name: subtopic_name})
     MERGE (q)-[:COVERS_TOPIC]->(s)
+    MERGE (s)-[:PART_OF]->(t)
     
-    WITH q
-    UNWIND $skills as skill_code
-    MATCH (sk:Skill {code: skill_code})
-    MERGE (q)-[:EVALUATES]->(sk)
-
     WITH q
     UNWIND $competencies as comp_id
     MATCH (c:Competence {id: comp_id})
     MERGE (q)-[:REQUIRES_COMPETENCE]->(c)
+
+    WITH q, comp_id
+    UNWIND $skills as skill_code
+    // No nosso banco, Skills têm ID composto: CompID_SkillID (ex: MT_C1_H1)
+    MATCH (sk:Skill {id: comp_id + "_" + skill_code})
+    MERGE (q)-[:EVALUATES]->(sk)
     """
     tx.run(query, 
            id=q['id'], 
            text=q['question'], 
            answer=q['answerKey'],
            explanation=enrichment['explanation'],
+           area=enrichment['area'],
+           topic=enrichment['topic'],
            difficulty=enrichment['difficulty'],
            is_diagnostic=enrichment['is_diagnostic'],
            embedding=embedding,
@@ -219,5 +254,11 @@ def ingest_tx(tx, q, enrichment, embedding):
            opt_e=option_texts.get('E', ''))
 
 if __name__ == "__main__":
-    ingest_questions("scripts/enem_sample.json")
+    parser = argparse.ArgumentParser(description="Ingestão de questões ENEM no Neo4j")
+    parser.add_argument("--limit", type=int, help="Limite de questões para processar (Smoke Test)")
+    parser.add_argument("--file", type=str, default="scripts/enem_sample.json", help="Caminho do arquivo JSON")
+    
+    args = parser.parse_args()
+    
+    ingest_questions(args.file, limit=args.limit)
     driver.close()
