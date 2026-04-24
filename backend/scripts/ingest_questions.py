@@ -117,7 +117,7 @@ def ingest_questions(file_path):
             for emb_attempt in range(3):
                 try:
                     embedding_response = genai.embed_content(
-                        model="models/text-embedding-004",
+                        model="models/gemini-embedding-001",
                         content=f"{q['question']} {enrichment['explanation']}",
                         task_type="retrieval_document"
                     )
