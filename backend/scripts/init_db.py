@@ -25,23 +25,23 @@ def ensure_constraints():
     ]
     
     with driver.session() as session:
-        print("⚙️ Verificando/Criando restrições de unicidade...")
+        print("⚙️ Verificando/Criando restrições de unicidade...", flush=True)
         for cmd in constraints:
             try:
                 session.run(cmd)
             except Exception as e:
-                print(f"⚠️ Aviso ao criar restrição: {e}")
+                print(f"⚠️ Aviso ao criar restrição: {e}", flush=True)
         
         # Índice Vetorial (768 dimensões para text-embedding-004)
-        print("⚙️ Verificando índice vetorial...")
+        print("⚙️ Verificando índice vetorial...", flush=True)
         try:
             session.run("CREATE VECTOR INDEX question_embeddings IF NOT EXISTS FOR (q:Question) ON (q.embedding) "
                         "OPTIONS {indexConfig: {`vector.dimensions`: 768, `vector.similarity_function`: 'cosine'}}")
         except Exception as e:
-            print(f"⚠️ Aviso ao criar índice vetorial: {e}")
+            print(f"⚠️ Aviso ao criar índice vetorial: {e}", flush=True)
 
     driver.close()
-    print("✅ Banco de dados otimizado e protegido!")
+    print("✅ Banco de dados otimizado e protegido!", flush=True)
 
 if __name__ == "__main__":
     ensure_constraints()

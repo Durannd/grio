@@ -100,7 +100,7 @@ def ingest_questions(file_path, limit=None):
     total_questions = len(questions)
     failed_ids = []
     
-    print(f"🚀 Iniciando ingestão de {total_questions} questões...")
+    print(f"🚀 Iniciando ingestão de {total_questions} questões...", flush=True)
 
     with driver.session() as session:
         # Garantir que o banco está pronto (constraints e índices)
@@ -113,10 +113,10 @@ def ingest_questions(file_path, limit=None):
             # 1. Verificar se a questão já foi processada
             result = session.run("MATCH (q:Question {id: $id}) RETURN q.explanation as exp", id=q['id']).single()
             if result and result['exp']:
-                # print(f"{progress_bar} - Questão {q['id']} já existe. Pulando...")
+                # print(f"{progress_bar} - Questão {q['id']} já existe. Pulando...", flush=True)
                 continue
 
-            print(f"{progress_bar} - Processando ID: {q['id']}...")
+            print(f"{progress_bar} - Processando ID: {q['id']}...", flush=True)
             
             # 2. Obter Enriquecimento (com Retries)
             enrichment = get_enrichment(q['question'], q['choices']['text'])
