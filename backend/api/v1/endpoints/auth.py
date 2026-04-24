@@ -6,7 +6,8 @@ from datetime import timedelta
 from database import get_db
 from crud.user import get_user_by_email
 from core.security import verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
-from schemas.user import User
+from schemas.user import User, UserCreate
+from crud.user import create_user
 from core.deps import get_current_user
 from pydantic import BaseModel
 
@@ -34,3 +35,19 @@ def login_for_access_token(db: Session = Depends(get_db), form_data: OAuth2Passw
 @router.get("/me", response_model=User)
 def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+@router.post("/signup", response_model=Token)
+def signup(user_in: UserCreate, db: Session = Depends(get_db)):
+    user = get_user_by_email(db, email=user_in.email)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail="O usuário com este e-mail já existe no sistema.",
+        )
+    user = create_user(db, user=user_in)
+    
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}

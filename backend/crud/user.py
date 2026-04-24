@@ -8,7 +8,12 @@ def get_user_by_email(db: Session, email: str):
 
 def create_user(db: Session, user: UserCreate):
     hashed_password = get_password_hash(user.password)
-    db_user = User(email=user.email, name=user.name, hashed_password=hashed_password)
+    db_user = User(
+        email=user.email, 
+        name=user.name, 
+        hashed_password=hashed_password,
+        avatar_url=user.avatar_url
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

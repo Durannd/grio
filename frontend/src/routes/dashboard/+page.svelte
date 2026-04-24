@@ -1,10 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { fade, slide, fly } from 'svelte/transition';
   import { goto } from '$app/navigation';
+  import { formatPedagogicalCode } from '$lib/utils';
 
   let learningPath: Array<{concept_name: string, description: string, score: number}> = [];
+  let studyPlan: any = null;
   let user: any = null;
   let loading = true;
+  let loadingPlan = true;
 
   onMount(async () => {
     try {
@@ -34,10 +38,17 @@
         learningPath = data.learning_path;
       }
 
+      // Fetch AI Study Plan
+      const planRes = await fetch("http://localhost:8000/api/v1/study-plan", { headers });
+      if (planRes.ok) {
+        studyPlan = await planRes.json();
+      }
+      loadingPlan = false;
       loading = false;
     } catch (error) {
       console.error("Error loading dashboard:", error);
       loading = false;
+      loadingPlan = false;
     }
   });
 
@@ -54,7 +65,7 @@
         <div class="orbit"></div>
         <div class="center-glow"></div>
       </div>
-      <p>Consultando o oráculo Griô...</p>
+      <p>Sincronizando seus dados...</p>
     </div>
   {:else}
     <div class="dashboard-grid">
@@ -63,30 +74,65 @@
           <div class="welcome">
             <span class="eyebrow">Painel do Aluno</span>
             <h1>Olá, <span class="text-gradient">{user.name}</span></h1>
-            <p>Sua jornada de sabedoria até a universidade.</p>
+            <p>Seu plano de estudos estratégico para o ENEM.</p>
           </div>
           <div class="sidebar-actions">
-            <a href="/prova" class="btn btn-primary">Refazer Diagnóstico</a>
             <button class="btn btn-outline" on:click={logout}>Sair da Conta</button>
           </div>
         </header>
 
         <div class="glass-card overview-card">
            <h3>Seu Progresso</h3>
-           <p>O Mentor Griô mapeou módulos estratégicos com base no seu diagnóstico. Siga a linha do tempo para dominar as competências do ENEM.</p>
+           <p>O Griô identificou módulos estratégicos com base no seu diagnóstico. Siga o cronograma para dominar as competências do ENEM.</p>
         </div>
       </aside>
 
       <section class="path-section animate-slide-up stagger-2">
         <div class="section-title">
-          <h2>Próximos Passos</h2>
+          <h2>Seu Plano de Estudos</h2>
+          <span class="badge-ai">IA ESTRATEGISTA</span>
+        </div>
+        
+        {#if loadingPlan}
+          <div class="plan-loading glass-card">Gerando recomendações personalizadas...</div>
+        {:else if studyPlan && studyPlan.plan}
+          <div class="study-plan-container animate-slide-up">
+            <p class="motivation">"{studyPlan.motivation}"</p>
+            <div class="plan-grid">
+              {#each studyPlan.plan as step}
+                <div class="plan-item glass-card">
+                  <div class="plan-priority">#{step.priority}</div>
+                  <div class="plan-content">
+                    <h3>{step.title}</h3>
+                    <div class="skill-ref">{formatPedagogicalCode(step.skill_code)}</div>
+                    <p class="justification">{step.justification}</p>
+                    <div class="topics">
+                      <strong>Conteúdos para focar:</strong>
+                      <ul>
+                        {#each step.topics as topic}
+                          <li>{topic}</li>
+                        {/each}
+                      </ul>
+                    </div>
+                    <div class="study-tip">
+                      <strong>💡 Dica:</strong> {step.tip}
+                    </div>
+                  </div>
+                </div>
+              {/each}
+            </div>
+          </div>
+        {/if}
+
+        <div class="section-title mt-12">
+          <h2>Sua Trilha de Conhecimento</h2>
         </div>
         
       {#if learningPath.length === 0}
         <div class="glass-card text-center empty-state">
-          <h3>Sua jornada ainda não começou</h3>
-          <p>Faça a prova de nivelamento para descobrirmos por onde você deve começar.</p>
-          <a href="/prova" class="btn btn-primary" style="margin-top: 1.5rem;">Iniciar Nivelamento</a>
+          <h3>Seu plano ainda não foi gerado</h3>
+          <p>Realize a avaliação diagnóstica para identificarmos seu nível de proficiência.</p>
+          <a href="/prova" class="btn btn-primary" style="margin-top: 1.5rem;">Iniciar Avaliação</a>
         </div>
       {:else}
         <div class="timeline">
@@ -98,7 +144,7 @@
               </div>
               <div class="glass-card node-content">
                 <div class="node-header">
-                  <h3>{concept.concept_name}</h3>
+                  <h3>{formatPedagogicalCode(concept.concept_name)}</h3>
                   <div class="proficiency-badge">
                     Proficiência: <strong>{(concept.score * 100).toFixed(0)}%</strong>
                   </div>
@@ -198,6 +244,113 @@
   .section-title h2 {
     font-size: 1.8rem;
     margin: 0;
+  }
+
+  .badge-ai {
+    background: linear-gradient(135deg, var(--primary) 0%, #d4a017 100%);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2rem;
+    letter-spacing: 0.1em;
+  }
+
+  .mt-12 { margin-top: 4rem; }
+
+  .motivation {
+    font-style: italic;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    border-left: 3px solid var(--primary);
+    padding-left: 1.5rem;
+  }
+
+  .plan-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .plan-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+
+  .plan-priority {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary);
+    opacity: 0.5;
+  }
+
+  .plan-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .skill-ref {
+    font-size: 0.8rem;
+    color: var(--primary-light);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .justification {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .topics {
+    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.03);
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .topics strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .topics ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .topics li::before {
+    content: "•";
+    color: var(--primary);
+    margin-right: 0.5rem;
+  }
+
+  .topics li {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+  }
+
+  .study-tip {
+    font-size: 0.9rem;
+    background: rgba(201, 160, 94, 0.1);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border-left: 3px solid var(--primary);
+  }
+
+  .plan-loading {
+    padding: 3rem;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-style: italic;
   }
 
   .sidebar-actions {

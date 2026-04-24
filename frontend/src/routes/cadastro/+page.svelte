@@ -2,29 +2,29 @@
   import CadastroForm from "$lib/components/CadastroForm.svelte";
   import { goto } from "$app/navigation";
 
-  let successMessage = "";
   let errorMessage = "";
 
   async function handleSubmit(event: any) {
-    const { email, password } = event.detail;
+    const { name, email, password } = event.detail;
     errorMessage = "";
-    successMessage = "";
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/users/", {
+      const response = await fetch("http://localhost:8000/api/v1/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, name: email.split("@")[0] }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       if (response.ok) {
-        successMessage = "Usuário criado com sucesso! Redirecionando...";
-        setTimeout(() => goto("/login"), 2000);
+        const data = await response.json();
+        localStorage.setItem("token", data.access_token);
+        // Redireciona para a tela de boas-vindas após o cadastro
+        goto("/welcome");
       } else {
         const data = await response.json();
-        errorMessage = data.detail || "Ocorreu um erro.";
+        errorMessage = data.detail || "Não foi possível realizar o cadastro.";
       }
     } catch (error) {
       errorMessage = "Não foi possível conectar ao servidor.";
@@ -34,22 +34,18 @@
 
 <div class="auth-container">
   <div class="auth-header animate-slide-up stagger-1">
-    <h1 class="text-gradient">Junte-se ao Griô</h1>
-    <p>Comece sua trilha rumo à universidade.</p>
+    <h1 class="text-gradient">Crie sua Conta</h1>
+    <p>Comece sua jornada de estudos agora mesmo.</p>
   </div>
 
   <CadastroForm on:submit={handleSubmit} />
-
-  {#if successMessage}
-    <p class="success-msg animate-slide-up stagger-3">{successMessage}</p>
-  {/if}
 
   {#if errorMessage}
     <p class="error-msg animate-slide-up stagger-3">{errorMessage}</p>
   {/if}
 
   <p class="auth-footer animate-slide-up stagger-3">
-    Já possui uma conta? <a href="/login">Fazer Login</a>
+    Já tem uma conta? <a href="/login">Entre aqui</a>
   </p>
 </div>
 
@@ -86,16 +82,6 @@
     margin-top: 1.5rem;
     font-size: 0.9rem;
     border: 1px solid rgba(204, 79, 79, 0.2);
-  }
-
-  .success-msg {
-    color: var(--success);
-    background: rgba(103, 163, 114, 0.1);
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-sm);
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-    border: 1px solid rgba(103, 163, 114, 0.2);
   }
 
   .auth-footer {

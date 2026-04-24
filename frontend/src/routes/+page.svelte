@@ -44,7 +44,7 @@
 
     <div class="scroll-hint">
       <div class="mouse-icon"></div>
-      <span>Descubra a Jornada</span>
+      <span>Conheça a Metodologia</span>
     </div>
   </section>
 
@@ -54,7 +54,7 @@
       <div class="manifesto-text">
         <h2 class="text-gradient">O Manifesto Griô</h2>
         <p>Na tradição africana, o Griô não é apenas um contador de histórias; ele é o guardião da memória e o arquiteto do futuro. No projeto <strong>Griô</strong>, aplicamos essa essência ao vestibular.</p>
-        <p>Acreditamos que cada erro em uma prova é uma vírgula em sua história de aprendizado. Nossa tecnologia não apenas avalia; ela mentoriza seu progresso.</p>
+        <p>Acreditamos que cada erro em uma prova é uma etapa no seu processo de aprendizado. Nossa tecnologia não apenas avalia; ela direciona seu progresso.</p>
       </div>
       <div class="manifesto-visual glass-panel">
         <div class="stats-card">
@@ -99,7 +99,7 @@
   <section class="final-cta reveal container">
     <div class="glass-panel text-center">
       <h2 class="text-gradient">Pronto para começar?</h2>
-      <p>Sua jornada universitária começa com um único passo. Descubra sua proficiência agora.</p>
+      <p>Sua aprovação universitária começa agora. Descubra sua proficiência.</p>
       <a href="/prova" class="btn btn-primary btn-lg">Começar Agora</a>
     </div>
   </section>

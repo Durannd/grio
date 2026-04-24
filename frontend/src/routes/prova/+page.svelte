@@ -132,15 +132,13 @@
 
   <div class="content-wrapper">
     {#if submitting}
-      <div class="loading-container" in:fade>
-        <div class="gri-loader"></div>
-        <p class="text-gradient">
-          {#if progress < 100}
-            Processando suas respostas...
-          {:else}
-            Auditoria Pedagógica & Mapeamento de Grafo...
-          {/if}
-        </p>
+      <div class="status-screen" in:fade>
+        <div class="loader-visual">
+          <div class="orbit"></div>
+          <div class="center-glow"></div>
+        </div>
+        <h2>Estamos analisando a sua trilha...</h2>
+        <p>Auditando desempenho pedagógico e mapeando seu grafo de conhecimento.</p>
       </div>
     {:else if loading}
       <div class="loading-container" in:fade>
@@ -149,7 +147,7 @@
       </div>
     {:else if questions.length > 0}
       <header class="onboarding-header" in:fly={{ y: -20, duration: 600 }}>
-        <h1 class="text-gradient">Sua Jornada Personalizada</h1>
+        <h1 class="text-gradient">Avaliação de Proficiência</h1>
         <div class="header-actions">
           <p class="subtitle">
           Esta avaliação diagnóstica permite identificar suas principais competências e áreas de melhoria.<br>
@@ -213,7 +211,7 @@
             on:click={handleSubmit} 
             disabled={!selectedAnswers[currentQuestion.id] || submitting}
           >
-            {#if submitting} Finalizando... {:else} Concluir Jornada {/if}
+            {#if submitting} Finalizando... {:else} Concluir Avaliação {/if}
           </button>
         {:else}
           <button 
@@ -495,16 +493,55 @@
     align-items: center;
   }
 
-  .gri-loader {
-    width: 60px;
-    height: 60px;
-    border: 3px solid rgba(255,255,255,0.05);
-    border-top-color: var(--primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  .status-screen {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
   }
 
-  @keyframes spin { 100% { transform: rotate(360deg); } }
+  .loader-visual {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 2rem;
+  }
+
+  .orbit {
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(201, 160, 94, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1.5s linear infinite;
+  }
+
+  .center-glow {
+    position: absolute;
+    inset: 30%;
+    background: var(--primary);
+    filter: blur(15px);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .status-screen h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .status-screen p {
+    color: var(--text-secondary);
+  }
 
   @media (max-width: 768px) {
     .question-card { padding: 2rem 1.5rem; }

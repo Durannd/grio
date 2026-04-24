@@ -3,16 +3,22 @@
 
   const dispatch = createEventDispatcher();
 
+  let name = "";
   let email = "";
   let password = "";
 
   function handleSubmit() {
-    dispatch("submit", { email, password });
+    dispatch("submit", { name, email, password });
   }
 </script>
 
 <div class="glass-card animate-slide-up stagger-2" style="max-width: 400px; width: 100%; margin: 0 auto;">
   <form on:submit|preventDefault={handleSubmit}>
+    <div class="form-group">
+      <label for="name">Nome Completo</label>
+      <input type="text" id="name" bind:value={name} placeholder="Seu nome completo" required />
+    </div>
+
     <div class="form-group">
       <label for="email">E-mail</label>
       <input type="email" id="email" bind:value={email} placeholder="seu@email.com" required />
