@@ -86,7 +86,7 @@
                   <span class="user-email">{user.email}</span>
                 </div>
                 <div class="dropdown-divider"></div>
-                <a href="/account" on:click={() => showDropdown = false}>Minha Conta</a>
+                <button class="account-btn" on:click={() => { showDropdown = false; goto('/account'); }}>Minha Conta</button>
                 <button class="logout-btn" on:click={logout}>Sair</button>
               </div>
             {/if}
@@ -252,7 +252,7 @@
     margin: 0.5rem 0;
   }
 
-  .profile-dropdown a, .logout-btn {
+  .profile-dropdown a, .account-btn, .logout-btn {
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     font-size: 0.9rem;
@@ -260,9 +260,17 @@
     text-align: left;
   }
 
-  .profile-dropdown a:hover, .logout-btn:hover {
+  .profile-dropdown a:hover, .account-btn:hover, .logout-btn:hover {
     background: rgba(255,255,255,0.05);
     color: var(--primary-light) !important;
+  }
+
+  .account-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    width: 100%;
   }
 
   .logout-btn {

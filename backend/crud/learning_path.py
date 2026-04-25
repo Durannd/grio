@@ -7,10 +7,10 @@ def get_user_learning_path(driver: Driver, user_id: int):
             "MATCH (u:User {id: $user_id})-[r:HAS_PROFICIENCY]->(s:Skill) "
             "WHERE r.score > 0 "
             "RETURN s.id AS id, s.description AS description, r.score AS score "
-            "ORDER BY r.score ASC LIMIT 10",
+            "ORDER BY r.score ASC",
             user_id=user_id
         )
-        
+
         path = []
         for record in result:
             path.append({
@@ -18,8 +18,7 @@ def get_user_learning_path(driver: Driver, user_id: int):
                 "description": record["description"],
                 "score": record["score"]
             })
-            
-        # Se o usuário não tem proficiências, retorna uma trilha padrão de nivelamento
+
         if not path:
             return [
                 {"concept_name": "Nivelamento: Matemática", "description": "Fundamentos de lógica e aritmética para o ENEM.", "score": 0.0},

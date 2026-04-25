@@ -192,7 +192,7 @@
           </div>
         {:else}
           <div class="proficiency-list">
-            {#each learningPath as concept}
+            {#each learningPath.slice(0, 5) as concept}
               <div class="proficiency-item glass-panel">
                 <div class="prof-header">
                   <h4>{formatPedagogicalCode(concept.concept_name)}</h4>

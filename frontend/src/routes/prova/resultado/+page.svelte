@@ -3,6 +3,7 @@
   import { fly, fade, scale } from "svelte/transition";
   import axios from "axios";
   import { formatPedagogicalCode } from "$lib/utils";
+  import { page } from "$app/stores";
 
   let report = null;
   let loading = true;
@@ -20,12 +21,14 @@
   onMount(async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(
-        "http://localhost:8000/api/v1/assessment-report/report",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const id = $page.url.searchParams.get("id");
+      const url = id 
+        ? `http://localhost:8000/api/v1/assessment-report/history/${id}`
+        : "http://localhost:8000/api/v1/assessment-report/report";
+        
+      const res = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       report = res.data;
     } catch (e) {
       error = "Não foi possível carregar seu diagnóstico.";

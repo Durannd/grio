@@ -534,6 +534,7 @@
     width: 60px;
     height: 60px;
     border: 3px solid rgba(255, 255, 255, 0.05);
+  }
   @keyframes spin { to { transform: rotate(360deg); } }
   @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
