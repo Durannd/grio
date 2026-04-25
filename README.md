@@ -13,6 +13,8 @@
 
 ---
 
+> 💡 **Documentação Técnica**: Para detalhes aprofundados sobre a arquitetura de grafos, embeddings e o motor de diagnóstico, acesse as [Especificações Técnicas](TECHNICAL_SPECIFICATIONS.md).
+
 <details open>
 <summary><strong>🇧🇷 Português</strong></summary>
 
