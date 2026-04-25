@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from core.neo4j import get_driver
 from core.deps import get_current_user
 from models.user import User
+from models.assessment import AssessmentAttempt
 from sqlalchemy.orm import Session
 from database import get_db
 import os
@@ -36,26 +37,31 @@ def get_diagnostic_report(
         if not proficiencies:
             return {"status": "pending", "message": "Nenhum diagnóstico com domínio identificado ainda."}
 
-        # 2. Verificar Cache (Snapshot)
-        import json
-        import hashlib
-        
-        # Criar um hash das proficiências atuais para o snapshot
-        prof_string = json.dumps(sorted(proficiencies, key=lambda x: x['id']), sort_keys=True)
-        current_snapshot = hashlib.md5(prof_string.encode()).hexdigest()
-        
-        user_record = session.run("""
-            MATCH (u:User {id: $user_id})
-            RETURN u.latest_analysis as latest_analysis, u.proficiencies_snapshot as snapshot
-        """, user_id=current_user.id).single()
-        
-        if user_record and user_record["snapshot"] == current_snapshot and user_record["latest_analysis"]:
-            try:
-                return json.loads(user_record["latest_analysis"])
-            except:
-                pass
+        # 2. Check the latest AssessmentAttempt in PostgreSQL
+        latest_attempt = db.query(AssessmentAttempt).filter(
+            AssessmentAttempt.user_id == current_user.id
+        ).order_by(AssessmentAttempt.created_at.desc()).first()
 
-        # 3. Gerar Nova Análise com IA
+        if not latest_attempt:
+             # Fallback if somehow there's no attempt record
+             latest_attempt = AssessmentAttempt(user_id=current_user.id, type="diagnostico")
+             db.add(latest_attempt)
+             db.commit()
+
+        # If the latest attempt already has an analysis, return it directly
+        if latest_attempt.analysis_json and latest_attempt.proficiencies_snapshot:
+            return {
+                "status": "success",
+                "analysis": latest_attempt.analysis_json,
+                "proficiencies": latest_attempt.proficiencies_snapshot,
+                "summary_stats": {
+                    "total_skills_mapped": len(latest_attempt.proficiencies_snapshot),
+                    "average_score": sum([p['score'] for p in latest_attempt.proficiencies_snapshot]) / len(latest_attempt.proficiencies_snapshot) if latest_attempt.proficiencies_snapshot else 0
+                },
+                "snapshot": "historical" 
+            }
+
+        # 3. Gerar Nova Análise com IA (Since it's a new attempt without analysis)
         prof_summary = "\n".join([f"- [{p.get('area', 'Geral')}] {p['id']}: {p['score']*100:.1f}% - {p['description']}" for p in proficiencies])
         
         prompt = f"""
@@ -101,18 +107,15 @@ def get_diagnostic_report(
                 "total_skills_mapped": len(proficiencies),
                 "average_score": sum([p['score'] for p in proficiencies]) / len(proficiencies) if proficiencies else 0
             },
-            "snapshot": current_snapshot
+            "snapshot": "new"
         }
 
-        # 4. Salvar no Cache
-        session.run("""
-            MATCH (u:User {id: $user_id})
-            SET u.latest_analysis = $analysis,
-                u.proficiencies_snapshot = $snapshot
-        """, user_id=current_user.id, analysis=json.dumps(response_data), snapshot=current_snapshot)
-
-        # 5. Marcar diagnóstico como concluído no SQL DB
+        # 4. Save to SQL Database Attempt instead of Neo4j Cache
+        latest_attempt.analysis_json = analysis_data
+        latest_attempt.proficiencies_snapshot = proficiencies
+        
         current_user.is_diagnostic_completed = 1
+        db.add(latest_attempt)
         db.add(current_user)
         db.commit()
 

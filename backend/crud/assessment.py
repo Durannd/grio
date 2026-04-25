@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from schemas.assessment import AssessmentSubmission
+from models.assessment import AssessmentAttempt
 from models.question import Question
 from core.neo4j import get_driver
 from collections import defaultdict
@@ -103,7 +104,6 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
                 MATCH (u:User {id: $user_id})
                 OPTIONAL MATCH (u)-[r:HAS_PROFICIENCY]->()
                 DELETE r
-                SET u.latest_analysis = null
             """, user_id=submission.user_id)
 
             # 2. Gravar novas proficiências e propagar
@@ -128,5 +128,13 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
                 MATCH (q:Question {id: q_id})
                 MERGE (u)-[:ANSWERED]->(q)
             """, user_id=submission.user_id, proficiencies=proficiencies_data, answered_ids=[a.question_id for a in submission.answers])
+
+    # --- SQL Persistence: Record the Attempt ---
+    new_attempt = AssessmentAttempt(
+        user_id=submission.user_id,
+        type="diagnostico"
+    )
+    db.add(new_attempt)
+    db.commit()
 
     return {"status": "success", "message": "Diagnóstico processado. Auditoria e propagação concluídas."}

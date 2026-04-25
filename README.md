@@ -56,8 +56,8 @@ O primeiro passo é construir **todas as funcionalidades** para uma única maté
 |--------|-----------|--------|
 | Frontend | **SvelteKit** | Performance e leveza mobile |
 | Backend | **Python + FastAPI** | Ecossistema de IA maduro |
-| Banco Relacional | **PostgreSQL** | Dados de usuários e autenticação |
-| Banco em Grafo | **Neo4j** | Grafo de conhecimento e proficiência |
+| Banco Relacional | **PostgreSQL** | Dados de usuários, autenticação e histórico imutável de avaliações |
+| Banco em Grafo | **Neo4j** | Grafo de conhecimento e proficiência (estado cognitivo atual) |
 | IA | **Gemini API** | Tutor inteligente |
 
 ## Roadmap

@@ -4,6 +4,7 @@ from api.v1.endpoints import users, concepts, assessment, auth, learning_path, c
 from database import engine, Base
 import models.user
 import models.question
+import models.assessment
 
 Base.metadata.create_all(bind=engine)
 

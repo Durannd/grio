@@ -21,7 +21,7 @@
   --bg-elevated: #121212;
   
   /* Liquid Glass Properties */
-  --glass-bg: rgba(15, 15, 15, 0.6);
+  --glass-bg: rgba(255, 255, 255, 0.03);
   --glass-border: 1px solid rgba(255, 255, 255, 0.08);
   --glass-blur: blur(24px);
 

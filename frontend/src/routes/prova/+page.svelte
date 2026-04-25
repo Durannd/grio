@@ -92,8 +92,6 @@
     submitting = true;
     try {
       const token = localStorage.getItem('token');
-      // Obter usuário do contexto ou localStorage (aqui supomos que temos acesso ao user.id)
-      // Para fins de demo, pegaremos do token decodificado ou de um store
       await axios.post('http://localhost:8000/api/v1/assessment/submit', {
         user_id: 0, // O backend sobrescreve isso com o ID real do token
         answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({
@@ -169,22 +167,27 @@
       <main class="question-section">
         {#key currentQuestionIndex}
           <div class="glass-card question-card" in:fly={{ x: 30, duration: 500 }} out:fly={{ x: -30, duration: 300 }}>
-            <div class="card-meta">
-              <div class="meta-left">
-                <span class="enem-badge">{formatEnemId(currentQuestion.id)}</span>
-                <span class="concept-tag">{currentQuestion.concept_name}</span>
+            <!-- Lado Esquerdo: Contexto e Texto da Questão -->
+            <div class="question-content">
+              <div class="card-meta">
+                <div class="meta-left">
+                  <span class="enem-badge">{formatEnemId(currentQuestion.id)}</span>
+                  <span class="concept-tag">{currentQuestion.concept_name}</span>
+                </div>
+                <div class="difficulty-badge">
+                  <span class="dot {currentQuestion.difficulty.toLowerCase()}"></span>
+                  <span>{currentQuestion.difficulty}</span>
+                </div>
               </div>
-              <div class="difficulty-badge">
-                <span class="dot {currentQuestion.difficulty.toLowerCase()}"></span>
-                <span>{currentQuestion.difficulty}</span>
+              
+              <div class="question-body">
+                <div class="question-text">{@html currentQuestion.text}</div>
               </div>
-            </div>
-            
-            <div class="question-body">
-              <div class="question-text">{@html currentQuestion.text}</div>
             </div>
 
+            <!-- Lado Direito: Opções -->
             <div class="options-container">
+              <h3 class="options-title">Escolha a alternativa correta:</h3>
               {#each currentQuestion.options as option}
                 <button 
                   class="option-item" 
@@ -273,30 +276,32 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 850px;
+    max-width: 1300px; /* Alargado para suportar o grid de 2 colunas */
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
   }
 
   .onboarding-header {
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .onboarding-header h1 {
     margin-bottom: 0.5rem;
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2rem, 4vw, 3rem);
   }
 
   .subtitle {
     color: var(--text-secondary);
-    font-size: 1.1rem;
-    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-inline: auto;
   }
 
   .progress-wrapper {
-    max-width: 300px;
+    max-width: 400px;
     margin: 0 auto;
   }
 
@@ -327,12 +332,20 @@
     width: 100%;
   }
 
+  /* Mudança para Grid de 2 Colunas */
   .question-card {
-    padding: 3.5rem;
-    border-radius: 2rem;
+    padding: 3rem;
+    border-radius: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .question-content {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .card-meta {
@@ -340,13 +353,16 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid rgba(255,255,255,0.05);
-    padding-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
   .meta-left {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
   .enem-badge {
@@ -355,7 +371,7 @@
     color: var(--text-secondary);
     opacity: 0.7;
     border-right: 1px solid rgba(255,255,255,0.1);
-    padding-right: 1.5rem;
+    padding-right: 1rem;
   }
 
   .concept-tag {
@@ -365,7 +381,7 @@
     font-weight: 700;
     color: var(--primary);
     background: rgba(201, 160, 94, 0.1);
-    padding: 0.35rem 1rem;
+    padding: 0.35rem 0.8rem;
     border-radius: 2rem;
   }
 
@@ -388,10 +404,11 @@
   .dot.difícil { background: var(--danger); }
 
   .question-text {
-    font-size: 1.4rem;
-    line-height: 1.7;
+    font-size: 1.1rem; /* Reduzido de 1.4rem */
+    line-height: 1.6;
     color: var(--text-primary);
     font-family: var(--font-sans);
+    text-align: justify;
   }
 
   /* MathML Support */
@@ -401,18 +418,26 @@
   }
 
   .options-container {
-    display: grid;
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .options-title {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
   }
 
   .option-item {
     display: flex;
-    align-items: flex-start;
-    gap: 1.25rem;
-    padding: 1.5rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem;
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 1.25rem;
+    border-radius: 1rem;
     cursor: pointer;
     text-align: left;
     transition: all 0.2s ease;
@@ -432,16 +457,16 @@
   }
 
   .option-marker {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
     background: rgba(255,255,255,0.05);
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
   }
 
@@ -451,8 +476,8 @@
   }
 
   .option-content {
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    line-height: 1.4;
     font-weight: 400;
   }
 
@@ -508,44 +533,89 @@
 
   .loader-visual {
     position: relative;
-    width: 100px;
-    height: 100px;
-    margin-bottom: 2rem;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 2.5rem;
   }
 
   .orbit {
     position: absolute;
     inset: 0;
-    border: 2px solid rgba(201, 160, 94, 0.2);
-    border-radius: 50%;
+    border: 2px solid transparent;
     border-top-color: var(--primary);
-    animation: spin 1.5s linear infinite;
+    border-right-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  }
+
+  .orbit::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 2px solid transparent;
+    border-top-color: var(--primary-light, #fcd34d);
+    border-left-color: var(--primary-light, #fcd34d);
+    border-radius: 50%;
+    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite reverse;
   }
 
   .center-glow {
     position: absolute;
-    inset: 30%;
+    inset: 35%;
     background: var(--primary);
-    filter: blur(15px);
+    filter: blur(10px);
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
+    opacity: 0.6;
   }
 
   .status-screen h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
   }
 
   .status-screen p {
     color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* Responsividade: Volta para 1 coluna em telas menores */
+  @media (max-width: 1024px) {
+    .question-card {
+      grid-template-columns: 1fr;
+      padding: 2.5rem;
+      gap: 2rem;
+    }
   }
 
   @media (max-width: 768px) {
-    .question-card { padding: 2rem 1.5rem; }
-    .question-text { font-size: 1.2rem; }
-    .onboarding-page { padding-top: 1rem; }
+    .question-card { 
+      padding: 1.5rem 1rem; 
+      gap: 1.5rem; 
+    }
+    .question-text { 
+      font-size: 1.05rem; 
+    }
+    .onboarding-page { 
+      padding-top: 1rem; 
+    }
+    .card-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .meta-left {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 1rem;
+      width: 100%;
+    }
+    .enem-badge {
+      border-right: none;
+    }
   }
 </style>
