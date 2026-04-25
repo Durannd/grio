@@ -142,13 +142,23 @@ def ingest_questions(file_path, limit=None):
             if result and result['exp']:
                 continue
 
-            # 2. Obter subtópicos conhecidos para o "chute" de área da questão
+            # 2. Obter subtópicos conhecidos para a área da questão
             area_hint = q.get('area', '')
+            current_area_subtopics = set()
+            
+            # Busca todos os subtópicos já cadastrados nos tópicos desta Área
+            if area_hint in EDUCATIONAL_TAXONOMY:
+                for t in EDUCATIONAL_TAXONOMY[area_hint]:
+                    current_area_subtopics.update(KNOWN_SUBTOPICS.get(t, set()))
+            else:
+                # Se a área não veio no JSON, pega uma amostra geral (limitada para não estourar tokens)
+                for subs in KNOWN_SUBTOPICS.values():
+                    current_area_subtopics.update(list(subs)[:5])
             
             # 3. Gemini
-            enrichment = get_enrichment(q['question'], q['choices']['text'], area_hint, set())
+            enrichment = get_enrichment(q['question'], q['choices']['text'], area_hint, current_area_subtopics)
             if not enrichment:
-                print(f"❌ {progress_bar} - Falha no Gemini para {q['id']}")
+                print(f"❌ {progress_bar} - Falha no Gemini para {q['id']}", flush=True)
                 failed_ids.append(q['id'])
                 continue
 
@@ -162,13 +172,16 @@ def ingest_questions(file_path, limit=None):
             # 4. Embedding
             try:
                 emb_res = client.models.embed_content(
-                    model="text-embedding-004",
+                    model="gemini-embedding-2",
                     contents=f"{q['question']} {enrichment['explanation']}",
-                    config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT")
+                    config=types.EmbedContentConfig(
+                        task_type="RETRIEVAL_DOCUMENT",
+                        output_dimensionality=768
+                    )
                 )
                 embedding = emb_res.embeddings[0].values
             except Exception as e:
-                print(f"❌ {progress_bar} - Erro Embedding para {q['id']}: {e}")
+                print(f"❌ {progress_bar} - Erro Embedding para {q['id']}: {e}", flush=True)
                 failed_ids.append(q['id'])
                 continue # Pula a inserção para não salvar vetor de zeros!
 
