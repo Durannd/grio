@@ -25,7 +25,7 @@
       });
       if (response.ok) {
         user = await response.json();
-        hasDiagnostic = user.is_diagnostic_completed === 1;
+        hasDiagnostic = user.is_diagnostic_completed === true;
       } else {
         user = null;
         localStorage.removeItem("token");

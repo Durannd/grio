@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from database import Base
 
 class User(Base):
@@ -9,5 +9,5 @@ class User(Base):
     name = Column(String)
     hashed_password = Column(String)
     avatar_url = Column(String, nullable=True)
-    is_diagnostic_completed = Column(Integer, default=0)
+    is_diagnostic_completed = Column(Boolean, default=False)
     study_plan_cache = Column(String, nullable=True) # Armazena o JSON do plano gerado pela IA
