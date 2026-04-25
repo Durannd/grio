@@ -75,6 +75,7 @@ def get_diagnostic_report(
         3. 'strengths': Liste competências onde o aluno já brilha.
         4. 'weaknesses': Identifique lacunas 'âncora' (aquelas que impedem o avanço em outros temas).
         5. 'action_plan': Sugira uma estratégia de estudo prioritária.
+        6. 'EMOJIS': Proibido o uso de emojis em qualquer campo do JSON.
 
         FORMATO JSON:
         {{

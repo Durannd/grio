@@ -4,7 +4,8 @@ import time
 import argparse
 import re
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from neo4j import GraphDatabase
 from scripts.init_db import ensure_constraints
 
@@ -163,13 +164,15 @@ def ingest_questions(file_path, limit=None):
             # 4. Embedding
             embedding = [0.0] * 768
             try:
-                emb_res = genai.embed_content(
-                    model="models/gemini-embedding-001",
-                    content=f"{q['question']} {enrichment['explanation']}",
-                    task_type="retrieval_document"
+                emb_res = client.models.embed_content(
+                    model="models/text-embedding-004", # Atualizando para o modelo mais recente de embeddings
+                    contents=f"{q['question']} {enrichment['explanation']}",
+                    config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT")
                 )
-                embedding = emb_res['embedding']
-            except: pass
+                embedding = emb_res.embeddings[0].values
+            except Exception as e:
+                print(f"Erro Embedding: {e}")
+                pass
 
             # 5. DB Write
             try:

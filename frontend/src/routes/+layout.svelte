@@ -11,6 +11,25 @@
   let showDropdown = false;
   let hasDiagnostic = false;
 
+  // Navbar scroll logic
+  let lastScrollY = 0;
+  let navbarHidden = false;
+  let scrollThreshold = 10;
+
+  function handleScroll() {
+    if (!browser) return;
+    const currentScrollY = window.scrollY;
+    
+    if (Math.abs(currentScrollY - lastScrollY) < scrollThreshold) return;
+
+    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+      navbarHidden = true;
+    } else {
+      navbarHidden = false;
+    }
+    lastScrollY = currentScrollY;
+  }
+
   async function loadUser() {
     if (!browser) return;
     const token = localStorage.getItem("token");
@@ -47,7 +66,11 @@
   }
 
   onMount(() => {
-    loadUser();
+    // loadUser is handled by the reactive statement on mount
+    if (browser) {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
   });
 
   // Re-check when path changes (optional, but good for login/logout)
@@ -57,7 +80,7 @@
 </script>
 
 <div class="app-layout">
-  <nav class="glass-nav">
+  <nav class="glass-nav" class:nav-hidden={navbarHidden}>
     <div class="nav-content container">
       <a href="/" class="brand">
         <img src="/grio-logo.png" alt="Logotipo Griô" class="logo-img" />
@@ -65,9 +88,6 @@
       <div class="links">
         {#if user}
           <a href="/dashboard">Dashboard</a>
-          {#if !hasDiagnostic}
-            <a href="/prova" class="btn-highlight">Fazer Prova</a>
-          {/if}
           <a href="/sobre">Sobre</a>
           
           <div class="user-profile">
@@ -114,28 +134,40 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .glass-nav {
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 100;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border-bottom: var(--glass-border);
     padding: 0.75rem 0;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  }
+
+  .nav-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
   }
 
   .nav-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 1.5rem;
   }
 
   .brand {
     display: flex;
     align-items: center;
+    margin-right: 2rem;
   }
 
   .logo-img {
@@ -162,30 +194,17 @@
     font-weight: 600;
     color: var(--text-secondary);
     transition: color var(--transition-fast);
+    white-space: nowrap;
   }
 
   .links a:hover {
     color: var(--primary);
   }
 
-  .btn-highlight {
-    background: var(--gradient-primary);
-    color: var(--text-dark) !important;
-    padding: 0.6rem 1.5rem;
-    border-radius: var(--radius-full);
-    font-weight: 700;
-    box-shadow: var(--shadow-glow);
-    transition: all var(--transition-fast);
-  }
-
-  .btn-highlight:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 30px rgba(201, 160, 94, 0.4);
-  }
-
   .user-profile {
     position: relative;
-    margin-left: 1rem;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
   }
 
   .profile-trigger {
@@ -198,8 +217,8 @@
   }
 
   .avatar, .avatar-placeholder {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     border: 2px solid var(--primary);
     object-fit: cover;
@@ -212,7 +231,7 @@
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .profile-dropdown {
@@ -227,6 +246,7 @@
     flex-direction: column;
     gap: 0.5rem;
     border-radius: 1rem;
+    box-shadow: var(--shadow-lg);
   }
 
   .dropdown-header {
@@ -243,7 +263,7 @@
 
   .user-email {
     font-size: 0.75rem;
-    color: var(--text-tertiary);
+    color: var(--text-secondary);
   }
 
   .dropdown-divider {
@@ -290,7 +310,24 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding-top: 2rem;
+    padding-top: 5.5rem;
     padding-bottom: 4rem;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    .links a:not(.login-link, .btn) {
+      display: none;
+    }
+    
+    .brand {
+      margin-right: auto;
+    }
+
+    .nav-content {
+      padding: 0 1rem;
+    }
   }
 </style>

@@ -67,14 +67,12 @@
     </div>
   {:else if error}
     <div class="status-screen error">
-      <div class="icon">⚠️</div>
       <h2>Ops! Algo deu errado.</h2>
       <p>{error}</p>
       <a href="/prova" class="btn btn-outline">Tentar Novamente</a>
     </div>
   {:else if report && report.status === "pending"}
     <div class="status-screen pending">
-      <div class="icon">⏳</div>
       <h2>Seu diagnóstico está sendo gerado.</h2>
       <p>
         Isso acontece quando você ainda não completou questões suficientes ou o
@@ -117,7 +115,6 @@
         </div>
 
         <div class="action-footer">
-          <div class="plan-icon">🎯</div>
           <div class="plan-text">
             <strong>Estratégia Recomendada:</strong>
             <p>{report.analysis.action_plan}</p>
@@ -189,6 +186,8 @@
   .results-page {
     min-height: 100vh;
     padding-bottom: 6rem;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .status-screen {
@@ -198,13 +197,13 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 2rem;
+    padding: 1.5rem;
   }
 
   .loader-visual {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     margin-bottom: 2rem;
   }
 
@@ -229,37 +228,50 @@
   .dashboard {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: 3.5rem;
+    padding: 0 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .dashboard-header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-top: 1rem;
+    line-height: 1.2;
   }
 
   .eyebrow {
     color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 0.3em;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
   }
 
   /* AI Insight Card */
   .ai-insight-card {
-    padding: 3.5rem;
+    padding: 3rem;
     position: relative;
     overflow: hidden;
+    border-radius: 1.5rem;
   }
 
   .ai-badge {
     background: var(--primary);
     color: var(--text-dark);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 800;
-    padding: 0.3rem 0.8rem;
+    padding: 0.25rem 0.75rem;
     border-radius: 4px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     display: inline-block;
+    letter-spacing: 0.05em;
   }
 
   .summary {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     color: var(--text-primary);
     line-height: 1.6;
     margin-bottom: 3rem;
@@ -273,13 +285,14 @@
   }
 
   .point-box h3 {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-weight: 700;
   }
 
   .point-box.strengths h3 {
@@ -290,8 +303,8 @@
   }
 
   .dot {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: currentColor;
   }
@@ -300,7 +313,7 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
   .point-box li {
@@ -308,37 +321,39 @@
     color: var(--text-secondary);
     padding-left: 1.5rem;
     position: relative;
+    line-height: 1.5;
   }
 
   .point-box li::before {
-    content: "•";
+    content: "→";
     position: absolute;
     left: 0;
     color: var(--primary);
+    opacity: 0.6;
   }
 
   .action-footer {
     background: rgba(201, 160, 94, 0.05);
     padding: 2rem;
-    border-radius: 1rem;
+    border-radius: 1.25rem;
     display: flex;
     gap: 1.5rem;
-    align-items: center;
+    align-items: flex-start;
     border-left: 4px solid var(--primary);
   }
 
-  .plan-icon {
-    font-size: 2rem;
-  }
   .plan-text strong {
     display: block;
     color: var(--primary);
-    font-size: 0.8rem;
-    margin-bottom: 0.3rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
   }
   .plan-text p {
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--text-secondary);
+    line-height: 1.6;
   }
 
   /* Quick Stats */
@@ -351,61 +366,79 @@
   .stat-card {
     text-align: center;
     padding: 2.5rem;
+    border-radius: 1.5rem;
   }
 
   .stat-card .val {
     font-size: 3rem;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-weight: 800;
+    color: var(--primary);
     display: block;
+    font-family: var(--font-serif);
+    margin-bottom: 0.25rem;
   }
   .stat-card .lab {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
     text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
   }
 
-  /* Skills Detail */
+  /* Area Groups & Skills */
+  .skills-detail {
+    margin-top: 2rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
   .area-group {
     margin-bottom: 4rem;
   }
 
   .area-title {
-    font-size: 1.2rem;
-    padding-left: 1.5rem;
+    font-size: 1.1rem;
+    padding-left: 1.25rem;
     border-left: 4px solid;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    font-weight: 700;
   }
 
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
   }
 
   .skill-item {
-    padding: 1.5rem;
+    padding: 2rem;
+    border-radius: 1.5rem;
   }
 
   .skill-info {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
   }
 
   .code {
     font-weight: 700;
     color: var(--primary);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
   .score {
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 1.1rem;
   }
   .desc {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
   }
 
   .bar-bg {
@@ -441,12 +474,56 @@
   }
 
   @media (max-width: 768px) {
-    .points-grid,
+    .dashboard {
+      padding: 0 1rem;
+      gap: 2.5rem;
+    }
+
+    .ai-insight-card {
+      padding: 2.25rem 1.5rem;
+    }
+
+    .summary {
+      font-size: 1.05rem;
+    }
+
+    .points-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
     .quick-stats {
       grid-template-columns: 1fr;
+      gap: 1.5rem;
     }
-    .ai-insight-card {
+
+    .stat-card {
       padding: 2rem;
+    }
+
+    .stat-card .val {
+      font-size: 2.5rem;
+    }
+
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .skill-item {
+      padding: 1.5rem;
+    }
+    
+    .area-group {
+      margin-bottom: 3rem;
+    }
+
+    .area-title {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
     }
   }
 </style>

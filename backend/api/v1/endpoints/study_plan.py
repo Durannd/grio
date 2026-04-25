@@ -56,7 +56,7 @@ async def get_study_plan(
                 return {"status": "pending", "message": "Faça a prova diagnóstica primeiro para gerar seu plano."}
 
             # 3. Gerar Plano de Estudos com Gemini
-            prof_summary = "\\n".join([f"- {p['id']}: {p['score']*100:.1f}% - {p['description']}" for p in proficiencies])
+            prof_summary = "\n".join([f"- {p['id']}: {p['score']*100:.1f}% - {p['description']}" for p in proficiencies])
             
             prompt = f"""
             Você é um estrategista educacional especializado no ENEM.

@@ -133,130 +133,130 @@
   }
 </script>
 
-<div class="onboarding-page">
-  <div class="background-decor">
-    <div class="glow glow-1"></div>
-    <div class="glow glow-2"></div>
+{#if submitting}
+  <div class="status-screen" in:fade>
+    <div class="loader-visual">
+      <div class="orbit"></div>
+      <div class="center-glow"></div>
+    </div>
+    <h2>Estamos analisando a sua trilha...</h2>
+    <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
   </div>
+{:else}
+  <div class="onboarding-page">
+    <div class="background-decor">
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+    </div>
 
-  <div class="content-wrapper">
-    {#if submitting}
-      <div class="status-screen" in:fade>
-        <div class="loader-visual">
-          <div class="orbit"></div>
-          <div class="center-glow"></div>
+    <div class="content-wrapper">
+      {#if loading}
+        <div class="loading-container" in:fade>
+          <div class="gri-loader"></div>
+          <p class="text-gradient">Preparando seu diagnóstico...</p>
         </div>
-        <h2>Estamos analisando a sua trilha...</h2>
-        <p>
-          Auditando desempenho pedagógico e mapeando seu grafo de conhecimento.
-        </p>
-      </div>
-    {:else if loading}
-      <div class="loading-container" in:fade>
-        <div class="gri-loader"></div>
-        <p class="text-gradient">Preparando seu diagnóstico...</p>
-      </div>
-    {:else if questions.length > 0}
-      <header class="onboarding-header" in:fly={{ y: -20, duration: 600 }}>
-        <h1 class="text-gradient">Avaliação de Proficiência</h1>
-        <div class="header-actions">
-          <p class="subtitle">
-            Esta avaliação diagnóstica permite identificar suas principais
-            competências e áreas de melhoria.<br />
-            Com base nos seus acertos, criaremos um plano de estudos focado no seu
-            progresso.
-          </p>
-          {#if import.meta.env.DEV}
-            <button class="btn btn-debug" on:click={debugAutoFill}
-              >Auto-Preencher (Debug)</button
+      {:else if questions.length > 0}
+        <header class="onboarding-header" in:fly={{ y: -20, duration: 600 }}>
+          <h1 class="text-gradient">Avaliação de Proficiência</h1>
+          <div class="header-actions">
+            <p class="subtitle">
+              Esta avaliação diagnóstica permite identificar suas principais
+              competências e áreas de melhoria.<br />
+              Com base nos seus acertos, criaremos um plano de estudos focado no seu
+              progresso.
+            </p>
+            {#if import.meta.env.DEV}
+              <button class="btn btn-debug" on:click={debugAutoFill}
+                >Auto-Preencher (Debug)</button
+              >
+            {/if}
+          </div>
+
+          <div class="progress-wrapper">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: {progress}%"></div>
+            </div>
+            <span class="progress-text"
+              >Descoberta {currentQuestionIndex + 1} de {questions.length}</span
             >
-          {/if}
-        </div>
-
-        <div class="progress-wrapper">
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: {progress}%"></div>
           </div>
-          <span class="progress-text"
-            >Descoberta {currentQuestionIndex + 1} de {questions.length}</span
-          >
-        </div>
-      </header>
+        </header>
 
-      <main class="question-section">
-        {#key currentQuestionIndex}
-          <div
-            class="glass-card question-card"
-            in:fly={{ x: 30, duration: 500 }}
-            out:fly={{ x: -30, duration: 300 }}
-          >
-            <div class="card-meta">
-              <div class="meta-left">
-                <span class="enem-badge"
-                  >{formatEnemId(currentQuestion.id)}</span
-                >
-                <span class="concept-tag">{currentQuestion.concept_name}</span>
+        <main class="question-section">
+          {#key currentQuestionIndex}
+            <div
+              class="glass-card question-card"
+              in:fly={{ x: 30, duration: 500 }}
+              out:fly={{ x: -30, duration: 300 }}
+            >
+              <div class="card-meta">
+                <div class="meta-left">
+                  <span class="enem-badge"
+                    >{formatEnemId(currentQuestion.id)}</span
+                  >
+                  <span class="concept-tag">{currentQuestion.concept_name}</span>
+                </div>
+                <div class="difficulty-badge">
+                  <span class="dot {currentQuestion.difficulty.toLowerCase()}"
+                  ></span>
+                  <span>{currentQuestion.difficulty}</span>
+                </div>
               </div>
-              <div class="difficulty-badge">
-                <span class="dot {currentQuestion.difficulty.toLowerCase()}"
-                ></span>
-                <span>{currentQuestion.difficulty}</span>
+
+              <div class="question-body">
+                <div class="question-text">{@html currentQuestion.text}</div>
+              </div>
+
+              <div class="options-container">
+                {#each currentQuestion.options as option}
+                  <button
+                    class="option-item"
+                    class:selected={selectedAnswers[currentQuestion.id] ===
+                      option.id}
+                    on:click={() => selectOption(currentQuestion.id, option.id)}
+                  >
+                    <div class="option-marker">
+                      {String.fromCharCode(64 + option.id)}
+                    </div>
+                    <div class="option-content">{@html option.text}</div>
+                  </button>
+                {/each}
               </div>
             </div>
+          {/key}
+        </main>
 
-            <div class="question-body">
-              <div class="question-text">{@html currentQuestion.text}</div>
-            </div>
-
-            <div class="options-container">
-              {#each currentQuestion.options as option}
-                <button
-                  class="option-item"
-                  class:selected={selectedAnswers[currentQuestion.id] ===
-                    option.id}
-                  on:click={() => selectOption(currentQuestion.id, option.id)}
-                >
-                  <div class="option-marker">
-                    {String.fromCharCode(64 + option.id)}
-                  </div>
-                  <div class="option-content">{@html option.text}</div>
-                </button>
-              {/each}
-            </div>
-          </div>
-        {/key}
-      </main>
-
-      <footer class="onboarding-footer">
-        <button
-          class="btn btn-outline"
-          on:click={prevQuestion}
-          disabled={currentQuestionIndex === 0}
-        >
-          Anterior
-        </button>
-
-        {#if currentQuestionIndex === questions.length - 1}
-          <button 
-            class="btn btn-primary" 
-            on:click={handleSubmit} 
-            disabled={!selectedAnswers[currentQuestion.id] || submitting}
-          >
-            {#if submitting} Finalizando... {:else} Concluir Avaliação {/if}
-          </button>
-        {:else}
+        <footer class="onboarding-footer">
           <button
-            class="btn btn-primary"
-            on:click={nextQuestion}
-            disabled={!selectedAnswers[currentQuestion.id]}
+            class="btn btn-outline"
+            on:click={prevQuestion}
+            disabled={currentQuestionIndex === 0}
           >
-            Próximo Passo
+            Anterior
           </button>
-        {/if}
-      </footer>
-    {/if}
+
+          {#if currentQuestionIndex === questions.length - 1}
+            <button 
+              class="btn btn-primary" 
+              on:click={handleSubmit} 
+              disabled={!selectedAnswers[currentQuestion.id] || submitting}
+            >
+              Concluir Avaliação
+            </button>
+          {:else}
+            <button
+              class="btn btn-primary"
+              on:click={nextQuestion}
+              disabled={!selectedAnswers[currentQuestion.id]}
+            >
+              Próximo Passo
+            </button>
+          {/if}
+        </footer>
+      {/if}
+    </div>
   </div>
-</div>
+{/if}
 
 <style>
   .onboarding-page {

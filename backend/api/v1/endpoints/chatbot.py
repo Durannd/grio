@@ -68,21 +68,26 @@ def socratic_mentor(
         """
 
         # 3. Chamar o Gemini
-        model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-2.5-flash"), system_instruction=system_instruction)
+        client = genai.Client()
         
-        # Converter histórico para o formato do Gemini
+        # Se não houver histórico, começamos com a mensagem de contexto do sistema
+        # Se houver histórico, a última mensagem do usuário já está lá
         history = []
         for msg in request.chat_history:
-            history.append({"role": "user" if msg.role == "user" else "model", "parts": [msg.content]})
+            history.append({"role": "user" if msg.role == "user" else "model", "parts": [{"text": msg.content}]})
             
-        chat = model.start_chat(history=history)
-        
-        # Criar a mensagem de entrada baseada no contexto atual se for o início
-        input_text = f"O aluno acabou de responder a questão {request.question_id} e {'acertou' if is_correct else 'errou'}. Inicie a orientação."
-        if request.chat_history:
-            input_text = request.chat_history[-1].content
+        # Caso seja o início da conversa (histórico vazio), criamos a mensagem de gatilho
+        if not history:
+            input_text = f"O aluno acabou de responder a questão {request.question_id} e {'acertou' if is_correct else 'errou'}. Inicie a orientação."
+            history.append({"role": "user", "parts": [{"text": input_text}]})
 
-        response = chat.send_message(input_text)
+        response = client.models.generate_content(
+            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+            contents=history,
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction
+            )
+        )
 
         return {
             "response": response.text,

@@ -14,11 +14,7 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
     driver = get_driver()
     
     # Configurar Auditor
-    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-    model = genai.GenerativeModel(
-        model_name=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-        generation_config={"response_mime_type": "application/json"}
-    )
+    client = genai.Client()
 
     option_map = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E"}
     detailed_results = []

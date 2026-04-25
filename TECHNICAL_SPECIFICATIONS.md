@@ -45,7 +45,8 @@ O Griô utiliza **Neo4j Vector Index** para realizar operações de similaridade
 ### Inteligência Artificial e Vetores
 Para cada questão ingerida, o sistema concatena o enunciado com a explicação pedagógica gerada pela IA e gera um vetor de 768 dimensões.
 - **SDK**: `google.genai` (Migrado do obsoleto `google.generativeai`).
-- **Modelo**: `models/gemini-embedding-001`.
+- **Modelo de Geração**: `gemini-2.5-flash`.
+- **Modelo de Embedding**: `text-embedding-004`.
 - **Métrica de Similaridade**: Coseno (`cosine`).
 - **Uso**: Permite que o sistema encontre questões "irmãs" ou identifique lacunas de conhecimento correlatas mesmo que não compartilhem a mesma etiqueta (tag) manual.
 

@@ -616,4 +616,35 @@
     0%, 100% { opacity: 0.5; }
     50% { opacity: 1; }
   }
+
+  @media (max-width: 768px) {
+    .dashboard-wrapper {
+      padding: 0 1rem;
+      width: 100%;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+    
+    .page-title {
+      font-size: 1.75rem;
+    }
+
+    .kpi-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .main-content-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .plan-card {
+      padding: 1.5rem;
+    }
+
+    .proficiency-item {
+      padding: 1.25rem;
+    }
+  }
 </style>
