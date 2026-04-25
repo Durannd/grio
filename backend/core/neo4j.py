@@ -1,4 +1,5 @@
 from neo4j import GraphDatabase
+import neo4j
 import os
 
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
@@ -10,7 +11,12 @@ driver = None
 def get_driver():
     global driver
     if driver is None:
-        driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+        # Para ignorar erro de SSL em Aura, mudamos o protocolo para +ssc (Self-Signed Certificate)
+        uri = NEO4J_URI.replace("neo4j+s://", "neo4j+ssc://").replace("bolt+s://", "bolt+ssc://")
+        driver = GraphDatabase.driver(
+            uri, 
+            auth=(NEO4J_USER, NEO4J_PASSWORD)
+        )
     return driver
 
 def close_driver():

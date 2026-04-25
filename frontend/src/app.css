@@ -16,14 +16,14 @@
   --info: #3B82F6;
 
   /* Backgrounds - Absolute Dark */
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #141414;
-  --bg-elevated: #1A1A1A;
+  --bg-primary: #050505;
+  --bg-secondary: #0c0c0c;
+  --bg-elevated: #121212;
   
   /* Liquid Glass Properties */
-  --glass-bg: rgba(20, 20, 20, 0.4);
-  --glass-border: 1px solid rgba(250, 250, 250, 0.05);
-  --glass-blur: blur(16px);
+  --glass-bg: rgba(15, 15, 15, 0.6);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(24px);
 
   /* Text */
   --text-primary: #FAFAFA;
@@ -37,8 +37,9 @@
   /* Shadows - Premium Glows */
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.8);
-  --shadow-glow: 0 0 24px rgba(201, 160, 94, 0.25);
+  --shadow-lg: 0 24px 50px -12px rgba(0, 0, 0, 0.9);
+  --shadow-glow: 0 0 30px rgba(201, 160, 94, 0.15);
+  --shadow-glow-strong: 0 0 40px rgba(201, 160, 94, 0.3);
 
   /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -67,6 +68,11 @@
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(201, 160, 94, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(201, 160, 94, 0.02) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(201, 160, 94, 0.05) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(201, 160, 94, 0.02) 0px, transparent 50%);
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;

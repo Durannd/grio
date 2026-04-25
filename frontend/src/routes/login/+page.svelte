@@ -38,7 +38,7 @@
 <div class="auth-container">
   <div class="auth-header animate-slide-up stagger-1">
     <h1 class="text-gradient">Acesse o Griô</h1>
-    <p>Bem-vindo de volta à sua jornada de conhecimento.</p>
+    <p>Bem-vindo de volta ao seu painel de estudos.</p>
   </div>
 
   <LoginForm on:submit={handleSubmit} />

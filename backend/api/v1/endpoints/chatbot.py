@@ -70,7 +70,7 @@ def socratic_mentor(
         """
 
         # 3. Chamar o Gemini
-        model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-1.5-flash"), system_instruction=system_instruction)
+        model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-2.5-flash"), system_instruction=system_instruction)
         
         # Converter histórico para o formato do Gemini
         history = []
@@ -80,7 +80,7 @@ def socratic_mentor(
         chat = model.start_chat(history=history)
         
         # Criar a mensagem de entrada baseada no contexto atual se for o início
-        input_text = f"O aluno acabou de responder a questão {request.question_id} e {'acertou' if is_correct else 'errou'}. Inicie a mentoria."
+        input_text = f"O aluno acabou de responder a questão {request.question_id} e {'acertou' if is_correct else 'errou'}. Inicie a orientação."
         if request.chat_history:
             input_text = request.chat_history[-1].content
 

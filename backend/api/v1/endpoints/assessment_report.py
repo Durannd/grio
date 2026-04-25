@@ -2,7 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from core.neo4j import get_driver
 from core.deps import get_current_user
 from models.user import User
+from sqlalchemy.orm import Session
+from database import get_db
 import os
+import json
 import google.generativeai as genai
 
 # Configurar Gemini
@@ -12,7 +15,8 @@ router = APIRouter()
 
 @router.get("/report")
 def get_diagnostic_report(
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
     driver = get_driver()
     with driver.session() as session:
@@ -55,14 +59,14 @@ def get_diagnostic_report(
         prof_summary = "\n".join([f"- [{p.get('area', 'Geral')}] {p['id']}: {p['score']*100:.1f}% - {p['description']}" for p in proficiencies])
         
         prompt = f"""
-        Você é o Mentor Griô, um mestre em pedagogia e análise de dados do ENEM.
-        Sua missão é transformar dados técnicos em um caminho de luz para o estudante.
+        Você é o analista pedagógico do sistema Griô.
+        Sua missão é transformar dados técnicos em recomendações estratégicas para o estudante.
         
         PERFIL DE PROFICIÊNCIA DO ESTUDANTE:
         {prof_summary}
         
         Instruções para o retorno (JSON):
-        1. 'title': Use algo inspirador mas profissional.
+        1. 'title': Use um título técnico para o diagnóstico de proficiência.
         2. 'summary': Analise a intersecção entre as áreas. Não apenas liste dados. Fale sobre a maturidade cognitiva.
         3. 'strengths': Liste competências onde o aluno já brilha.
         4. 'weaknesses': Identifique lacunas 'âncora' (aquelas que impedem o avanço em outros temas).
@@ -87,7 +91,7 @@ def get_diagnostic_report(
         try:
             analysis_data = json.loads(ai_response.text)
         except:
-            analysis_data = {"title": "Sua Jornada Griô", "summary": ai_response.text, "strengths": [], "weaknesses": [], "action_plan": "Continue explorando."}
+            analysis_data = {"title": "Diagnóstico Griô", "summary": ai_response.text, "strengths": [], "weaknesses": [], "action_plan": "Continue explorando os módulos."}
 
         response_data = {
             "status": "success",
@@ -106,5 +110,10 @@ def get_diagnostic_report(
             SET u.latest_analysis = $analysis,
                 u.proficiencies_snapshot = $snapshot
         """, user_id=current_user.id, analysis=json.dumps(response_data), snapshot=current_snapshot)
+
+        # 5. Marcar diagnóstico como concluído no SQL DB
+        current_user.is_diagnostic_completed = 1
+        db.add(current_user)
+        db.commit()
 
         return response_data

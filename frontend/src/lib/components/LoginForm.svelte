@@ -11,14 +11,6 @@
   }
 </script>
 
-<style>
-  .glass-card {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-</style>
-
 <div class="glass-card animate-slide-up stagger-2">
   <form on:submit|preventDefault={handleSubmit}>
     <div class="form-group">
@@ -34,8 +26,41 @@
     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
       Entrar na Plataforma
     </button>
-    <div style="text-align: center; margin-top: 1rem; color: var(--success); font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-      🔒 <span>SSL Secure Login</span>
+    
+    <div class="secure-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lock-icon">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+      <span>SSL Secure Login</span>
     </div>
   </form>
 </div>
+
+<style>
+  .glass-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .secure-badge {
+    text-align: center; 
+    margin-top: 1.5rem; 
+    color: var(--success); 
+    font-size: 0.75rem; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 0.5rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .lock-icon {
+    width: 14px;
+    height: 14px;
+  }
+</style>

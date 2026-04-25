@@ -1,0 +1,45 @@
+name: Ingestão de Dados ENEM
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Limite de questões (deixe vazio para todas)'
+        required: false
+        default: ''
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+          # Garantir que as libs necessárias estejam instaladas mesmo sem requirements.txt
+          pip install neo4j google-generativeai python-dotenv
+
+      - name: Run Ingestion
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NEO4J_URI: ${{ secrets.NEO4J_URI }}
+          NEO4J_USER: ${{ secrets.NEO4J_USER }}
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+          PYTHONPATH: backend
+        run: |
+          LIMIT_ARG=""
+          if [ "${{ github.event.inputs.limit }}" != "" ]; then
+            LIMIT_ARG="--limit ${{ github.event.inputs.limit }}"
+          fi
+          # 1. Ingerir Matriz de Referência (Idempotente)
+          python backend/scripts/ingest_matrix.py
+          # 2. Ingerir Questões
+          python backend/scripts/ingest_questions.py $LIMIT_ARG

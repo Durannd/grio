@@ -1,7 +1,17 @@
 import json
+import os
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente ANTES de importar módulos que usam os envs
+load_dotenv()
+
 from core.neo4j import get_driver
+from scripts.init_db import ensure_constraints
 
 def ingest_matrix(file_path):
+    # Garantir que o banco está pronto
+    ensure_constraints()
+    
     with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     
@@ -40,4 +50,6 @@ def ingest_matrix(file_path):
     print("Matriz de Referência ingerida no Neo4j!")
 
 if __name__ == "__main__":
-    ingest_matrix("scripts/enem_matrix_full.json")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    matrix_path = os.path.join(BASE_DIR, "enem_matrix_full.json")
+    ingest_matrix(matrix_path)

@@ -2,6 +2,10 @@
   import { onMount } from "svelte";
   import { fly, fade, scale } from "svelte/transition";
   import axios from "axios";
+  import { onMount } from "svelte";
+  import { formatPedagogicalCode } from "$lib/utils";
+  import { fly, fade, scale } from "svelte/transition";
+  import axios from "axios";
 
   let report = null;
   let loading = true;
@@ -58,7 +62,7 @@
         <div class="orbit"></div>
         <div class="center-glow"></div>
       </div>
-      <h2>O Mentor Griô está analisando sua trilha...</h2>
+      <h2>Estamos analisando a sua trilha...</h2>
       <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
     </div>
   {:else if error}
@@ -88,7 +92,7 @@
       <!-- AI Insight Highlight -->
       <section class="ai-insight-card glass-panel animate-slide-up">
         <div class="insight-header">
-          <div class="ai-badge">IA MENTOR</div>
+          <div class="ai-badge">ANÁLISE ESTRATÉGICA</div>
           <h2>{report.analysis.title}</h2>
         </div>
         <p class="summary">{report.analysis.summary}</p>
@@ -156,7 +160,14 @@
                       class="score"
                       style="color: {getScoreColor(skill.score)}"
                     >
-                      {(skill.score * 100).toFixed(0)}%
+                      <span class="code">{formatPedagogicalCode(skill.id)}</span
+                      >
+                      <span
+                        class="score"
+                        style="color: {getScoreColor(skill.score)}"
+                      >
+                        {(skill.score * 100).toFixed(0)}%
+                      </span>
                     </span>
                   </div>
                   <p class="desc">{skill.description}</p>
