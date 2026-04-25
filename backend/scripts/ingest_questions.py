@@ -165,7 +165,7 @@ def ingest_questions(file_path, limit=None):
             embedding = [0.0] * 768
             try:
                 emb_res = client.models.embed_content(
-                    model="models/text-embedding-004", # Atualizando para o modelo mais recente de embeddings
+                    model="text-embedding-004", # Atualizando para o modelo mais recente de embeddings
                     contents=f"{q['question']} {enrichment['explanation']}",
                     config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT")
                 )
