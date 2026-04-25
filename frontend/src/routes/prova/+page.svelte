@@ -237,21 +237,12 @@
         </button>
 
         {#if currentQuestionIndex === questions.length - 1}
-          <button
-            class="btn btn-primary"
-            on:click={handleSubmit}
+          <button 
+            class="btn btn-primary" 
+            on:click={handleSubmit} 
             disabled={!selectedAnswers[currentQuestion.id] || submitting}
           >
-            {#if submitting}
-              Finalizando...
-            {:else}
-              Concluir Jornada
-            {/if}
-            {#if submitting}
-              Finalizando...
-            {:else}
-              Concluir Avaliação
-            {/if}
+            {#if submitting} Finalizando... {:else} Concluir Avaliação {/if}
           </button>
         {:else}
           <button

@@ -2,10 +2,7 @@
   import { onMount } from "svelte";
   import { fly, fade, scale } from "svelte/transition";
   import axios from "axios";
-  import { onMount } from "svelte";
   import { formatPedagogicalCode } from "$lib/utils";
-  import { fly, fade, scale } from "svelte/transition";
-  import axios from "axios";
 
   let report = null;
   let loading = true;
@@ -155,19 +152,9 @@
               {#each skills as skill}
                 <div class="skill-item glass-card">
                   <div class="skill-info">
-                    <span class="code">{skill.id}</span>
-                    <span
-                      class="score"
-                      style="color: {getScoreColor(skill.score)}"
-                    >
-                      <span class="code">{formatPedagogicalCode(skill.id)}</span
-                      >
-                      <span
-                        class="score"
-                        style="color: {getScoreColor(skill.score)}"
-                      >
-                        {(skill.score * 100).toFixed(0)}%
-                      </span>
+                    <span class="code">{formatPedagogicalCode(skill.id)}</span>
+                    <span class="score" style="color: {getScoreColor(skill.score)}">
+                      {(skill.score * 100).toFixed(0)}%
                     </span>
                   </div>
                   <p class="desc">{skill.description}</p>
