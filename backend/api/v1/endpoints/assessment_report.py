@@ -7,10 +7,8 @@ from sqlalchemy.orm import Session
 from database import get_db
 import os
 import json
-import google.generativeai as genai
-
-# Configurar Gemini
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+from google import genai
+from google.genai import types
 
 router = APIRouter()
 
@@ -88,16 +86,19 @@ def get_diagnostic_report(
         }}
         """
         
-        model = genai.GenerativeModel(
-            model_name=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-            generation_config={"response_mime_type": "application/json"}
+        client = genai.Client()
+        response = client.models.generate_content(
+            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json"
+            )
         )
-        ai_response = model.generate_content(prompt)
         
         try:
-            analysis_data = json.loads(ai_response.text)
+            analysis_data = json.loads(response.text)
         except:
-            analysis_data = {"title": "Diagnóstico Griô", "summary": ai_response.text, "strengths": [], "weaknesses": [], "action_plan": "Continue explorando os módulos."}
+            analysis_data = {"title": "Diagnóstico Griô", "summary": response.text, "strengths": [], "weaknesses": [], "action_plan": "Continue explorando os módulos."}
 
         response_data = {
             "status": "success",

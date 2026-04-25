@@ -3,11 +3,9 @@ from core.neo4j import get_driver
 from core.deps import get_current_user
 from models.user import User
 from schemas.chatbot import MentorRequest, MentorResponse
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import os
-
-# Configurar Gemini
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 router = APIRouter()
 
@@ -85,7 +83,7 @@ def socratic_mentor(
             input_text = request.chat_history[-1].content
 
         response = chat.send_message(input_text)
-        
+
         return {
             "response": response.text,
             "skill_targeted": result["skill_codes"][0] if result["skill_codes"] else None,

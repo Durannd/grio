@@ -5,7 +5,8 @@ from models.question import Question
 from core.neo4j import get_driver
 from collections import defaultdict
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import os
 import json
 
@@ -68,7 +69,13 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
         }}
         """
         try:
-            audit_resp = model.generate_content(audit_prompt)
+            audit_resp = client.models.generate_content(
+                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                contents=audit_prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
+            )
             audit_data = json.loads(audit_resp.text)["audit"]
             confidence_map = {item["question_id"]: item["confidence_score"] for item in audit_data}
         except:

@@ -12,8 +12,7 @@ from scripts.init_db import ensure_constraints
 load_dotenv()
 
 # Configuração Gemini
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-2.5-flash")
+client = genai.Client()
 
 # Caminhos de arquivos
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -102,7 +101,13 @@ def get_enrichment(question_text, choices, area_hint, current_topic_subtopics, r
     
     for attempt in range(retries):
         try:
-            response = model.generate_content(prompt)
+            response = client.models.generate_content(
+                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
+            )
             json_match = re.search(r'\{.*\}', response.text, re.DOTALL)
             if json_match:
                 return json.loads(json_match.group())

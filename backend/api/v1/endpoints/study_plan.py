@@ -4,7 +4,8 @@ from core.deps import get_current_user
 from models.user import User
 from database import get_db
 from sqlalchemy.orm import Session
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import os
 import json
 
@@ -88,9 +89,14 @@ async def get_study_plan(
             }}
             """
             
-            genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-            model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-2.5-flash")) # Atualizando para a versão mais rápida e estável
-            response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
+            client = genai.Client()
+            response = client.models.generate_content(
+                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
+            )
             
             try:
                 plan_data = json.loads(response.text)
