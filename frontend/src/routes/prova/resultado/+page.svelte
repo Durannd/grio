@@ -8,6 +8,7 @@
   let report = null;
   let loading = true;
   let error = null;
+  $: isHistory = !!$page.url.searchParams.get('id');
 
   // Mapeamento de cores por área
   const areaColors = {
@@ -60,8 +61,13 @@
         <div class="orbit"></div>
         <div class="center-glow"></div>
       </div>
-      <h2>Estamos analisando a sua trilha...</h2>
-      <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
+      {#if isHistory}
+        <h2>Buscando histórico...</h2>
+        <p>Recuperando os dados da sua avaliação anterior.</p>
+      {:else}
+        <h2>Estamos analisando a sua trilha...</h2>
+        <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
+      {/if}
     </div>
   {:else if error}
     <div class="status-screen error">
@@ -88,36 +94,40 @@
       <section class="ai-insight-card glass-panel animate-slide-up">
         <div class="insight-header">
           <div class="ai-badge">ANÁLISE ESTRATÉGICA</div>
-          <h2>{report.analysis.title}</h2>
+          <h2>{report.analysis?.title || 'Análise Pendente'}</h2>
         </div>
-        <p class="summary">{report.analysis.summary}</p>
-        
-        <div class="points-grid">
-          <div class="point-box strengths">
-            <h3><span class="dot"></span> Pontos de Domínio</h3>
-            <ul>
-              {#each report.analysis.strengths as s}
-                <li>{s}</li>
-              {/each}
-            </ul>
+        {#if report.analysis}
+          <p class="summary">{report.analysis.summary}</p>
+          
+          <div class="points-grid">
+            <div class="point-box strengths">
+              <h3><span class="dot"></span> Pontos de Domínio</h3>
+              <ul>
+                {#each report.analysis.strengths as s}
+                  <li>{s}</li>
+                {/each}
+              </ul>
+            </div>
+            <div class="point-box gaps">
+              <h3><span class="dot"></span> Lacunas Críticas</h3>
+              <ul>
+                {#each report.analysis.weaknesses as w}
+                  <li>{w}</li>
+                {/each}
+              </ul>
+            </div>
           </div>
-          <div class="point-box gaps">
-            <h3><span class="dot"></span> Lacunas Críticas</h3>
-            <ul>
-              {#each report.analysis.weaknesses as w}
-                <li>{w}</li>
-              {/each}
-            </ul>
-          </div>
-        </div>
 
-        <div class="action-footer">
-          <div class="plan-icon">🎯</div>
-          <div class="plan-text">
-            <strong>Estratégia Recomendada:</strong>
-            <p>{report.analysis.action_plan}</p>
+          <div class="action-footer">
+            <div class="plan-icon">🎯</div>
+            <div class="plan-text">
+              <strong>Estratégia Recomendada:</strong>
+              <p>{report.analysis.action_plan}</p>
+            </div>
           </div>
-        </div>
+        {:else}
+          <p class="summary">A inteligência artificial não conseguiu gerar o plano para esta avaliação ou a análise foi interrompida.</p>
+        {/if}
       </section>
 
       <!-- Stats Summary -->
