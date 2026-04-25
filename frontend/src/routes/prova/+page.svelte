@@ -129,16 +129,7 @@
   </div>
 
   <div class="content-wrapper">
-    {#if submitting}
-      <div class="status-screen" in:fade>
-        <div class="loader-visual">
-          <div class="orbit"></div>
-          <div class="center-glow"></div>
-        </div>
-        <h2>Estamos analisando a sua trilha...</h2>
-        <p>Auditando desempenho pedagógico e mapeando seu grafo de conhecimento.</p>
-      </div>
-    {:else if loading}
+    {#if loading}
       <div class="loading-container" in:fade>
         <div class="gri-loader"></div>
         <p class="text-gradient">Preparando seu diagnóstico...</p>
@@ -516,72 +507,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-
-  .status-screen {
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 2rem;
-  }
-
-  .loader-visual {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    margin-bottom: 2.5rem;
-  }
-
-  .orbit {
-    position: absolute;
-    inset: 0;
-    border: 2px solid transparent;
-    border-top-color: var(--primary);
-    border-right-color: var(--primary);
-    border-radius: 50%;
-    animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-  }
-
-  .orbit::before {
-    content: '';
-    position: absolute;
-    inset: 8px;
-    border: 2px solid transparent;
-    border-top-color: var(--primary-light, #fcd34d);
-    border-left-color: var(--primary-light, #fcd34d);
-    border-radius: 50%;
-    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite reverse;
-  }
-
-  .center-glow {
-    position: absolute;
-    inset: 35%;
-    background: var(--primary);
-    filter: blur(10px);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-    opacity: 0.6;
-  }
-
-  .status-screen h2 {
-    font-size: 1.75rem;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.75rem;
-    color: var(--text-primary);
-  }
-
-  .status-screen p {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
   }
 
   /* Responsividade: Volta para 1 coluna em telas menores */

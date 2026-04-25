@@ -178,27 +178,55 @@
 
   .loader-visual {
     position: relative;
-    width: 100px;
-    height: 100px;
-    margin-bottom: 2rem;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 2.5rem;
   }
 
   .orbit {
     position: absolute;
     inset: 0;
-    border: 2px solid rgba(201, 160, 94, 0.2);
-    border-radius: 50%;
+    border: 2px solid transparent;
     border-top-color: var(--primary);
-    animation: spin 1.5s linear infinite;
+    border-right-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  }
+
+  .orbit::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 2px solid transparent;
+    border-top-color: var(--primary-light, #fcd34d);
+    border-left-color: var(--primary-light, #fcd34d);
+    border-radius: 50%;
+    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite reverse;
   }
 
   .center-glow {
     position: absolute;
-    inset: 30%;
+    inset: 35%;
     background: var(--primary);
-    filter: blur(15px);
+    filter: blur(10px);
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
+    opacity: 0.6;
+  }
+
+  .status-screen h2 {
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+  }
+
+  .status-screen p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
   }
 
   .dashboard {
