@@ -42,11 +42,13 @@ Diferente de sistemas de ensino tradicionais baseados em tabelas estáticas, o G
 
 O Griô utiliza **Neo4j Vector Index** para realizar operações de similaridade em nível de banco de dados.
 
-### Processo de Embedding
+### Inteligência Artificial e Vetores
 Para cada questão ingerida, o sistema concatena o enunciado com a explicação pedagógica gerada pela IA e gera um vetor de 768 dimensões.
 - **Modelo**: `models/gemini-embedding-001`.
 - **Métrica de Similaridade**: Coseno (`cosine`).
 - **Uso**: Permite que o sistema encontre questões "irmãs" ou identifique lacunas de conhecimento correlatas mesmo que não compartilhem a mesma etiqueta (tag) manual.
+
+> **âš ï¸  Débito Técnico Conhecido (Risco Crítico)**: A implementação atual do backend (FastAPI) utiliza o pacote Python deprecado `google.generativeai`. Todo o suporte a este pacote foi encerrado pelo Google. A equipe deve migrar com urgência todas as integrações de inferência e embeddings (arquivos como `crud/assessment.py`, `api/v1/endpoints/chatbot.py`, `scripts/ingest_questions.py`, etc) para o novo SDK oficial `google.genai`.
 
 ---
 

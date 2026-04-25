@@ -29,10 +29,14 @@
       <input type="password" id="password" bind:value={password} placeholder="••••••••" required />
     </div>
     
-    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; min-height: 48px;">
       Criar Minha Conta
     </button>
     
+    <div class="reflective-statement" style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: var(--text-secondary);">
+      <p>Nossa missão é democratizar a educação de alta performance através de IA e dados.</p>
+    </div>
+
     <div class="secure-badge">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lock-icon">
         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -66,7 +70,7 @@
   }
 
   .lock-icon {
-    width: 14px;
-    height: 14px;
+    width: 24px;
+    height: 24px;
   }
 </style>
