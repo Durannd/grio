@@ -1,35 +1,31 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { formatPedagogicalCode } from '$lib/utils';
-  import { fly, fade, scale } from 'svelte/transition';
-  import { page } from '$app/stores';
-  import axios from 'axios';
+  import { onMount } from "svelte";
+  import { fly, fade, scale } from "svelte/transition";
+  import axios from "axios";
+  import { formatPedagogicalCode } from "$lib/utils";
 
   let report = null;
   let loading = true;
   let error = null;
-  $: isHistory = !!$page.url.searchParams.get('id');
 
   // Mapeamento de cores por área
   const areaColors = {
-    'Matemática e suas Tecnologias': '#C9A05E',
-    'Ciências da Natureza e suas Tecnologias': '#22C55E',
-    'Ciências Humanas e suas Tecnologias': '#EF4444',
-    'Linguagens, Códigos e suas Tecnologias': '#3B82F6',
-    'Geral': '#A3A3A3'
+    "Matemática e suas Tecnologias": "#C9A05E",
+    "Ciências da Natureza e suas Tecnologias": "#22C55E",
+    "Ciências Humanas e suas Tecnologias": "#EF4444",
+    "Linguagens, Códigos e suas Tecnologias": "#3B82F6",
+    Geral: "#A3A3A3",
   };
 
   onMount(async () => {
     try {
-      const token = localStorage.getItem('token');
-      const historyId = $page.url.searchParams.get('id');
-      const endpoint = historyId 
-        ? `http://localhost:8000/api/v1/assessment-report/history/${historyId}`
-        : 'http://localhost:8000/api/v1/assessment-report/report';
-
-      const res = await axios.get(endpoint, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const token = localStorage.getItem("token");
+      const res = await axios.get(
+        "http://localhost:8000/api/v1/assessment-report/report",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       report = res.data;
     } catch (e) {
       error = "Não foi possível carregar seu diagnóstico.";
@@ -40,18 +36,20 @@
   });
 
   function getScoreColor(score: number) {
-    if (score >= 0.7) return 'var(--success)';
-    if (score >= 0.4) return 'var(--warning)';
-    return 'var(--danger)';
+    if (score >= 0.7) return "var(--success)";
+    if (score >= 0.4) return "var(--warning)";
+    return "var(--danger)";
   }
 
   // Agrupar habilidades por área
-  $: groupedSkills = report?.proficiencies ? report.proficiencies.reduce((acc, p) => {
-    const area = p.area || 'Geral';
-    if (!acc[area]) acc[area] = [];
-    acc[area].push(p);
-    return acc;
-  }, {}) : {};
+  $: groupedSkills = report?.proficiencies
+    ? report.proficiencies.reduce((acc, p) => {
+        const area = p.area || "Geral";
+        if (!acc[area]) acc[area] = [];
+        acc[area].push(p);
+        return acc;
+      }, {})
+    : {};
 </script>
 
 <div class="results-page">
@@ -61,13 +59,8 @@
         <div class="orbit"></div>
         <div class="center-glow"></div>
       </div>
-      {#if isHistory}
-        <h2>Buscando histórico...</h2>
-        <p>Recuperando os dados da sua avaliação anterior.</p>
-      {:else}
-        <h2>Estamos analisando a sua trilha...</h2>
-        <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
-      {/if}
+      <h2>Estamos analisando a sua trilha...</h2>
+      <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
     </div>
   {:else if error}
     <div class="status-screen error">
@@ -76,11 +69,14 @@
       <p>{error}</p>
       <a href="/prova" class="btn btn-outline">Tentar Novamente</a>
     </div>
-  {:else if report && report.status === 'pending'}
+  {:else if report && report.status === "pending"}
     <div class="status-screen pending">
       <div class="icon">⏳</div>
       <h2>Seu diagnóstico está sendo gerado.</h2>
-      <p>Isso acontece quando você ainda não completou questões suficientes ou o sistema está processando seu grafo de conhecimento.</p>
+      <p>
+        Isso acontece quando você ainda não completou questões suficientes ou o
+        sistema está processando seu grafo de conhecimento.
+      </p>
       <a href="/prova" class="btn btn-primary">Voltar para a Prova</a>
     </div>
   {:else if report}
@@ -94,49 +90,47 @@
       <section class="ai-insight-card glass-panel animate-slide-up">
         <div class="insight-header">
           <div class="ai-badge">ANÁLISE ESTRATÉGICA</div>
-          <h2>{report.analysis?.title || 'Análise Pendente'}</h2>
+          <h2>{report.analysis.title}</h2>
         </div>
-        {#if report.analysis}
-          <p class="summary">{report.analysis.summary}</p>
-          
-          <div class="points-grid">
-            <div class="point-box strengths">
-              <h3><span class="dot"></span> Pontos de Domínio</h3>
-              <ul>
-                {#each report.analysis.strengths as s}
-                  <li>{s}</li>
-                {/each}
-              </ul>
-            </div>
-            <div class="point-box gaps">
-              <h3><span class="dot"></span> Lacunas Críticas</h3>
-              <ul>
-                {#each report.analysis.weaknesses as w}
-                  <li>{w}</li>
-                {/each}
-              </ul>
-            </div>
-          </div>
+        <p class="summary">{report.analysis.summary}</p>
 
-          <div class="action-footer">
-            <div class="plan-icon">🎯</div>
-            <div class="plan-text">
-              <strong>Estratégia Recomendada:</strong>
-              <p>{report.analysis.action_plan}</p>
-            </div>
+        <div class="points-grid">
+          <div class="point-box strengths">
+            <h3><span class="dot"></span> Pontos de Domínio</h3>
+            <ul>
+              {#each report.analysis.strengths as s}
+                <li>{s}</li>
+              {/each}
+            </ul>
           </div>
-        {:else}
-          <p class="summary">A inteligência artificial não conseguiu gerar o plano para esta avaliação ou a análise foi interrompida.</p>
-        {/if}
+          <div class="point-box gaps">
+            <h3><span class="dot"></span> Lacunas Críticas</h3>
+            <ul>
+              {#each report.analysis.weaknesses as w}
+                <li>{w}</li>
+              {/each}
+            </ul>
+          </div>
+        </div>
+
+        <div class="action-footer">
+          <div class="plan-icon">🎯</div>
+          <div class="plan-text">
+            <strong>Estratégia Recomendada:</strong>
+            <p>{report.analysis.action_plan}</p>
+          </div>
+        </div>
       </section>
 
       <!-- Stats Summary -->
       <div class="quick-stats">
-        <div class="glass-card stat-card" in:scale={{delay: 200}}>
-          <span class="val">{(report.summary_stats.average_score * 100).toFixed(0)}%</span>
+        <div class="glass-card stat-card" in:scale={{ delay: 200 }}>
+          <span class="val"
+            >{(report.summary_stats.average_score * 100).toFixed(0)}%</span
+          >
           <span class="lab">Domínio Médio</span>
         </div>
-        <div class="glass-card stat-card" in:scale={{delay: 400}}>
+        <div class="glass-card stat-card" in:scale={{ delay: 400 }}>
           <span class="val">{report.summary_stats.total_skills_mapped}</span>
           <span class="lab">Habilidades Mapeadas</span>
         </div>
@@ -145,10 +139,15 @@
       <!-- Skills Detail -->
       <section class="skills-detail">
         <h2 class="section-title">Detalhamento Pedagógico</h2>
-        
+
         {#each Object.entries(groupedSkills) as [area, skills]}
           <div class="area-group">
-            <h3 class="area-title" style="border-left-color: {areaColors[area] || '#fff'}">{area}</h3>
+            <h3
+              class="area-title"
+              style="border-left-color: {areaColors[area] || '#fff'}"
+            >
+              {area}
+            </h3>
             <div class="skills-grid">
               {#each skills as skill}
                 <div class="skill-item glass-card">
@@ -160,7 +159,12 @@
                   </div>
                   <p class="desc">{skill.description}</p>
                   <div class="bar-bg">
-                    <div class="bar-fill" style="width: {skill.score * 100}%; background: {areaColors[area] || 'var(--primary)'}"></div>
+                    <div
+                      class="bar-fill"
+                      style="width: {skill.score *
+                        100}%; background: {areaColors[area] ||
+                        'var(--primary)'}"
+                    ></div>
                   </div>
                 </div>
               {/each}
@@ -170,7 +174,9 @@
       </section>
 
       <footer class="dash-footer">
-        <a href="/dashboard" class="btn btn-primary btn-lg">Acessar Meu Painel Completo</a>
+        <a href="/dashboard" class="btn btn-primary btn-lg"
+          >Acessar Meu Painel Completo</a
+        >
       </footer>
     </div>
   {/if}
@@ -194,55 +200,27 @@
 
   .loader-visual {
     position: relative;
-    width: 80px;
-    height: 80px;
-    margin-bottom: 2.5rem;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 2rem;
   }
 
   .orbit {
     position: absolute;
     inset: 0;
-    border: 2px solid transparent;
+    border: 2px solid rgba(201, 160, 94, 0.2);
+    border-radius: 50%;
     border-top-color: var(--primary);
-    border-right-color: var(--primary);
-    border-radius: 50%;
-    animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-  }
-
-  .orbit::before {
-    content: '';
-    position: absolute;
-    inset: 8px;
-    border: 2px solid transparent;
-    border-top-color: var(--primary-light, #fcd34d);
-    border-left-color: var(--primary-light, #fcd34d);
-    border-radius: 50%;
-    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite reverse;
+    animation: spin 1.5s linear infinite;
   }
 
   .center-glow {
     position: absolute;
-    inset: 35%;
+    inset: 30%;
     background: var(--primary);
-    filter: blur(10px);
+    filter: blur(15px);
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
-    opacity: 0.6;
-  }
-
-  .status-screen h2 {
-    font-size: 1.75rem;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.75rem;
-    color: var(--text-primary);
-  }
-
-  .status-screen p {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
   }
 
   .dashboard {
@@ -301,8 +279,12 @@
     gap: 0.5rem;
   }
 
-  .point-box.strengths h3 { color: var(--success); }
-  .point-box.gaps h3 { color: var(--warning); }
+  .point-box.strengths h3 {
+    color: var(--success);
+  }
+  .point-box.gaps h3 {
+    color: var(--warning);
+  }
 
   .dot {
     width: 8px;
@@ -342,9 +324,19 @@
     border-left: 4px solid var(--primary);
   }
 
-  .plan-icon { font-size: 2rem; }
-  .plan-text strong { display: block; color: var(--primary); font-size: 0.8rem; margin-bottom: 0.3rem; }
-  .plan-text p { font-size: 0.95rem; color: var(--text-secondary); }
+  .plan-icon {
+    font-size: 2rem;
+  }
+  .plan-text strong {
+    display: block;
+    color: var(--primary);
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .plan-text p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+  }
 
   /* Quick Stats */
   .quick-stats {
@@ -358,8 +350,17 @@
     padding: 2.5rem;
   }
 
-  .stat-card .val { font-size: 3rem; font-weight: 700; color: var(--text-primary); display: block; }
-  .stat-card .lab { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; }
+  .stat-card .val {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: block;
+  }
+  .stat-card .lab {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
 
   /* Skills Detail */
   .area-group {
@@ -389,20 +390,60 @@
     margin-bottom: 0.8rem;
   }
 
-  .code { font-weight: 700; color: var(--primary); font-size: 0.8rem; }
-  .score { font-weight: 700; }
-  .desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.2rem; }
+  .code {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 0.8rem;
+  }
+  .score {
+    font-weight: 700;
+  }
+  .desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+  }
 
-  .bar-bg { height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
-  .bar-fill { height: 100%; transition: width 1s ease; }
+  .bar-bg {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    transition: width 1s ease;
+  }
 
-  .dash-footer { display: flex; justify-content: center; margin-top: 2rem; }
+  .dash-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
 
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
 
   @media (max-width: 768px) {
-    .points-grid, .quick-stats { grid-template-columns: 1fr; }
-    .ai-insight-card { padding: 2rem; }
+    .points-grid,
+    .quick-stats {
+      grid-template-columns: 1fr;
+    }
+    .ai-insight-card {
+      padding: 2rem;
+    }
   }
 </style>

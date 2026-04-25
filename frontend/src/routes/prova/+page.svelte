@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { fade, fly } from 'svelte/transition';
-  import { goto } from '$app/navigation';
-  import axios from 'axios';
+  import { onMount } from "svelte";
+  import { fade, fly } from "svelte/transition";
+  import { goto } from "$app/navigation";
+  import axios from "axios";
 
   interface Option {
     id: number;
@@ -34,8 +34,8 @@
         return;
       }
 
-      const response = await fetch('http://localhost:8000/api/v1/assessment', {
-        headers: { "Authorization": `Bearer ${token}` }
+      const response = await fetch("http://localhost:8000/api/v1/assessment", {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.status === 401) {
@@ -50,13 +50,16 @@
       }
       loading = false;
     } catch (error) {
-      console.error('Erro ao buscar questões:', error);
+      console.error("Erro ao buscar questões:", error);
       loading = false;
     }
   });
 
   $: currentQuestion = questions[currentQuestionIndex];
-  $: progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
+  $: progress =
+    questions.length > 0
+      ? ((currentQuestionIndex + 1) / questions.length) * 100
+      : 0;
 
   function selectOption(questionId: string, optionId: number) {
     const timeSpent = (Date.now() - startTime) / 1000;
@@ -69,7 +72,7 @@
     if (currentQuestionIndex < questions.length - 1) {
       currentQuestionIndex++;
       startTime = Date.now();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       handleSubmit();
     }
@@ -78,43 +81,51 @@
   function prevQuestion() {
     if (currentQuestionIndex > 0) {
       currentQuestionIndex--;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 
   function formatEnemId(id: string) {
-    if (!id) return '';
-    const [year, num] = id.split('_');
+    if (!id) return "";
+    const [year, num] = id.split("_");
     return `ENEM ${year} • Questão ${num}`;
   }
 
   async function handleSubmit() {
     submitting = true;
     try {
-      const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8000/api/v1/assessment/submit', {
-        user_id: 0, // O backend sobrescreve isso com o ID real do token
-        answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({
-          question_id: qId,
-          selected_option_id: aId,
-          time_seconds: Math.round(answersTime[qId] || 0)
-        }))
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      goto('/prova/resultado');
+      const token = localStorage.getItem("token");
+      // Obter usuário do contexto ou localStorage (aqui supomos que temos acesso ao user.id)
+      // Para fins de demo, pegaremos do token decodificado ou de um store
+      await axios.post(
+        "http://localhost:8000/api/v1/assessment/submit",
+        {
+          user_id: 0, // O backend sobrescreve isso com o ID real do token
+          answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({
+            question_id: qId,
+            selected_option_id: aId,
+            time_seconds: Math.round(answersTime[qId] || 0),
+          })),
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      goto("/prova/resultado");
     } catch (e) {
       console.error(e);
-      alert("Erro ao processar diagnóstico. Redirecionando para o dashboard...");
-      goto('/dashboard');
+      alert(
+        "Erro ao processar diagnóstico. Redirecionando para o dashboard...",
+      );
+      goto("/dashboard");
     } finally {
       submitting = false;
     }
   }
 
   function debugAutoFill() {
-    questions.forEach(q => {
+    questions.forEach((q) => {
       selectedAnswers[q.id] = Math.floor(Math.random() * 5) + 1;
     });
     selectedAnswers = { ...selectedAnswers };
@@ -129,7 +140,18 @@
   </div>
 
   <div class="content-wrapper">
-    {#if loading}
+    {#if submitting}
+      <div class="status-screen" in:fade>
+        <div class="loader-visual">
+          <div class="orbit"></div>
+          <div class="center-glow"></div>
+        </div>
+        <h2>Estamos analisando a sua trilha...</h2>
+        <p>
+          Auditando desempenho pedagógico e mapeando seu grafo de conhecimento.
+        </p>
+      </div>
+    {:else if loading}
       <div class="loading-container" in:fade>
         <div class="gri-loader"></div>
         <p class="text-gradient">Preparando seu diagnóstico...</p>
@@ -139,53 +161,64 @@
         <h1 class="text-gradient">Avaliação de Proficiência</h1>
         <div class="header-actions">
           <p class="subtitle">
-          Esta avaliação diagnóstica permite identificar suas principais competências e áreas de melhoria.<br>
-          Com base nos seus acertos, criaremos um plano de estudos focado no seu progresso.
-        </p>
+            Esta avaliação diagnóstica permite identificar suas principais
+            competências e áreas de melhoria.<br />
+            Com base nos seus acertos, criaremos um plano de estudos focado no seu
+            progresso.
+          </p>
           {#if import.meta.env.DEV}
-            <button class="btn btn-debug" on:click={debugAutoFill}>Auto-Preencher (Debug)</button>
+            <button class="btn btn-debug" on:click={debugAutoFill}
+              >Auto-Preencher (Debug)</button
+            >
           {/if}
         </div>
-        
+
         <div class="progress-wrapper">
           <div class="progress-bar">
             <div class="progress-fill" style="width: {progress}%"></div>
           </div>
-          <span class="progress-text">Descoberta {currentQuestionIndex + 1} de {questions.length}</span>
+          <span class="progress-text"
+            >Descoberta {currentQuestionIndex + 1} de {questions.length}</span
+          >
         </div>
       </header>
 
       <main class="question-section">
         {#key currentQuestionIndex}
-          <div class="glass-card question-card" in:fly={{ x: 30, duration: 500 }} out:fly={{ x: -30, duration: 300 }}>
-            <!-- Lado Esquerdo: Contexto e Texto da Questão -->
-            <div class="question-content">
-              <div class="card-meta">
-                <div class="meta-left">
-                  <span class="enem-badge">{formatEnemId(currentQuestion.id)}</span>
-                  <span class="concept-tag">{currentQuestion.concept_name}</span>
-                </div>
-                <div class="difficulty-badge">
-                  <span class="dot {currentQuestion.difficulty.toLowerCase()}"></span>
-                  <span>{currentQuestion.difficulty}</span>
-                </div>
+          <div
+            class="glass-card question-card"
+            in:fly={{ x: 30, duration: 500 }}
+            out:fly={{ x: -30, duration: 300 }}
+          >
+            <div class="card-meta">
+              <div class="meta-left">
+                <span class="enem-badge"
+                  >{formatEnemId(currentQuestion.id)}</span
+                >
+                <span class="concept-tag">{currentQuestion.concept_name}</span>
               </div>
-              
-              <div class="question-body">
-                <div class="question-text">{@html currentQuestion.text}</div>
+              <div class="difficulty-badge">
+                <span class="dot {currentQuestion.difficulty.toLowerCase()}"
+                ></span>
+                <span>{currentQuestion.difficulty}</span>
               </div>
             </div>
 
-            <!-- Lado Direito: Opções -->
+            <div class="question-body">
+              <div class="question-text">{@html currentQuestion.text}</div>
+            </div>
+
             <div class="options-container">
-              <h3 class="options-title">Escolha a alternativa correta:</h3>
               {#each currentQuestion.options as option}
-                <button 
-                  class="option-item" 
-                  class:selected={selectedAnswers[currentQuestion.id] === option.id}
+                <button
+                  class="option-item"
+                  class:selected={selectedAnswers[currentQuestion.id] ===
+                    option.id}
                   on:click={() => selectOption(currentQuestion.id, option.id)}
                 >
-                  <div class="option-marker">{String.fromCharCode(64 + option.id)}</div>
+                  <div class="option-marker">
+                    {String.fromCharCode(64 + option.id)}
+                  </div>
                   <div class="option-content">{@html option.text}</div>
                 </button>
               {/each}
@@ -195,10 +228,14 @@
       </main>
 
       <footer class="onboarding-footer">
-        <button class="btn btn-outline" on:click={prevQuestion} disabled={currentQuestionIndex === 0}>
+        <button
+          class="btn btn-outline"
+          on:click={prevQuestion}
+          disabled={currentQuestionIndex === 0}
+        >
           Anterior
         </button>
-        
+
         {#if currentQuestionIndex === questions.length - 1}
           <button 
             class="btn btn-primary" 
@@ -208,9 +245,9 @@
             {#if submitting} Finalizando... {:else} Concluir Avaliação {/if}
           </button>
         {:else}
-          <button 
-            class="btn btn-primary" 
-            on:click={nextQuestion} 
+          <button
+            class="btn btn-primary"
+            on:click={nextQuestion}
             disabled={!selectedAnswers[currentQuestion.id]}
           >
             Próximo Passo
@@ -267,38 +304,36 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 1300px; /* Alargado para suportar o grid de 2 colunas */
+    max-width: 850px;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
   }
 
   .onboarding-header {
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 
   .onboarding-header h1 {
     margin-bottom: 0.5rem;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(2.5rem, 6vw, 4rem);
   }
 
   .subtitle {
     color: var(--text-secondary);
-    font-size: 1rem;
-    margin-bottom: 2rem;
-    max-width: 700px;
-    margin-inline: auto;
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
   }
 
   .progress-wrapper {
-    max-width: 400px;
+    max-width: 300px;
     margin: 0 auto;
   }
 
   .progress-bar {
     height: 4px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 2px;
     margin-bottom: 0.75rem;
     overflow: hidden;
@@ -323,37 +358,26 @@
     width: 100%;
   }
 
-  /* Mudança para Grid de 2 Colunas */
   .question-card {
-    padding: 3rem;
-    border-radius: 1.5rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-
-  .question-content {
+    padding: 3.5rem;
+    border-radius: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   .card-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    padding-bottom: 1rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 1.5rem;
   }
 
   .meta-left {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 1.5rem;
   }
 
   .enem-badge {
@@ -361,8 +385,8 @@
     font-weight: 600;
     color: var(--text-secondary);
     opacity: 0.7;
-    border-right: 1px solid rgba(255,255,255,0.1);
-    padding-right: 1rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding-right: 1.5rem;
   }
 
   .concept-tag {
@@ -372,7 +396,7 @@
     font-weight: 700;
     color: var(--primary);
     background: rgba(201, 160, 94, 0.1);
-    padding: 0.35rem 0.8rem;
+    padding: 0.35rem 1rem;
     border-radius: 2rem;
   }
 
@@ -390,16 +414,21 @@
     border-radius: 50%;
   }
 
-  .dot.fácil { background: var(--success); }
-  .dot.médio { background: var(--warning); }
-  .dot.difícil { background: var(--danger); }
+  .dot.fácil {
+    background: var(--success);
+  }
+  .dot.médio {
+    background: var(--warning);
+  }
+  .dot.difícil {
+    background: var(--danger);
+  }
 
   .question-text {
-    font-size: 1.1rem; /* Reduzido de 1.4rem */
-    line-height: 1.6;
+    font-size: 1.4rem;
+    line-height: 1.7;
     color: var(--text-primary);
     font-family: var(--font-sans);
-    text-align: justify;
   }
 
   /* MathML Support */
@@ -409,26 +438,18 @@
   }
 
   .options-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-  }
-
-  .options-title {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+    display: grid;
+    gap: 1rem;
   }
 
   .option-item {
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.2rem;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 1rem;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1.25rem;
     cursor: pointer;
     text-align: left;
     transition: all 0.2s ease;
@@ -437,7 +458,7 @@
   }
 
   .option-item:hover {
-    background: rgba(255,255,255,0.04);
+    background: rgba(255, 255, 255, 0.04);
     border-color: rgba(201, 160, 94, 0.3);
   }
 
@@ -448,16 +469,16 @@
   }
 
   .option-marker {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     flex-shrink: 0;
-    background: rgba(255,255,255,0.05);
-    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
   }
 
@@ -467,8 +488,8 @@
   }
 
   .option-content {
-    font-size: 0.95rem;
-    line-height: 1.4;
+    font-size: 1rem;
+    line-height: 1.5;
     font-weight: 400;
   }
 
@@ -509,38 +530,74 @@
     align-items: center;
   }
 
-  /* Responsividade: Volta para 1 coluna em telas menores */
-  @media (max-width: 1024px) {
-    .question-card {
-      grid-template-columns: 1fr;
-      padding: 2.5rem;
-      gap: 2rem;
+  .gri-loader {
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(255, 255, 255, 0.05);
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  .status-screen {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .loader-visual {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 2rem;
+  }
+
+  .orbit {
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(201, 160, 94, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1.5s linear infinite;
+  }
+
+  .center-glow {
+    position: absolute;
+    inset: 30%;
+    background: var(--primary);
+    filter: blur(15px);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
     }
+  }
+  .status-screen h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .status-screen p {
+    color: var(--text-secondary);
   }
 
   @media (max-width: 768px) {
-    .question-card { 
-      padding: 1.5rem 1rem; 
-      gap: 1.5rem; 
+    .question-card {
+      padding: 2rem 1.5rem;
     }
-    .question-text { 
-      font-size: 1.05rem; 
+    .question-text {
+      font-size: 1.2rem;
     }
-    .onboarding-page { 
-      padding-top: 1rem; 
-    }
-    .card-meta {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-    .meta-left {
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding-bottom: 1rem;
-      width: 100%;
-    }
-    .enem-badge {
-      border-right: none;
+    .onboarding-page {
+      padding-top: 1rem;
     }
   }
 </style>
