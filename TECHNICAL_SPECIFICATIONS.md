@@ -8,7 +8,7 @@ Este documento detalha a arquitetura, as escolhas tecnológicas e as implementa�
 
 A arquitetura do Griô é dividida em três pilares fundamentais, selecionados para garantir escalabilidade horizontal e processamento de dados relacionais complexos:
 
-- **Backend**: Python 3.12 com **FastAPI**. Escolhido pela alta performance assíncrona (ASGI) e integração nativa com ecossistemas de IA.
+- **Backend**: Python 3.12 com **FastAPI**. Escolhido pela alta performance assíncrona (ASGI) e integração nativa com ecossistemas de IA. A camada de rede conta com **Security Headers Middleware** (CSP, HSTS, XSS Protection, X-Frame-Options) para proteção nativa contra vulnerabilidades de injeção em navegadores e sniffers.
 - **Banco de Dados de Conhecimento (Graph DB)**: **Neo4j**. Utilizado para mapear as complexas relações entre questões, habilidades (BNCC/ENEM) e competências.
 - **Banco de Dados Relacional**: **PostgreSQL**. Armazena dados transacionais, perfis de usuários e logs de acesso.
 - **Inteligência Artificial**: **Google Gemini (Família 1.5 e 2.0)**.
@@ -44,11 +44,10 @@ O Griô utiliza **Neo4j Vector Index** para realizar operações de similaridade
 
 ### Inteligência Artificial e Vetores
 Para cada questão ingerida, o sistema concatena o enunciado com a explicação pedagógica gerada pela IA e gera um vetor de 768 dimensões.
+- **SDK**: `google.genai` (Migrado do obsoleto `google.generativeai`).
 - **Modelo**: `models/gemini-embedding-001`.
 - **Métrica de Similaridade**: Coseno (`cosine`).
 - **Uso**: Permite que o sistema encontre questões "irmãs" ou identifique lacunas de conhecimento correlatas mesmo que não compartilhem a mesma etiqueta (tag) manual.
-
-> **âš ï¸  Débito Técnico Conhecido (Risco Crítico)**: A implementação atual do backend (FastAPI) utiliza o pacote Python deprecado `google.generativeai`. Todo o suporte a este pacote foi encerrado pelo Google. A equipe deve migrar com urgência todas as integrações de inferência e embeddings (arquivos como `crud/assessment.py`, `api/v1/endpoints/chatbot.py`, `scripts/ingest_questions.py`, etc) para o novo SDK oficial `google.genai`.
 
 ---
 
