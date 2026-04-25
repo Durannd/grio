@@ -2,11 +2,11 @@ import os
 import json
 import time
 import argparse
-import re
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from neo4j import GraphDatabase
+from pydantic import BaseModel, Field
 from scripts.init_db import ensure_constraints
 
 # Carregar variáveis de ambiente
@@ -40,6 +40,17 @@ NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "password")
 uri = NEO4J_URI.replace("neo4j+s://", "neo4j+ssc://").replace("bolt+s://", "bolt+ssc://")
 driver = GraphDatabase.driver(uri, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
+# --- SCHEMA PARA SAÍDA ESTRUTURADA ---
+class EnrichmentSchema(BaseModel):
+    explanation: str = Field(description="Explicação detalhada da resposta correta e dos conceitos envolvidos.")
+    area: str = Field(description="Área do conhecimento (ex: Ciências da Natureza e suas Tecnologias).")
+    topic: str = Field(description="Tópico principal (ex: Biologia: Ecologia e Meio Ambiente).")
+    subtopics: list[str] = Field(description="Lista de subtópicos específicos (ex: ['Ciclos Biogeoquímicos', 'Poluição']).")
+    difficulty: str = Field(description="Nível de dificuldade ('Fácil', 'Médio' ou 'Difícil').")
+    is_diagnostic: bool = Field(description="Verdadeiro se a questão for fundamental para diagnosticar nivelamento base.")
+    competencies: list[str] = Field(description="IDs das competências da matriz de referência (ex: ['C1', 'C2']).")
+    skills: list[str] = Field(description="IDs das habilidades sem o prefixo da competência (ex: ['H1', 'H3']).")
+
 def get_known_subtopics_from_db():
     """Busca subtópicos já existentes no banco para popular o cache inicial."""
     with driver.session() as session:
@@ -62,7 +73,7 @@ def get_enrichment(question_text, choices, area_hint, current_topic_subtopics, r
     matrix_context = area_matrix if area_matrix else FULL_MATRIX["areas"]
 
     prompt = f"""
-    Analise a seguinte questão do ENEM e forneça um JSON estruturado para enriquecimento pedagógico.
+    Analise a seguinte questão do ENEM e forneça as informações para enriquecimento pedagógico.
     
     QUESTÃO:
     {question_text}
@@ -85,18 +96,6 @@ def get_enrichment(question_text, choices, area_hint, current_topic_subtopics, r
     
     4. DIAGNÓSTICO: 'is_diagnostic' true apenas para conceitos base (meta: 15% do total).
     
-    FORMATO DE RETORNO (JSON APENAS):
-    {{
-        "explanation": "...",
-        "area": "...",
-        "topic": "...",
-        "subtopics": ["..."],
-        "difficulty": "Fácil" | "Médio" | "Difícil",
-        "is_diagnostic": boolean,
-        "competencies": ["ID_DA_COMPETENCIA"],
-        "skills": ["ID_DA_HABILIDADE_SEM_PREFIXO"]
-    }}
-    
     NOTA: Em 'skills', use apenas o código curto (ex: 'H1'). O sistema fará o link com a competência.
     """
     
@@ -106,14 +105,14 @@ def get_enrichment(question_text, choices, area_hint, current_topic_subtopics, r
                 model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
                 contents=prompt,
                 config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
+                    response_mime_type="application/json",
+                    response_schema=EnrichmentSchema,
+                    temperature=0.2 # Menos criatividade, mais consistência taxonômica
                 )
             )
-            json_match = re.search(r'\{.*\}', response.text, re.DOTALL)
-            if json_match:
-                return json.loads(json_match.group())
             return json.loads(response.text)
         except Exception as e:
+            print(f"⚠️ Tentativa {attempt + 1}/{retries} falhou: {e}")
             time.sleep(2 * (attempt + 1))
     return None
 
@@ -144,35 +143,34 @@ def ingest_questions(file_path, limit=None):
                 continue
 
             # 2. Obter subtópicos conhecidos para o "chute" de área da questão
-            # (ENEM sample costuma vir com área ou podemos inferir pelo ID/Contexto)
-            area_hint = q.get('area', '') # Se não tiver, o prompt lida com a matriz completa
-            known_for_topic = [] # Será preenchido dinamicamente se soubermos o tópico
+            area_hint = q.get('area', '')
             
             # 3. Gemini
-            enrichment = get_enrichment(q['question'], q['choices']['text'], area_hint, known_for_topic)
+            enrichment = get_enrichment(q['question'], q['choices']['text'], area_hint, set())
             if not enrichment:
                 print(f"❌ {progress_bar} - Falha no Gemini para {q['id']}")
                 failed_ids.append(q['id'])
                 continue
 
-            # Atualizar cache local de subtópicos
+            # Atualizar cache local de subtópicos com o tópico retornado
             topic = enrichment.get('topic')
             if topic:
-                if topic not in KNOWN_SUBTOPICS: KNOWN_SUBTOPICS[topic] = set()
+                if topic not in KNOWN_SUBTOPICS: 
+                    KNOWN_SUBTOPICS[topic] = set()
                 KNOWN_SUBTOPICS[topic].update(enrichment.get('subtopics', []))
 
             # 4. Embedding
-            embedding = [0.0] * 768
             try:
                 emb_res = client.models.embed_content(
-                    model="text-embedding-004", # Atualizando para o modelo mais recente de embeddings
+                    model="text-embedding-004",
                     contents=f"{q['question']} {enrichment['explanation']}",
                     config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT")
                 )
                 embedding = emb_res.embeddings[0].values
             except Exception as e:
-                print(f"Erro Embedding: {e}")
-                pass
+                print(f"❌ {progress_bar} - Erro Embedding para {q['id']}: {e}")
+                failed_ids.append(q['id'])
+                continue # Pula a inserção para não salvar vetor de zeros!
 
             # 5. DB Write
             try:
@@ -190,9 +188,6 @@ def ingest_questions(file_path, limit=None):
 def ingest_tx(tx, q, enrichment, embedding):
     choices = q.get('choices', {})
     option_texts = {label: text for label, text in zip(choices.get('label', []), choices.get('text', []))}
-    
-    # Query Refatorada para ser RESILIENTE
-    # Separamos a criação da questão da busca de competências para evitar que um MATCH falho mate a transação
     
     # Parte 1: Questão, Área, Tópicos e Subtópicos (Sempre criados)
     tx.run("""
@@ -221,24 +216,27 @@ def ingest_tx(tx, q, enrichment, embedding):
        opt_a=option_texts.get('A', ''), opt_b=option_texts.get('B', ''), opt_c=option_texts.get('C', ''),
        opt_d=option_texts.get('D', ''), opt_e=option_texts.get('E', ''))
 
-    # Parte 2: Competências (Safe Match)
-    for comp_id in enrichment.get('competencies', []):
+    # Parte 2: Competências otimizado com UNWIND
+    comps = enrichment.get('competencies', [])
+    if comps:
         tx.run("""
             MATCH (q:Question {id: $qid})
-            MATCH (c:Competence {id: $cid})
+            UNWIND $comps as cid
+            MATCH (c:Competence {id: cid})
             MERGE (q)-[:REQUIRES_COMPETENCE]->(c)
-        """, qid=q['id'], cid=comp_id)
+        """, qid=q['id'], comps=comps)
 
-    # Parte 3: Habilidades (Safe Match com ID composto)
-    for skill_code in enrichment.get('skills', []):
-        # Tentamos casar com qualquer competência sugerida
-        for comp_id in enrichment.get('competencies', []):
-            skill_unique_id = f"{comp_id}_{skill_code}"
-            tx.run("""
-                MATCH (q:Question {id: $qid})
-                MATCH (s:Skill {id: $sid})
-                MERGE (q)-[:EVALUATES]->(s)
-            """, qid=q['id'], sid=skill_unique_id)
+    # Parte 3: Habilidades otimizado com UNWIND
+    skills = enrichment.get('skills', [])
+    # Cria os IDs únicos combinando todas as competências com todas as habilidades sugeridas
+    skill_ids = [f"{c}_{s}" for c in comps for s in skills]
+    if skill_ids:
+        tx.run("""
+            MATCH (q:Question {id: $qid})
+            UNWIND $skill_ids as sid
+            MATCH (s:Skill {id: sid})
+            MERGE (q)-[:EVALUATES]->(s)
+        """, qid=q['id'], skill_ids=skill_ids)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
