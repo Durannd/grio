@@ -114,9 +114,59 @@ def get_diagnostic_report(
         latest_attempt.analysis_json = analysis_data
         latest_attempt.proficiencies_snapshot = proficiencies
         
-        current_user.is_diagnostic_completed = 1
+        current_user.is_diagnostic_completed = True
         db.add(latest_attempt)
         db.add(current_user)
         db.commit()
 
         return response_data
+
+@router.get("/history")
+def get_assessment_history(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    attempts = db.query(AssessmentAttempt).filter(
+        AssessmentAttempt.user_id == current_user.id
+    ).order_by(AssessmentAttempt.created_at.desc()).all()
+    
+    return {
+        "history": [
+            {
+                "id": a.id,
+                "created_at": a.created_at,
+                "type": a.type,
+                "has_analysis": bool(a.analysis_json)
+            } for a in attempts
+        ]
+    }
+
+@router.get("/history/{attempt_id}")
+def get_assessment_attempt(
+    attempt_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    attempt = db.query(AssessmentAttempt).filter(
+        AssessmentAttempt.id == attempt_id,
+        AssessmentAttempt.user_id == current_user.id
+    ).first()
+    
+    if not attempt:
+        raise HTTPException(status_code=404, detail="Tentativa não encontrada")
+        
+    proficiencies = attempt.proficiencies_snapshot or []
+    
+    return {
+        "status": "success",
+        "id": attempt.id,
+        "created_at": attempt.created_at,
+        "type": attempt.type,
+        "analysis": attempt.analysis_json,
+        "proficiencies": proficiencies,
+        "summary_stats": {
+            "total_skills_mapped": len(proficiencies),
+            "average_score": sum([p['score'] for p in proficiencies]) / len(proficiencies) if proficiencies else 0
+        },
+        "snapshot": "historical"
+    }

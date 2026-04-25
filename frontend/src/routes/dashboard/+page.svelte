@@ -5,10 +5,9 @@
   import { formatPedagogicalCode } from '$lib/utils';
 
   let learningPath: Array<{concept_name: string, description: string, score: number}> = [];
-  let studyPlan: any = null;
+  let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = [];
   let user: any = null;
   let loading = true;
-  let loadingPlan = true;
   let errorMessage = "";
 
   onMount(async () => {
@@ -37,24 +36,29 @@
         learningPath = data.learning_path;
       }
 
-      loading = false;
-
-      const planRes = await fetch("http://localhost:8000/api/v1/study-plan", { headers });
-      if (planRes.ok) {
-        studyPlan = await planRes.json();
+      const historyRes = await fetch("http://localhost:8000/api/v1/assessment-report/history", { headers });
+      if (historyRes.ok) {
+        const hData = await historyRes.json();
+        history = hData.history;
       }
-      loadingPlan = false;
+
+      loading = false;
     } catch (error) {
       console.error("Error loading dashboard:", error);
       errorMessage = "Houve um erro ao carregar seus dados. Por favor, tente novamente mais tarde.";
       loading = false;
-      loadingPlan = false;
     }
   });
 
   function logout() {
     localStorage.removeItem("token");
     goto("/login");
+  }
+
+  function formatDate(dateStr: string) {
+    return new Date(dateStr).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    });
   }
 
   $: totalModules = learningPath.length;
@@ -83,15 +87,13 @@
     <div class="dashboard-header animate-fade-in">
       <div>
         <h1 class="page-title">Bem-vindo(a), <span class="text-gradient">{user.name.split(' ')[0]}</span></h1>
-        <p class="page-subtitle">Acompanhe seu desempenho e siga as recomendações da IA para evoluir no ENEM.</p>
+        <p class="page-subtitle">Acompanhe seu desempenho e histórico de avaliações no ENEM.</p>
       </div>
       <div class="header-actions">
-        {#if learningPath.length === 0}
-          <a href="/prova" class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="m18 15-6-6-6 6"/></svg>
-            Fazer Diagnóstico
-          </a>
-        {/if}
+        <a href="/prova" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="m18 15-6-6-6 6"/></svg>
+          Novo Diagnóstico
+        </a>
       </div>
     </div>
 
@@ -133,63 +135,42 @@
         </div>
         <div class="kpi-data">
           <p class="kpi-label">Foco Recomendado</p>
-          <h3 class="kpi-value text-gradient">{studyPlan?.plan?.[0]?.skill_code ? formatPedagogicalCode(studyPlan.plan[0].skill_code) : "Aguardando"}</h3>
+          <h3 class="kpi-value text-gradient">{learningPath.length > 0 ? formatPedagogicalCode(learningPath[0].concept_name) : "Aguardando"}</h3>
         </div>
       </div>
     </div>
 
     <div class="main-content-grid">
-      <!-- AI Study Plan Column -->
+      <!-- History Column -->
       <section class="plan-section animate-slide-up stagger-2">
         <div class="section-header">
-          <h2 class="section-title">Plano de Ação Estratégico</h2>
-          <span class="badge ai-badge">IA Griô</span>
+          <h2 class="section-title">Histórico de Avaliações</h2>
         </div>
 
-        {#if loadingPlan}
-          <div class="glass-panel loading-skeleton">
-            <div class="skeleton-line" style="width: 60%"></div>
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line" style="width: 80%"></div>
-          </div>
-        {:else if studyPlan && studyPlan.plan && studyPlan.plan.length > 0}
-          <p class="ai-motivation">"{studyPlan.motivation}"</p>
-          
+        {#if history.length > 0}
           <div class="plan-cards">
-            {#each studyPlan.plan as step}
+            {#each history as item}
               <div class="plan-card glass-panel group">
                 <div class="plan-card-header">
-                  <div class="priority-badge">Prioridade {step.priority}</div>
-                  <span class="skill-tag">{formatPedagogicalCode(step.skill_code)}</span>
+                  <div class="priority-badge">Data: {formatDate(item.created_at)}</div>
+                  <span class="skill-tag">{item.type.toUpperCase()}</span>
                 </div>
-                <h3 class="plan-card-title">{step.title}</h3>
-                <p class="plan-card-desc">{step.justification}</p>
+                <h3 class="plan-card-title">Análise de Proficiência</h3>
+                <p class="plan-card-desc">Veja os detalhes desta avaliação, incluindo suas forças, fraquezas e o plano de ação estratégico recomendado pela IA Griô.</p>
                 
-                <div class="plan-card-body">
-                  <div class="topics-list">
-                    <strong>Conteúdos-chave:</strong>
-                    <ul>
-                      {#each step.topics as topic}
-                        <li>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                          <span>{topic}</span>
-                        </li>
-                      {/each}
-                    </ul>
-                  </div>
-                </div>
-                <div class="plan-card-footer">
-                  <div class="tip-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tip-icon"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.41.56 2.63 1.49 3.49.77.77 1.24 1.53 1.42 2.51"/></svg>
-                    <span>{step.tip}</span>
-                  </div>
+                <div class="plan-card-footer mt-4">
+                  <a href="/prova/resultado?id={item.id}" class="btn btn-outline" style="width: 100%; text-align: center;">Ver Análise Completa</a>
                 </div>
               </div>
             {/each}
           </div>
         {:else}
           <div class="glass-panel empty-state">
-            <p>Seu plano ainda não foi gerado ou você precisa completar o diagnóstico.</p>
+            <div class="empty-icon">
+               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <h3>Nenhum histórico</h3>
+            <p>Você ainda não realizou nenhuma avaliação para gerar histórico.</p>
           </div>
         {/if}
       </section>

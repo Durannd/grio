@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { formatPedagogicalCode } from '$lib/utils';
   import { fly, fade, scale } from 'svelte/transition';
+  import { page } from '$app/stores';
   import axios from 'axios';
 
   let report = null;
@@ -20,7 +21,12 @@
   onMount(async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:8000/api/v1/assessment-report/report', {
+      const historyId = $page.url.searchParams.get('id');
+      const endpoint = historyId 
+        ? `http://localhost:8000/api/v1/assessment-report/history/${historyId}`
+        : 'http://localhost:8000/api/v1/assessment-report/report';
+
+      const res = await axios.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` }
       });
       report = res.data;
