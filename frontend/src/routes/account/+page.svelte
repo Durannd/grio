@@ -14,15 +14,9 @@
   let avatar_url = "";
 
   onMount(async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      goto("/login");
-      return;
-    }
-
     try {
       const response = await fetch("http://localhost:8000/api/v1/auth/me", {
-        headers: { Authorization: `Bearer ${token}` }
+        credentials: "include"
       });
       if (response.ok) {
         user = await response.json();
@@ -44,7 +38,6 @@
     successMessage = "";
     errorMessage = "";
     
-    const token = localStorage.getItem("token");
     try {
       // Simulação de update (pode criar endpoint no backend se necessário, mas vou focar no front conforme solicitado)
       // O usuário pediu "visualização de conta", vou deixar funcional com o que temos ou adicionar um PUT se der tempo

@@ -4,6 +4,8 @@
   import { goto } from "$app/navigation";
   import axios from "axios";
 
+  import { toasts } from "$lib/stores/toast";
+
   interface Option {
     id: number;
     text: string;
@@ -28,18 +30,11 @@
 
   onMount(async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        goto("/login");
-        return;
-      }
-
       const response = await fetch("http://localhost:8000/api/v1/assessment", {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include"
       });
 
       if (response.status === 401) {
-        localStorage.removeItem("token");
         goto("/login");
         return;
       }
@@ -94,9 +89,6 @@
   async function handleSubmit() {
     submitting = true;
     try {
-      const token = localStorage.getItem("token");
-      // Obter usuário do contexto ou localStorage (aqui supomos que temos acesso ao user.id)
-      // Para fins de demo, pegaremos do token decodificado ou de um store
       const response = await axios.post(
         "http://localhost:8000/api/v1/assessment/submit",
         {
@@ -108,11 +100,20 @@
           })),
         },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true
         },
       );
 
       const attemptId = response.data.attempt_id;
+      const audit = response.data.audit_summary;
+
+      if (audit && audit.has_warnings) {
+        toasts.warning(
+          "Detectamos um padrão de respostas muito rápido. Isso pode afetar a precisão do seu plano de estudos. Tente dedicar mais tempo a cada questão nas próximas vezes!",
+          8000
+        );
+      }
+
       goto(`/prova/resultado?id=${attemptId}`);
     } catch (e) {
       console.error(e);

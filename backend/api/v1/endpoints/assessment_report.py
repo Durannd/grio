@@ -23,19 +23,19 @@ def generate_ai_analysis(proficiencies: list):
     ])
     
     prompt = f"""
-    Você é o analista pedagógico do sistema Griô.
-    Sua missão é transformar dados técnicos em recomendações estratégicas para o estudante.
+    Você é um assistente de análise pedagógica especializado no ENEM.
+    Sua tarefa é converter dados técnicos de proficiência em recomendações diagnósticas objetivas.
     
     PERFIL DE PROFICIÊNCIA DO ESTUDANTE:
     {prof_summary}
     
     Instruções para o retorno (JSON):
-    1. 'title': Use um título técnico para o diagnóstico de proficiência.
-    2. 'summary': Analise a intersecção entre as áreas. Não apenas liste dados. Fale sobre a maturidade cognitiva.
-    3. 'strengths': Liste competências onde o aluno já brilha.
-    4. 'weaknesses': Identifique lacunas 'âncora' (aquelas que impedem o avanço em outros temas).
-    5. 'action_plan': Sugira uma estratégia de estudo prioritária.
-    6. 'EMOJIS': Proibido o uso de emojis em qualquer campo do JSON.
+    1. 'title': Utilize um título técnico para o relatório.
+    2. 'summary': Analise a maturidade cognitiva demonstrada pelos dados.
+    3. 'strengths': Liste competências com alto nível de domínio técnico.
+    4. 'weaknesses': Identifique lacunas fundamentais que impactam o progresso global.
+    5. 'action_plan': Defina uma estratégia técnica prioritária.
+    6. 'REGRAS': TOM neutro e profissional. Proibido o uso de emojis, saudações ou personificações.
 
     FORMATO JSON:
     {{

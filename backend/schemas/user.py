@@ -11,6 +11,8 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    current_streak: int = 0
+    last_activity_date: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 

@@ -12,31 +12,24 @@
 
   onMount(async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        goto("/login");
-        return;
-      }
-
-      const headers = {
-        "Authorization": `Bearer ${token}`
+      const fetchOptions = {
+        credentials: "include"
       };
 
-      const userRes = await fetch("http://localhost:8000/api/v1/auth/me", { headers });
+      const userRes = await fetch("http://localhost:8000/api/v1/auth/me", fetchOptions);
       if (userRes.status === 401) {
-        localStorage.removeItem("token");
         goto("/login");
         return;
       }
       user = await userRes.json();
 
-      const pathRes = await fetch("http://localhost:8000/api/v1/learning-path", { headers });
+      const pathRes = await fetch("http://localhost:8000/api/v1/learning-path", fetchOptions);
       if (pathRes.ok) {
         const data = await pathRes.json();
         learningPath = data.learning_path;
       }
 
-      const historyRes = await fetch("http://localhost:8000/api/v1/assessment-report/history", { headers });
+      const historyRes = await fetch("http://localhost:8000/api/v1/assessment-report/history", fetchOptions);
       if (historyRes.ok) {
         const hData = await historyRes.json();
         history = hData.history;
@@ -128,6 +121,16 @@
           <h3 class="kpi-value">{needsAttention}</h3>
         </div>
       </div>
+
+      <div class="kpi-card glass-panel streak-highlight">
+        <div class="kpi-icon fire">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.5 3.5 6.5 1.5 2 2 4.5 2 7a6 6 0 1 1-12 0c0-1.5.5-3 1-4.5.5 1.5 1 3 2 4.5Z"/></svg>
+        </div>
+        <div class="kpi-data">
+          <p class="kpi-label">Sua Sequência</p>
+          <h3 class="kpi-value">{user.current_streak} dias</h3>
+        </div>
+      </div>
       
       <div class="kpi-card glass-panel ai-highlight">
         <div class="kpi-icon ai-gold">
@@ -203,6 +206,9 @@
                 <p class="prof-desc">{concept.description}</p>
                 <div class="progress-bar-container">
                   <div class="progress-bar" style="width: {concept.score * 100}%; background-color: {concept.score >= 0.7 ? '#10B981' : (concept.score >= 0.4 ? '#F59E0B' : '#EF4444')}"></div>
+                </div>
+                <div class="prof-footer mt-4">
+                  <a href="/estudar/{concept.concept_name}" class="btn btn-primary btn-sm" style="width: 100%; text-align: center;">Estudar este conceito</a>
                 </div>
               </div>
             {/each}
@@ -310,6 +316,18 @@
   .ai-highlight {
     background: linear-gradient(145deg, rgba(201, 160, 94, 0.05), rgba(0,0,0,0.4));
     border: 1px solid rgba(201, 160, 94, 0.2);
+  }
+
+  .streak-highlight {
+    background: linear-gradient(145deg, rgba(239, 68, 68, 0.05), rgba(0,0,0,0.4));
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  .kpi-icon.fire { color: #EF4444; background: rgba(239, 68, 68, 0.15); }
+
+  .prof-footer {
+    display: flex;
+    justify-content: center;
   }
 
   .kpi-icon {

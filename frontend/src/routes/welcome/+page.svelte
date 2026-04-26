@@ -6,17 +6,9 @@
   let user: any = null;
 
   onMount(async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      goto("/login");
-      return;
-    }
-
     try {
       const response = await fetch("http://localhost:8000/api/v1/auth/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include"
       });
       if (response.ok) {
         user = await response.json();

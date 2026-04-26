@@ -59,19 +59,19 @@ async def get_study_plan(
             prof_summary = "\n".join([f"- {p['id']}: {p['score']*100:.1f}% - {p['description']}" for p in proficiencies])
             
             prompt = f"""
-            Você é um estrategista educacional especializado no ENEM.
-            Com base nas proficiências do estudante abaixo (onde menores scores indicam maiores dificuldades), gere um PLANO DE ESTUDOS personalizado.
+            Você é um assistente de planejamento de estudos especializado no ENEM.
+            Com base nas proficiências do estudante abaixo, gere um PLANO DE ESTUDOS técnico e objetivo.
             
             PROFICIÊNCIAS:
             {prof_summary}
             
             Instruções:
-            1. Identifique as 3 maiores lacunas prioritárias.
+            1. Identifique as 3 maiores lacunas prioritárias para evolução de performance.
             2. Para cada lacuna, indique:
-               - O que estudar (temas específicos).
-               - Por que estudar (relevância para o ENEM).
-               - Uma dica prática de estudo.
-            3. O tom deve ser motivador, técnico e direto.
+               - O que estudar (temas específicos e fundamentais).
+               - Por que estudar (relevância técnica para a matriz ENEM).
+               - Uma orientação prática de estudo.
+            3. TOM: Estritamente profissional, neutro e direto. Proibido o uso de personas, saudações ou tratamentos informais.
             
             FORMATO JSON:
             {{

@@ -20,14 +20,13 @@
 
   onMount(async () => {
     try {
-      const token = localStorage.getItem("token");
       const id = $page.url.searchParams.get("id");
       const url = id 
         ? `http://localhost:8000/api/v1/assessment-report/history/${id}`
         : "http://localhost:8000/api/v1/assessment-report/report";
         
       const res = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true
       });
       report = res.data;
     } catch (e) {

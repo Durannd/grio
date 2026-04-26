@@ -6,6 +6,7 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import Chatbot from '$lib/components/Chatbot.svelte';
+  import Toast from '$lib/components/Toast.svelte';
 
   let user: any = null;
   let showDropdown = false;
@@ -32,30 +33,32 @@
 
   async function loadUser() {
     if (!browser) return;
-    const token = localStorage.getItem("token");
-    if (!token) {
-      user = null;
-      return;
-    }
 
     try {
       const response = await fetch("http://localhost:8000/api/v1/auth/me", {
-        headers: { Authorization: `Bearer ${token}` }
+        credentials: "include"
       });
       if (response.ok) {
         user = await response.json();
         hasDiagnostic = user.is_diagnostic_completed === true;
       } else {
         user = null;
-        localStorage.removeItem("token");
       }
     } catch (error) {
       console.error("Erro ao carregar usuário:", error);
+      user = null;
     }
   }
 
-  function logout() {
-    localStorage.removeItem("token");
+  async function logout() {
+    try {
+      await fetch("http://localhost:8000/api/v1/auth/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
     user = null;
     showDropdown = false;
     goto("/login");
@@ -126,6 +129,7 @@
     </div>
   {/key}
 
+  <Toast />
   <Chatbot />
 </div>
 

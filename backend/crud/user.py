@@ -18,3 +18,24 @@ def create_user(db: Session, user: UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+from datetime import datetime, timedelta
+
+def update_user_streak(db: Session, user: User):
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    if user.last_activity_date == today:
+        return user
+    
+    yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    
+    if user.last_activity_date == yesterday:
+        user.current_streak += 1
+    else:
+        user.current_streak = 1
+        
+    user.last_activity_date = today
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user

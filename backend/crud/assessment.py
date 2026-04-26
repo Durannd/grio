@@ -154,15 +154,23 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
     # --- SQL Persistence: Record the Attempt with Snapshot ---
     new_attempt = AssessmentAttempt(
         user_id=submission.user_id,
-        type="diagnostico",
+        type=submission.type,
         proficiencies_snapshot=enriched_proficiencies
     )
     db.add(new_attempt)
     db.commit()
     db.refresh(new_attempt)
 
+    # Calcular se houve muitos chutes (opcional, para feedback na UI)
+    low_confidence_count = sum(1 for c in confidence_map.values() if c < 0.5)
+    has_cheated = low_confidence_count > (len(detailed_results) / 3)
+
     return {
         "status": "success", 
         "message": "Diagnóstico processado. Auditoria e propagação concluídas.",
-        "attempt_id": new_attempt.id
+        "attempt_id": new_attempt.id,
+        "audit_summary": {
+            "low_confidence_count": low_confidence_count,
+            "has_warnings": has_cheated
+        }
     }

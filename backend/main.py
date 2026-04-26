@@ -19,18 +19,19 @@ app.add_middleware(
         "http://127.0.0.1:4173"
     ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
 @app.middleware("http")
 async def add_security_headers(request, call_next):
     response: Response = await call_next(request)
-    response.headers["Content-Security-Policy"] = "default-src 'self'; connect-src 'self' http://localhost:8000"
+    # Refined CSP for API responses
+    response.headers["Content-Security-Policy"] = "default-src 'none'; frame-ancestors 'none'; sandbox"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["X-XSS-Protection"] = "0" # Modern standard: disable legacy filter
     return response
 
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])

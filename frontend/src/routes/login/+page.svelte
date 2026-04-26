@@ -18,12 +18,11 @@
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
+        credentials: "include",
         body: formData,
       });
 
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("token", data.access_token);
         goto("/dashboard");
       } else {
         const data = await response.json();

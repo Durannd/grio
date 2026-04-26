@@ -14,12 +14,11 @@
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ name, email, password }),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("token", data.access_token);
         // Redireciona para a tela de boas-vindas após o cadastro
         goto("/welcome");
       } else {

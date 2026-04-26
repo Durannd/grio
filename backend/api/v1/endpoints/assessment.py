@@ -5,6 +5,7 @@ from crud.question import get_assessment_questions
 from schemas.question import Assessment, Question
 from schemas.assessment import AssessmentSubmission
 from crud.assessment import process_assessment_submission
+from crud.user import update_user_streak
 from core.neo4j import get_driver
 
 router = APIRouter()
@@ -73,6 +74,44 @@ def read_assessment(
             
     return {"questions": questions}
 
+@router.get("/practice/{skill_id}", response_model=Assessment)
+def read_practice_assessment(
+    skill_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    driver = get_driver()
+    with driver.session() as session:
+        # Busca questões vinculadas à Habilidade específica (Skill) que o usuário ainda não respondeu
+        result = session.run("""
+            MATCH (s:Skill {id: $skill_id})<-[:EVALUATES]-(q:Question)
+            WHERE NOT (:User {id: $user_id})-[:ANSWERED]->(q)
+            WITH q, rand() as r ORDER BY r
+            RETURN q.id as id, q.text as text, q.difficulty as difficulty, 
+                   q.answer as correct_answer,
+                   q.option_a as option_a, q.option_b as option_b, q.option_c as option_c,
+                   q.option_d as option_d, q.option_e as option_e
+            LIMIT 10
+        """, skill_id=skill_id, user_id=current_user.id)
+        
+        questions = []
+        for record in result:
+            options = [
+                {"id": 1, "text": record["option_a"] or ""},
+                {"id": 2, "text": record["option_b"] or ""},
+                {"id": 3, "text": record["option_c"] or ""},
+                {"id": 4, "text": record["option_d"] or ""},
+                {"id": 5, "text": record["option_e"] or ""},
+            ]
+            questions.append({
+                "id": record["id"],
+                "text": record["text"],
+                "difficulty": record["difficulty"],
+                "concept_name": f"Prática: {skill_id}",
+                "options": options
+            })
+            
+    return {"questions": questions}
+
 @router.post("/submit")
 def submit_assessment(
     submission: AssessmentSubmission, 
@@ -81,4 +120,5 @@ def submit_assessment(
 ):
     # Overwrite the user_id from the token to ensure security
     submission.user_id = current_user.id
+    update_user_streak(db, current_user)
     return process_assessment_submission(db, submission)

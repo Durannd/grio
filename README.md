@@ -41,14 +41,14 @@ Uma plataforma **gratuita e inteligente** que oferece ao estudante de baixa rend
 | 🔥 | **Hábito sobre Intensidade** | Gamificação focada em consistência diária, não picos esporádicos |
 | 📱 | **Mobile-First** | Projetado para funcionar em celulares com dados limitados |
 
-## MVP: Matemática
+## O MVP
 
-O primeiro passo é construir **todas as funcionalidades** para uma única matéria — Matemática — validando o modelo completo antes de expandir.
+O primeiro passo é construir as funcionalidades core para as principais áreas do conhecimento do ENEM — Matemática, Ciências da Natureza, Ciências Humanas e Linguagens — validando o modelo de aprendizado adaptativo.
 
 **O MVP inclui:**
-- 📝 Prova de nivelamento para mapear o nível do aluno
+- 📝 Prova de nivelamento para mapear o nível do aluno (todas as áreas)
 - 🗺️ Trilha de aprendizado personalizada (Aprenda → Pratique → Domine)
-- 💬 Chat com IA contextual para tirar dúvidas
+- 💬 Chat com IA contextual e Micro-aulas geradas dinamicamente
 - 🏆 Sistema de streaks e conquistas
 - 📚 Banco de questões de vestibulares anteriores (ENEM, FUVEST, etc.)
 

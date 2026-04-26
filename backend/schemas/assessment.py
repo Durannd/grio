@@ -9,3 +9,4 @@ class Answer(BaseModel):
 class AssessmentSubmission(BaseModel):
     user_id: int
     answers: List[Answer]
+    type: str = "diagnostico"
