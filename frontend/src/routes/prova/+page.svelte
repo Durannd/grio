@@ -97,7 +97,7 @@
       const token = localStorage.getItem("token");
       // Obter usuário do contexto ou localStorage (aqui supomos que temos acesso ao user.id)
       // Para fins de demo, pegaremos do token decodificado ou de um store
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:8000/api/v1/assessment/submit",
         {
           user_id: 0, // O backend sobrescreve isso com o ID real do token
@@ -112,7 +112,8 @@
         },
       );
 
-      goto("/prova/resultado");
+      const attemptId = response.data.attempt_id;
+      goto(`/prova/resultado?id=${attemptId}`);
     } catch (e) {
       console.error(e);
       alert(

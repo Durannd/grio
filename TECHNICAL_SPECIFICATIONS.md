@@ -61,10 +61,13 @@ Cada submissão de prova passa por uma auditoria em tempo real para detectar com
 1. **Temporal Audit**: Respostas com tempo inferior a 5 segundos são penalizadas automaticamente com um `confidence_score` de 0.1, independentemente do acerto.
 2. **AI Pattern Detection**: O Gemini analisa a correlação entre a dificuldade da questão e o tempo de resposta. Um acerto em uma questão "Difícil" em 8 segundos é marcado como "Baixa Confiança".
 
-### Cálculo de Proficiência e Propagação de Conhecimento
-A proficiência não é estática. Quando um aluno demonstra domínio em uma **Skill**, o Griô propaga esse conhecimento pelo grafo:
-- **Propagação Lateral**: Se o aluno domina a Skill A e ela pertence à mesma Competência que a Skill B, o sistema atribui um "crédito de confiança" inicial para a Skill B (fator de 0.2), assumindo que conhecimentos correlatos são parcialmente compartilhados.
-- **Limpeza de Estado**: A cada novo diagnóstico completo, o grafo de proficiência do usuário é recalculado para evitar "vícios de memória" de avaliações muito antigas.
+### Cálculo de Proficiência e Persistência Híbrida
+A proficiência é o núcleo do sistema e segue um modelo de **Estado Híbrido**:
+
+- **Grafo Cumulativo (Neo4j)**: O grafo de `(User)-[:HAS_PROFICIENCY]->(Skill)` atua como a **memória de longo prazo** do estudante. A cada nova avaliação, o grafo é atualizado via `MERGE`, garantindo que o conhecimento é cumulativo. Habilidades de avaliações anteriores são preservadas, e o `score` é atualizado para refletir o estado mais recente, mas nunca apagado.
+- **Snapshot Histórico (PostgreSQL)**: Para cada avaliação submetida (`AssessmentAttempt`), o sistema salva um "snapshot" (JSON) dos resultados daquela sessão específica. Isso cria um **registro histórico imutável**, permitindo que o usuário (e o sistema) analisem o desempenho em um ponto específico no tempo, sem interferência de avaliações futuras.
+- **Propagação Lateral**: Se o aluno domina uma Skill, o sistema atribui um "crédito de confiança" inicial para Skills correlatas, assumindo que conhecimentos são parcialmente compartilhados.
+- **Auditoria de Confiança**: Respostas muito rápidas são penalizadas para garantir a integridade dos dados de proficiência.
 
 ---
 

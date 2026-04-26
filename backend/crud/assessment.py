@@ -113,15 +113,22 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
             proficiencies_data.append({"id": item_id, "score": float(score)})
             print(f"DEBUG: Skill {item_id} -> Score Final: {score}")
         
+        enriched_proficiencies = []
         if proficiencies_data:
-            # 1. Limpar proficiências e análises antigas (LIMPEZA TOTAL)
-            session.run("""
-                MATCH (u:User {id: $user_id})
-                OPTIONAL MATCH (u)-[r:HAS_PROFICIENCY]->()
-                DELETE r
-            """, user_id=submission.user_id)
+            # 1. Enriquecer dados para o snapshot da tentativa (somente desta prova)
+            enriched_result = session.run("""
+                UNWIND $profs AS p
+                MATCH (s:Skill {id: p.id})
+                OPTIONAL MATCH (s)-[:PART_OF]->(c:Competence)-[:BELONGS_TO]->(a:Area)
+                RETURN s.id as id, 
+                       s.description as description, 
+                       p.score as score,
+                       a.name as area,
+                       labels(s)[0] as type
+            """, profs=proficiencies_data)
+            enriched_proficiencies = [dict(record) for record in enriched_result]
 
-            # 2. Gravar novas proficiências e propagar
+            # 2. Gravar novas proficiências e propagar (SEM DELETAR ANTIGAS - CUMULATIVO NO GRAFO)
             session.run("""
                 MERGE (u:User {id: $user_id})
                 WITH u
@@ -144,12 +151,18 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
                 MERGE (u)-[:ANSWERED]->(q)
             """, user_id=submission.user_id, proficiencies=proficiencies_data, answered_ids=[a.question_id for a in submission.answers])
 
-    # --- SQL Persistence: Record the Attempt ---
+    # --- SQL Persistence: Record the Attempt with Snapshot ---
     new_attempt = AssessmentAttempt(
         user_id=submission.user_id,
-        type="diagnostico"
+        type="diagnostico",
+        proficiencies_snapshot=enriched_proficiencies
     )
     db.add(new_attempt)
     db.commit()
+    db.refresh(new_attempt)
 
-    return {"status": "success", "message": "Diagnóstico processado. Auditoria e propagação concluídas."}
+    return {
+        "status": "success", 
+        "message": "Diagnóstico processado. Auditoria e propagação concluídas.",
+        "attempt_id": new_attempt.id
+    }
