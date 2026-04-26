@@ -45,7 +45,7 @@ async def get_study_plan(
             result = session.run("""
                 MATCH (u:User {id: $user_id})-[r:HAS_PROFICIENCY]->(s:Skill)
                 WHERE r.score >= 0
-                RETURN s.id as id, s.description as description, r.score as score
+                RETURN s.id as id, s.description as description, r.score as score, COALESCE(r.is_inferred, false) as is_inferred
                 ORDER BY r.score ASC
                 LIMIT 5
             """, user_id=current_user.id)
@@ -56,7 +56,7 @@ async def get_study_plan(
                 return {"status": "pending", "message": "Faça a prova diagnóstica primeiro para gerar seu plano."}
 
             # 3. Gerar Plano de Estudos com Gemini
-            prof_summary = "\n".join([f"- {p['id']}: {p['score']*100:.1f}% - {p['description']}" for p in proficiencies])
+            prof_summary = "\n".join([f"- {p['id']}: {p['score']*100:.1f}% {'(Inferido)' if p['is_inferred'] else ''} - {p['description']}" for p in proficiencies])
             
             prompt = f"""
             Você é um assistente de planejamento de estudos especializado no ENEM.
@@ -65,13 +65,15 @@ async def get_study_plan(
             PROFICIÊNCIAS:
             {prof_summary}
             
-            Instruções:
-            1. Identifique as 3 maiores lacunas prioritárias para evolução de performance.
-            2. Para cada lacuna, indique:
+            Instruções Críticas de Análise:
+            1. Scores marcados como '(Inferido)' representam potencial latente identificado pela nossa rede neural, não erros reais. Trate-os como áreas de expansão e descoberta.
+            2. Scores baixos SEM a marcação '(Inferido)' são lacunas reais (erros em questões). Priorize estas para remediação urgente.
+            3. Identifique as 3 maiores lacunas prioritárias (focando em erros reais primeiro).
+            4. Para cada lacuna, indique:
                - O que estudar (temas específicos e fundamentais).
                - Por que estudar (relevância técnica para a matriz ENEM).
                - Uma orientação prática de estudo.
-            3. TOM: Estritamente profissional, neutro e direto. Proibido o uso de personas, saudações ou tratamentos informais.
+            5. TOM: Estritamente profissional, neutro e direto. Proibido o uso de personas, saudações ou tratamentos informais.
             
             FORMATO JSON:
             {{

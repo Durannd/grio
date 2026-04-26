@@ -97,6 +97,7 @@ def get_diagnostic_report(
                        s.description as description, 
                        r.score as score,
                        a.name as area,
+                       COALESCE(r.is_inferred, false) as is_inferred,
                        labels(s)[0] as type
             """, user_id=current_user.id)
             proficiencies = [dict(record) for record in result if record.get("score", 0) >= 0]

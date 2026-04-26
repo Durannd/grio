@@ -196,19 +196,25 @@
         {:else}
           <div class="proficiency-list">
             {#each learningPath.slice(0, 5) as concept}
-              <div class="proficiency-item glass-panel">
+              <div class="proficiency-item glass-panel" class:inferred={concept.is_inferred}>
                 <div class="prof-header">
                   <h4>{formatPedagogicalCode(concept.concept_name)}</h4>
-                  <div class="prof-score" class:high={concept.score >= 0.7} class:med={concept.score >= 0.4 && concept.score < 0.7} class:low={concept.score < 0.4}>
-                    {(concept.score * 100).toFixed(0)}%
-                  </div>
+                  {#if concept.is_inferred}
+                    <div class="inferred-badge">POTENCIAL</div>
+                  {:else}
+                    <div class="prof-score" class:high={concept.score >= 0.7} class:med={concept.score >= 0.4 && concept.score < 0.7} class:low={concept.score < 0.4}>
+                      {(concept.score * 100).toFixed(0)}%
+                    </div>
+                  {/if}
                 </div>
                 <p class="prof-desc">{concept.description}</p>
-                <div class="progress-bar-container">
-                  <div class="progress-bar" style="width: {concept.score * 100}%; background-color: {concept.score >= 0.7 ? '#10B981' : (concept.score >= 0.4 ? '#F59E0B' : '#EF4444')}"></div>
+                <div class="progress-bar-container" class:inferred-bar={concept.is_inferred}>
+                  <div class="progress-bar" style="width: {concept.score * 100}%; background-color: {concept.is_inferred ? '#6B7280' : (concept.score >= 0.7 ? '#10B981' : (concept.score >= 0.4 ? '#F59E0B' : '#EF4444'))}"></div>
                 </div>
                 <div class="prof-footer mt-4">
-                  <a href="/estudar/{concept.concept_name}" class="btn btn-primary btn-sm" style="width: 100%; text-align: center;">Estudar este conceito</a>
+                  <a href="/estudar/{concept.concept_name}" class="btn btn-primary btn-sm" style="width: 100%; text-align: center;">
+                    {concept.is_inferred ? 'Explorar Habilidade' : 'Estudar este conceito'}
+                  </a>
                 </div>
               </div>
             {/each}

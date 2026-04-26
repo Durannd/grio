@@ -47,6 +47,12 @@ O Griô evoluiu de um MVP de Matemática para uma plataforma multi-disciplinar (
 - **Impacto**: O Gemini agora prioriza "buracos negros" de conhecimento no Plano de Estudos e o Dashboard exibe barras vermelhas (0%) para incentivar a recuperação imediata.
 - **Status**: ✅ Concluído.
 
+### 8. Proficiência Inferida (Grafo Transparente)
+- **O que é**: Distinção técnica entre proficiência real (questão feita) e inferida (propagada por proximidade).
+- **Mecânica**: Adição da flag `is_inferred` no Neo4j e UI dedicada no Dashboard ("Selos de Potencial").
+- **Impacto**: Elimina falsos negativos no dashboard e permite que a IA diferencie "Oportunidade" de "Deficiência".
+- **Status**: ✅ Concluído.
+
 ---
 
 ## 📈 Próximos Passos (Backlog de Maturidade)

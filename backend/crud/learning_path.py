@@ -6,7 +6,7 @@ def get_user_learning_path(driver: Driver, user_id: int):
         result = session.run(
             "MATCH (u:User {id: $user_id})-[r:HAS_PROFICIENCY]->(s:Skill) "
             "WHERE r.score >= 0 "
-            "RETURN s.id AS id, s.description AS description, r.score AS score "
+            "RETURN s.id AS id, s.description AS description, r.score AS score, COALESCE(r.is_inferred, false) AS is_inferred "
             "ORDER BY r.score ASC",
             user_id=user_id
         )
@@ -16,7 +16,8 @@ def get_user_learning_path(driver: Driver, user_id: int):
             path.append({
                 "concept_name": record["id"], # Usando ID como nome (ex: MT_C1_H1)
                 "description": record["description"],
-                "score": record["score"]
+                "score": record["score"],
+                "is_inferred": record["is_inferred"]
             })
 
         if not path:

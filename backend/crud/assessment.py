@@ -135,7 +135,7 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
                 UNWIND $proficiencies AS prof
                 MATCH (target) WHERE target.id = prof.id
                 MERGE (u)-[r:HAS_PROFICIENCY]->(target)
-                SET r.score = prof.score
+                SET r.score = prof.score, r.is_inferred = false
                 
                 // Propagação seletiva: só propaga se o score original for alto (> 0.6)
                 WITH u, target, r
@@ -143,7 +143,7 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
                 MATCH (target)-[:PART_OF]->(c:Competence)<-[:PART_OF]-(related:Skill)
                 WHERE NOT (u)-[:HAS_PROFICIENCY]->(related)
                 MERGE (u)-[r2:HAS_PROFICIENCY]->(related)
-                SET r2.score = r.score * 0.2
+                SET r2.score = r.score * 0.2, r2.is_inferred = true
                 
                 WITH u
                 UNWIND $answered_ids AS q_id
