@@ -278,7 +278,7 @@
     margin: 0.5rem 0;
   }
 
-  .profile-dropdown a, .account-btn, .logout-btn {
+  .account-btn, .logout-btn {
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     font-size: 0.9rem;
@@ -286,7 +286,7 @@
     text-align: left;
   }
 
-  .profile-dropdown a:hover, .account-btn:hover, .logout-btn:hover {
+  .account-btn:hover, .logout-btn:hover {
     background: rgba(255,255,255,0.05);
     color: var(--primary-light) !important;
   }

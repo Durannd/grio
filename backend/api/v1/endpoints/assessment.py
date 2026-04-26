@@ -118,11 +118,14 @@ def read_diagnostic_assessment_by_area(
     area: str,
     current_user: User = Depends(get_current_user)
 ):
+    area_map = {"MT": "Matemática", "CN": "Natureza", "LC": "Linguagens", "CH": "Humanas"}
+    mapped_area = area_map.get(area, area)
+    
     driver = get_driver()
     with driver.session() as session:
         result = session.run("""
-            MATCH (a:Area {name: $area})<-[:BELONGS_TO]-(c:Competence)<-[:PART_OF]-(s:Skill)<-[:EVALUATES]-(q:Question)
-            WHERE NOT (:User {id: $user_id})-[:ANSWERED]->(q)
+            MATCH (a:Area)<-[:BELONGS_TO]-(c:Competence)<-[:PART_OF]-(s:Skill)<-[:EVALUATES]-(q:Question)
+            WHERE a.name CONTAINS $mapped_area AND NOT (:User {id: $user_id})-[:ANSWERED]->(q)
             WITH q, c
             ORDER BY c.weight DESC, rand()
             RETURN q.id as id, q.text as text, q.difficulty as difficulty, 
@@ -130,7 +133,7 @@ def read_diagnostic_assessment_by_area(
                    q.option_a as option_a, q.option_b as option_b, q.option_c as option_c,
                    q.option_d as option_d, q.option_e as option_e
             LIMIT 20
-        """, area=area, user_id=current_user.id)
+        """, mapped_area=mapped_area, user_id=current_user.id)
         
         questions = []
         for record in result:

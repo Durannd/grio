@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from "$app/stores";
   import { onMount } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { goto } from "$app/navigation";
@@ -30,7 +31,12 @@
 
   onMount(async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/assessment", {
+      const area = $page.url.searchParams.get("area");
+      const url = area 
+        ? `http://localhost:8000/api/v1/assessment/diagnostico/${area}` 
+        : "http://localhost:8000/api/v1/assessment";
+        
+      const response = await fetch(url, {
         credentials: "include"
       });
 

@@ -143,7 +143,7 @@
   .mt-4 { margin-top: 1rem; }
   .glass-panel { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 2rem; }
   .section-title { font-size: 1.5rem; font-weight: 600; color: #FFF; margin-bottom: 1.5rem; }
-  .proficiency-list { display: flex; flex-direction: column; gap: 1.25rem; }
+  .proficiency-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
   .proficiency-item { padding: 1.5rem; transition: transform 0.2s ease, border-color 0.2s ease; }
   .proficiency-item:hover { transform: translateX(4px); border-color: rgba(255,255,255,0.15); }
   .prof-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
