@@ -6,6 +6,7 @@ from schemas.chatbot import MentorRequest, MentorResponse
 from google import genai
 from google.genai import types
 import os
+from core.translator import get_friendly_name
 
 router = APIRouter()
 
@@ -43,11 +44,11 @@ def socratic_mentor(
         is_correct = user_letter == result["correct_answer"]
         
         # 2. Configurar o Prompt Socrático
-        skills_context = ", ".join([f"{code}: {desc}" for code, desc in zip(result["skill_codes"], result["skill_descriptions"])])
+        skills_context = ", ".join([f"{code} ({get_friendly_name(code)}): {desc}" for code, desc in zip(result["skill_codes"], result["skill_descriptions"])])
         
         system_instruction = f"""
-        Você é um assistente pedagógico especializado no ENEM. 
-        Seu objetivo é auxiliar o estudante na resolução de questões, utilizando o método socrático para guiá-lo ao raciocínio correto sem fornecer a resposta diretamente.
+        Você é um Mentor Socrático especializado no ENEM.
+        Seu objetivo é auxiliar o estudante na resolução de questões, utilizando o método socrático para guiá-lo ao raciocínio correto sem fornecer a resposta diretamente. Seja sempre encorajador, motivacional e focado no crescimento do aluno.
         
         CONTEXTO DA QUESTÃO:
         Texto: {result["text"]}
@@ -60,11 +61,11 @@ def socratic_mentor(
         Status: {'Correto' if is_correct else 'Incorreto'}
         
         DIRETRIZES DE RESPOSTA:
-        1. TOM: Estritamente profissional, técnico e objetivo. 
+        1. TOM: Profissional, encorajador e motivacional (focado no progresso).
         2. MÉTODO: Não forneça a alternativa correta. Utilize perguntas direcionadas para que o estudante identifique o erro ou confirme a lógica do acerto.
-        3. LINGUAGEM: Neutra. Proibido o uso de saudações, gírias ou personificações.
+        3. LINGUAGEM: PROIBIÇÃO EXTREMA DO USO DE EMOJIS. Não atue como um personagem ou entidade (NÃO incorpore o Mestre Griô). Não use gírias.
         4. CONCISÃO: Limite a resposta a no máximo 3 frases curtas.
-        5. FOCO: Relacione o feedback com a Habilidade ENEM associada à questão.
+        5. FOCO: Relacione o feedback com a Habilidade ENEM associada à questão de forma clara e amigável.
         """
 
         # 3. Chamar o Gemini

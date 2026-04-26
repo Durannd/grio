@@ -113,6 +113,44 @@ def read_practice_assessment(
             
     return {"questions": questions}
 
+@router.get("/diagnostico/{area}", response_model=Assessment)
+def read_diagnostic_assessment_by_area(
+    area: str,
+    current_user: User = Depends(get_current_user)
+):
+    driver = get_driver()
+    with driver.session() as session:
+        result = session.run("""
+            MATCH (a:Area {name: $area})<-[:BELONGS_TO]-(c:Competence)<-[:PART_OF]-(s:Skill)<-[:EVALUATES]-(q:Question)
+            WHERE NOT (:User {id: $user_id})-[:ANSWERED]->(q)
+            WITH q, c
+            ORDER BY c.weight DESC, rand()
+            RETURN q.id as id, q.text as text, q.difficulty as difficulty, 
+                   q.answer as correct_answer,
+                   q.option_a as option_a, q.option_b as option_b, q.option_c as option_c,
+                   q.option_d as option_d, q.option_e as option_e
+            LIMIT 20
+        """, area=area, user_id=current_user.id)
+        
+        questions = []
+        for record in result:
+            options = [
+                {"id": 1, "text": record["option_a"] or ""},
+                {"id": 2, "text": record["option_b"] or ""},
+                {"id": 3, "text": record["option_c"] or ""},
+                {"id": 4, "text": record["option_d"] or ""},
+                {"id": 5, "text": record["option_e"] or ""},
+            ]
+            questions.append({
+                "id": record["id"],
+                "text": record["text"],
+                "difficulty": record["difficulty"],
+                "concept_name": f"Diagnóstico: {area}",
+                "options": options
+            })
+            
+    return {"questions": questions}
+
 @router.post("/submit")
 def submit_assessment(
     submission: AssessmentSubmission, 

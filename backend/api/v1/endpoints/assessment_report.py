@@ -9,6 +9,7 @@ import os
 import json
 from google import genai
 from google.genai import types
+from core.translator import get_friendly_name
 
 router = APIRouter()
 
@@ -92,6 +93,7 @@ def get_diagnostic_report(
         with driver.session() as session:
             result = session.run("""
                 MATCH (u:User {id: $user_id})-[r:HAS_PROFICIENCY]->(s:Skill)
+                WHERE COALESCE(r.is_inferred, false) = false
                 OPTIONAL MATCH (s)-[:PART_OF]->(c:Competence)-[:BELONGS_TO]->(a:Area)
                 RETURN s.id as id, 
                        s.description as description, 

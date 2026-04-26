@@ -55,7 +55,10 @@ O Griô evoluiu de um MVP de Matemática para uma plataforma multi-disciplinar (
 
 ---
 
-## 📈 Próximos Passos (Backlog de Maturidade)
+### Fase Pivot: Experiência Area-First (Griô 2.0)
+- [ ] **Interface Monumental**: Implementar os 4 cards de Área com estética Liquid Glass 2.0.
+- [ ] **Tradução Pedagógica**: Criar camada de tradução para eliminar siglas técnicas (ex: CN_C1_H1) da visão do aluno.
+- [ ] **Filtro de Contexto LLM**: Refatorar payload do diagnóstico para enviar apenas interações reais, ocultando dados inferidos.
 
 ### Fase B: Expansão de Base
 - [ ] **Simulados Customizados**: Gerar provas baseadas apenas nas "feridas" (lacunas) transversais do aluno.
