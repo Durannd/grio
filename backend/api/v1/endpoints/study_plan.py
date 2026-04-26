@@ -44,7 +44,7 @@ async def get_study_plan(
             # 2. Buscar proficiências do usuário
             result = session.run("""
                 MATCH (u:User {id: $user_id})-[r:HAS_PROFICIENCY]->(s:Skill)
-                WHERE r.score > 0
+                WHERE r.score >= 0
                 RETURN s.id as id, s.description as description, r.score as score
                 ORDER BY r.score ASC
                 LIMIT 5

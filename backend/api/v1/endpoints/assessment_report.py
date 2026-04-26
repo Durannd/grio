@@ -87,7 +87,7 @@ def get_diagnostic_report(
 
     # Determine proficiencies to analyze
     if latest_attempt.proficiencies_snapshot is not None:
-        proficiencies = [p for p in latest_attempt.proficiencies_snapshot if p['score'] > 0]
+        proficiencies = [p for p in latest_attempt.proficiencies_snapshot if p.get('score', 0) >= 0]
     else:
         with driver.session() as session:
             result = session.run("""
@@ -99,7 +99,7 @@ def get_diagnostic_report(
                        a.name as area,
                        labels(s)[0] as type
             """, user_id=current_user.id)
-            proficiencies = [dict(record) for record in result if record["score"] > 0]
+            proficiencies = [dict(record) for record in result if record.get("score", 0) >= 0]
     
     if latest_attempt.analysis_json and latest_attempt.proficiencies_snapshot is not None:
         # NOTE: We still pass the filtered proficiencies here. The snapshot in DB remains complete.
@@ -174,7 +174,7 @@ def get_assessment_attempt(
     if not attempt:
         raise HTTPException(status_code=404, detail="Tentativa não encontrada")
         
-    proficiencies = [p for p in (attempt.proficiencies_snapshot or []) if p.get('score', 0) > 0]
+    proficiencies = [p for p in (attempt.proficiencies_snapshot or []) if p.get('score', 0) >= 0]
 
     # Se não tem análise mas tem proficiências, gera agora (Lazy Loading)
     if not attempt.analysis_json and proficiencies:

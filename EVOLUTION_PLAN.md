@@ -42,12 +42,16 @@ O Griô evoluiu de um MVP de Matemática para uma plataforma multi-disciplinar (
 - **Mecânica**: Seleciona até 4 questões de competências diferentes para cada uma das 4 áreas (Mat, Nat, Hum, Lin).
 - **Status**: ✅ Concluído.
 
+### 7. Visibilidade Total de Lacunas (0%)
+- **O que é**: Fim da supressão de habilidades com score zerado no pipeline de dados.
+- **Impacto**: O Gemini agora prioriza "buracos negros" de conhecimento no Plano de Estudos e o Dashboard exibe barras vermelhas (0%) para incentivar a recuperação imediata.
+- **Status**: ✅ Concluído.
+
 ---
 
 ## 📈 Próximos Passos (Backlog de Maturidade)
 
 ### Fase B: Expansão de Base
-- [ ] **Ingestão em Larga Escala**: Scripts para importar Natureza e Humanas (ENEM 2020-2024).
 - [ ] **Simulados Customizados**: Gerar provas baseadas apenas nas "feridas" (lacunas) transversais do aluno.
 
 ### Fase C: Refinamento Pedagógico

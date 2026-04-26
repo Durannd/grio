@@ -2,10 +2,10 @@ from neo4j import Driver
 
 def get_user_learning_path(driver: Driver, user_id: int):
     with driver.session() as session:
-        # Busca habilidades onde o usuário tem proficiência (> 0), ordenados por score (prioriza o que ele menos sabe)
+        # Busca habilidades onde o usuário tem proficiência, ordenados por score (prioriza o que ele menos sabe)
         result = session.run(
             "MATCH (u:User {id: $user_id})-[r:HAS_PROFICIENCY]->(s:Skill) "
-            "WHERE r.score > 0 "
+            "WHERE r.score >= 0 "
             "RETURN s.id AS id, s.description AS description, r.score AS score "
             "ORDER BY r.score ASC",
             user_id=user_id
