@@ -44,7 +44,7 @@ def socratic_mentor(
         is_correct = user_letter == result["correct_answer"]
         
         # 2. Configurar o Prompt Socrático
-        skills_context = ", ".join([f"{code} ({get_friendly_name(code)}): {desc}" for code, desc in zip(result["skill_codes"], result["skill_descriptions"])])
+        skills_context = ", ".join([f"{get_friendly_name(code)}: {desc}" for code, desc in zip(result["skill_codes"], result["skill_descriptions"])])
         
         system_instruction = f"""
         Você é um Mentor Socrático especializado no ENEM.

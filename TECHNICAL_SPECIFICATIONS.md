@@ -12,7 +12,7 @@ A arquitetura do Griô é dividida em três pilares fundamentais, selecionados p
 - **Banco de Dados de Conhecimento (Graph DB)**: **Neo4j**. Utilizado para mapear as complexas relações entre questões, habilidades (BNCC/ENEM) e competências, permitindo a propagação de proficiência em tempo real.
 - **Banco de Dados Relacional**: **PostgreSQL**. Armazena dados transacionais, perfis de usuários, histórico imutável de avaliações e streaks de atividade.
 - **Inteligência Artificial**: **Google Gemini (Família 1.5 e 2.0)**.
-    - `gemini-2.5-flash`: Utilizado para auditoria pedagógica, geração de micro-aulas via RAG e mentoria socrática.
+    - `gemini-2.5-flash`: Utilizado para auditoria pedagógica, geração de micro-aulas via RAG e **Mentoria Socrática** (focada no encorajamento e crescimento, com proibição absoluta de personas/emojis). Operações blindadas com *Context Hygiene* no Cypher (evita vazamento de dados inferidos para a LLM).
     - `text-embedding-004`: Gerador de vetores de alta dimensionalidade (768d) para busca semântica e similaridade de questões.
 - **Frontend**: **SvelteKit** com TypeScript. Focado em uma experiência de usuário (UX) fluida ("Warm Earthy Elegance"), utilizando store de estado para Toasts e animações reativas.
 

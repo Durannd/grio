@@ -84,7 +84,7 @@ Implementamos o fluxo completo de autenticação via **HttpOnly Cookies**:
 
 Localizado na pasta `frontend/`. O SvelteKit é focado em simplicidade reativa.
 
-*   **Design System (`src/app.css`)**: Não estamos usando frameworks como Tailwind ou Bootstrap. Desenvolvemos nossa própria folha de estilo usando **Variáveis CSS** no topo do arquivo. Nosso tema atual é o "Warm Earthy Elegance".
+*   **Design System (`src/app.css`)**: Não estamos usando frameworks como Tailwind ou Bootstrap. Desenvolvemos nossa própria folha de estilo usando **Variáveis CSS** no topo do arquivo. Nosso tema atual é o "Liquid Glass 2.0", focado em fundos escuros (#0A0A0B), bordas finas e detalhes neon por Área do Conhecimento.
 *   **Fluxo de Páginas**: 
     - As páginas ficam em `src/routes/`.
     - Os formulários e componentes ficam em `src/lib/components/`.

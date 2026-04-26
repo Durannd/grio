@@ -140,6 +140,8 @@
     min-height: 100vh;
     width: 100%;
     overflow-x: hidden;
+    background-color: #0A0A0B;
+    color: #FFF;
   }
 
   .glass-nav {

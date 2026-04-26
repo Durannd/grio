@@ -12,6 +12,13 @@
   // Tab management
   let activeTab = 'technical'; // 'profile' | 'technical'
 
+  $: groupedPath = learningPath.reduce((acc: any, item) => {
+    const area = item.concept_name.substring(0, 2);
+    if (!acc[area]) acc[area] = [];
+    acc[area].push(item);
+    return acc;
+  }, {});
+
   onMount(async () => {
     try {
       const fetchOptions = {
@@ -25,10 +32,10 @@
       }
       user = await userRes.json();
 
-      const pathRes = await fetch("http://localhost:8000/api/v1/learning-path", fetchOptions);
+      const pathRes = await fetch("http://localhost:8000/api/v1/learning-path/full", fetchOptions);
       if (pathRes.ok) {
         const data = await pathRes.json();
-        learningPath = data.learning_path;
+        learningPath = data.learning_path || data;
       }
 
       loading = false;
@@ -57,7 +64,11 @@
   {:else}
     <div class="profile-header animate-fade-in">
       <div class="header-content">
-        <div class="avatar">{user.name.charAt(0).toUpperCase()}</div>
+        {#if user.avatar_url}
+          <img src={user.avatar_url} alt={user.name} class="avatar" />
+        {:else}
+          <div class="avatar">{user.name.charAt(0).toUpperCase()}</div>
+        {/if}
         <div>
           <h1 class="page-title">{user.name}</h1>
           <p class="page-subtitle">{user.email}</p>
@@ -121,34 +132,41 @@
               <p>Ainda não temos dados suficientes para traçar sua proficiência granular.</p>
             </div>
           {:else}
-            <div class="proficiency-list">
-              {#each learningPath as concept (concept.concept_name)}
-                <div class="proficiency-item glass-panel" class:inferred={concept.is_inferred}>
-                  <div class="prof-header">
-                    <div class="prof-title-wrap">
-                      <span class="prof-code">{concept.concept_name}</span>
-                      <h4>{formatPedagogicalCode(concept.concept_name)}</h4>
-                    </div>
-                    {#if concept.is_inferred}
-                      <div class="inferred-badge">POTENCIAL</div>
-                    {:else}
-                      <div class="prof-score" class:high={concept.score >= 0.7} class:med={concept.score >= 0.4 && concept.score < 0.7} class:low={concept.score < 0.4}>
-                        {(concept.score * 100).toFixed(0)}%
+            {#each Object.entries(groupedPath) as [areaCode, concepts]}
+              <div class="area-group mb-4">
+                <h3 class="area-group-title">
+                  {areaCode === 'MT' ? 'Matemática e suas Tecnologias' : areaCode === 'CN' ? 'Ciências da Natureza e suas Tecnologias' : areaCode === 'LC' ? 'Linguagens, Códigos e suas Tecnologias' : 'Ciências Humanas e suas Tecnologias'}
+                </h3>
+                <div class="proficiency-list">
+                  {#each concepts as concept (concept.concept_name)}
+                    <div class="proficiency-item glass-panel" class:inferred={concept.is_inferred}>
+                      <div class="prof-header">
+                        <div class="prof-title-wrap">
+                          <span class="prof-code">{concept.concept_name}</span>
+                          <h4>{formatPedagogicalCode(concept.concept_name)}</h4>
+                        </div>
+                        {#if concept.is_inferred}
+                          <div class="inferred-badge">POTENCIAL</div>
+                        {:else}
+                          <div class="prof-score" class:high={concept.score >= 0.7} class:med={concept.score >= 0.4 && concept.score < 0.7} class:low={concept.score < 0.4}>
+                            {(concept.score * 100).toFixed(0)}%
+                          </div>
+                        {/if}
                       </div>
-                    {/if}
-                  </div>
-                  <p class="prof-desc">{concept.description}</p>
-                  <div class="progress-bar-container" class:inferred-bar={concept.is_inferred}>
-                    <div class="progress-bar" style="width: {concept.score * 100}%; background-color: {concept.is_inferred ? '#6B7280' : (concept.score >= 0.7 ? '#10B981' : (concept.score >= 0.4 ? '#F59E0B' : '#EF4444'))}"></div>
-                  </div>
-                  <div class="prof-footer mt-4">
-                    <a href="/estudar/{concept.concept_name}" class="btn btn-primary btn-sm" style="width: 100%; text-align: center;">
-                      {concept.is_inferred ? 'Explorar Habilidade' : 'Estudar este conceito'}
-                    </a>
-                  </div>
+                      <p class="prof-desc">{concept.description}</p>
+                      <div class="progress-bar-container" class:inferred-bar={concept.is_inferred}>
+                        <div class="progress-bar" style="width: {concept.score * 100}%; background-color: {concept.is_inferred ? '#6B7280' : (concept.score >= 0.7 ? '#10B981' : (concept.score >= 0.4 ? '#F59E0B' : '#EF4444'))}"></div>
+                      </div>
+                      <div class="prof-footer mt-4">
+                        <a href="/estudar/{concept.concept_name}" class="btn btn-primary btn-sm" style="width: 100%; text-align: center;">
+                          {concept.is_inferred ? 'Explorar Habilidade' : 'Estudar este conceito'}
+                        </a>
+                      </div>
+                    </div>
+                  {/each}
                 </div>
-              {/each}
-            </div>
+              </div>
+            {/each}
           {/if}
         </div>
       {/if}
@@ -161,8 +179,6 @@
     max-width: 1000px;
     margin: 0 auto;
     padding: 2rem 1.5rem;
-    background-color: #0A0A0B;
-    min-height: 100vh;
   }
 
   /* Status Screens */
@@ -224,14 +240,16 @@
   .avatar {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #00D1FF, #BFFF00);
+    background: var(--primary);
+    border: 2px solid var(--primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2.5rem;
     font-weight: 800;
-    color: #000;
+    color: white;
+    object-fit: cover;
   }
 
   .page-title {
@@ -393,6 +411,19 @@
   /* Technical Section */
   .section-header {
     margin-bottom: 2rem;
+  }
+
+  .area-group {
+    margin-bottom: 3rem;
+  }
+
+  .area-group-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-light, #DFB97B);
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 0.5rem;
   }
 
   .proficiency-list {

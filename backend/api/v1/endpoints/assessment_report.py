@@ -19,10 +19,9 @@ def generate_ai_analysis(proficiencies: list):
         return None
 
     prof_summary = "\n".join([
-        f"- [{p.get('area', 'Geral')}] {p['id']}: {p['score']*100:.1f}% - {p['description']}" 
+        f"- [{p.get('area', 'Geral')}] {get_friendly_name(p['id'])}: {p['score']*100:.1f}% - {p['description']}"
         for p in proficiencies
-    ])
-    
+    ])    
     prompt = f"""
     Você é um assistente de análise pedagógica especializado no ENEM.
     Sua tarefa é converter dados técnicos de proficiência em recomendações diagnósticas objetivas.

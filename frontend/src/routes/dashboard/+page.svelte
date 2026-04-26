@@ -51,9 +51,9 @@
 
   $: areaScores = {
     'MT': { label: 'Matemática', color: '#00D1FF', score: 0, count: 0, delay: 150 },
-    'CN': { label: 'Natureza', color: '#BFFF00', score: 0, count: 0, delay: 300 },
+    'CN': { label: 'Ciências da Natureza', color: '#BFFF00', score: 0, count: 0, delay: 300 },
     'LC': { label: 'Linguagens', color: '#FF4D00', score: 0, count: 0, delay: 450 },
-    'CH': { label: 'Humanas', color: '#FFD700', score: 0, count: 0, delay: 600 }
+    'CH': { label: 'Ciências Humanas', color: '#FFD700', score: 0, count: 0, delay: 600 }
   };
 
   $: {
@@ -117,9 +117,10 @@
     <!-- Liquid Glass 2.0 Area Cards -->
     <div class="area-cards-grid">
       {#each areaCards as area (area.id)}
-        <div 
+        <a 
+          href="/area/{area.id}"
           class="area-card"
-          style="--area-color: {area.color};"
+          style="--area-color: {area.color}; text-decoration: none;"
           in:fly={{ y: 20, duration: 800, delay: area.delay }}
         >
           <div class="area-content">
@@ -132,7 +133,7 @@
               <div class="progress-fill" style="width: {area.score * 100}%;"></div>
             </div>
           </div>
-        </div>
+        </a>
       {/each}
     </div>
 
@@ -145,7 +146,7 @@
 
         {#if history.length > 0}
           <div class="plan-cards">
-            {#each history as item}
+            {#each history.slice(0, 2) as item}
               <div class="plan-card glass-panel group">
                 <div class="plan-card-header">
                   <div class="priority-badge">Data: {formatDate(item.created_at)}</div>
@@ -159,6 +160,9 @@
                 </div>
               </div>
             {/each}
+          </div>
+          <div class="mt-4 text-center">
+            <a href="/history" class="btn btn-outline" style="width: 100%;">Ver todo o histórico</a>
           </div>
         {:else}
           <div class="glass-panel empty-state">
@@ -189,8 +193,6 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 2rem 1.5rem;
-    background-color: #0A0A0B;
-    min-height: 100vh;
   }
 
   /* Status Screens */
@@ -236,6 +238,7 @@
   .mt-4 { margin-top: 1rem; }
   .mt-2 { margin-top: 0.5rem; }
   .mb-4 { margin-bottom: 1rem; }
+  .text-center { text-align: center; }
 
   /* Header */
   .dashboard-header {
@@ -320,6 +323,7 @@
     padding: 2rem 1.5rem;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Spring-like */
+    display: block;
   }
 
   .area-card::before {
