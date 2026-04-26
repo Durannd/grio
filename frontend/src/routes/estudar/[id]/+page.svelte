@@ -38,9 +38,9 @@
 
 <div class="study-container container">
   <div class="header-nav animate-slide-up stagger-1">
-    <a href="/dashboard" class="btn btn-outline btn-sm">
+    <a href="/area/{skill_id.substring(0, 2)}" class="btn btn-outline btn-sm">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="m15 18-6-6 6-6"/></svg>
-      Voltar ao Dashboard
+      Voltar para Área
     </a>
   </div>
 
@@ -65,7 +65,7 @@
     <article class="lesson-content animate-slide-up stagger-2">
       <header class="lesson-header glass-panel mb-8">
         <div class="area-badge">{microlesson.area}</div>
-        <h1 class="text-gradient">{formatPedagogicalCode(microlesson.skill_id)}</h1>
+        <h1>{formatPedagogicalCode(microlesson.skill_id)}</h1>
         <p class="description">{microlesson.description}</p>
       </header>
 
@@ -79,7 +79,7 @@
           <p>Agora que você revisou este conceito, que tal testar seus conhecimentos com um micro-simulado direcionado?</p>
           <div class="actions mt-6">
             <a href="/praticar/{microlesson.skill_id}" class="btn btn-primary">Praticar Agora</a>
-            <a href="/dashboard" class="btn btn-outline ml-4">Voltar ao Dashboard</a>
+            <a href="/area/{skill_id.substring(0, 2)}" class="btn btn-outline ml-4">Voltar para Área</a>
           </div>
         </div>
       </footer>
@@ -123,16 +123,16 @@
   .orbit {
     position: absolute;
     inset: 0;
-    border: 2px solid rgba(201, 160, 94, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    border-top-color: var(--primary);
+    border-top-color: #FFF;
     animation: spin 1.5s linear infinite;
   }
 
   .center-glow {
     position: absolute;
     inset: 30%;
-    background: var(--primary);
+    background: #FFF;
     filter: blur(10px);
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
@@ -154,15 +154,15 @@
   .lesson-header {
     padding: 3rem;
     text-align: center;
-    border-bottom: 1px solid rgba(201, 160, 94, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .area-badge {
     display: inline-block;
     padding: 0.35rem 1rem;
-    background: rgba(201, 160, 94, 0.1);
-    border: 1px solid rgba(201, 160, 94, 0.3);
-    color: var(--primary-light);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #FFF;
     border-radius: var(--radius-full);
     font-size: 0.75rem;
     font-weight: 700;
@@ -224,7 +224,7 @@
 
   .markdown-body :global(blockquote) {
     border-left: 4px solid var(--primary);
-    background: rgba(201, 160, 94, 0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding: 1.5rem 2rem;
     margin: 2rem 0;
     font-style: italic;
@@ -241,8 +241,8 @@
   .completion-card {
     text-align: center;
     padding: 3rem;
-    border: 1px solid rgba(201, 160, 94, 0.3);
-    background: linear-gradient(145deg, rgba(201, 160, 94, 0.05), rgba(0,0,0,0.4));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.02), rgba(0,0,0,0.4));
   }
 
   .completion-card h3 {
