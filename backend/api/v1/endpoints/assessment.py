@@ -20,26 +20,27 @@ def read_assessment(
 ):
     driver = get_driver()
     with driver.session() as session:
-        # Algoritmo de seleção por competência para garantir abrangência (Breadth-First)
-        # 1. Tenta pegar 1 questão de cada competência aleatória
-        # 2. Remove restrição de ano (is_diagnostic) para evitar o erro de 2009
+        # Algoritmo de seleção Top-Down equilibrado por Área
+        # 1. Tenta pegar até 4 questões distintas (de competências diferentes) para cada Área
+        # 2. Mantém o fallback caso o banco não tenha questões suficientes em alguma área
         result = session.run("""
-            MATCH (c:Competence)
-            WITH c, rand() as r ORDER BY r
-            MATCH (q:Question)-[:EVALUATES]->(:Skill)-[:PART_OF]->(c)
+            // Busca equilibrada por Área -> Competência
+            MATCH (a:Area)<-[:BELONGS_TO]-(c:Competence)<-[:PART_OF]-(:Skill)<-[:EVALUATES]-(q:Question)
             WHERE NOT (:User {id: $user_id})-[:ANSWERED]->(q)
-            WITH c, q, rand() as rq ORDER BY rq
-            WITH c, head(collect(q)) as chosen_q
-            WITH chosen_q WHERE chosen_q IS NOT NULL
-            RETURN chosen_q.id as id, chosen_q.text as text, chosen_q.difficulty as difficulty, 
-                   chosen_q.answer as correct_answer,
-                   chosen_q.option_a as option_a, chosen_q.option_b as option_b, chosen_q.option_c as option_c,
-                   chosen_q.option_d as option_d, chosen_q.option_e as option_e
+            WITH a, c, q, rand() as rq ORDER BY rq
+            WITH a, c, head(collect(q)) as chosen_q // 1 questão por competência
+            WITH a, chosen_q, rand() as rc ORDER BY rc
+            WITH a, collect(chosen_q)[..4] as area_questions // até 4 questões por área
+            UNWIND area_questions as final_q
+            RETURN final_q.id as id, final_q.text as text, final_q.difficulty as difficulty, 
+                   final_q.answer as correct_answer,
+                   final_q.option_a as option_a, final_q.option_b as option_b, final_q.option_c as option_c,
+                   final_q.option_d as option_d, final_q.option_e as option_e
             LIMIT 15
             
             UNION
             
-            // Fallback: se não completou 15 por competência, pega aleatórias restantes
+            // Fallback: se não completou 15, pega aleatórias restantes
             MATCH (q:Question)
             WHERE NOT (:User {id: $user_id})-[:ANSWERED]->(q)
             WITH q, rand() as r ORDER BY r

@@ -37,6 +37,11 @@ O Griô evoluiu de um MVP de Matemática para uma plataforma multi-disciplinar (
 - **Tom de IA**: Prompts 100% neutralizados e profissionalizados (sem personas ou informalidades).
 - **Status**: ✅ Concluído.
 
+### 6. Diagnóstico Equilibrado (Top-Down)
+- **O que é**: Algoritmo de seleção de questões que força a diversidade por **Área do Conhecimento**.
+- **Mecânica**: Seleciona até 4 questões de competências diferentes para cada uma das 4 áreas (Mat, Nat, Hum, Lin).
+- **Status**: ✅ Concluído.
+
 ---
 
 ## 📈 Próximos Passos (Backlog de Maturidade)
