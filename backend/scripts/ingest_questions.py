@@ -89,10 +89,12 @@ def get_enrichment(question_text, choices, area_hint, current_topic_subtopics, r
     2. COMPETENCIES e SKILLS: Escolha apenas IDs existentes nesta matriz oficial:
     {json.dumps(matrix_context, indent=2, ensure_ascii=False)}
     
-    3. SUBTOPICS (CONSOLIDAÇÃO): 
-       Aqui estão subtópicos já conhecidos para esta área/tópico: {list(current_topic_subtopics)}
-       - Se a questão se encaixar perfeitamente em um deles, USE O NOME EXATO.
-       - Se precisar criar um novo, seja conciso (máx 3 palavras) e use "Title Case".
+    3. SUBTOPICS (CONSOLIDAÇÃO EXTREMA): 
+       Aqui estão subtópicos já cadastrados no banco para esta área: {list(current_topic_subtopics)}
+       - REGRA DE OURO: Você DEVE REUTILIZAR um ou mais subtópicos desta lista se a questão tiver o mínimo de relação.
+       - PROIBIDO criar sinônimos ou especificações (Ex: Se já existe "Poluição", não crie "Poluição da Água").
+       - SÓ crie um novo subtópico se for um conceito TOTALMENTE INÉDITO. 
+       - Se for criar um novo, seja genérico, curto (1 a 3 palavras) e use "Title Case".
     
     4. DIAGNÓSTICO: 'is_diagnostic' true apenas para conceitos base (meta: 15% do total).
     
