@@ -43,14 +43,14 @@ Uma plataforma **gratuita e inteligente** que oferece ao estudante de baixa rend
 
 ## O MVP
 
-O primeiro passo é construir as funcionalidades core para as principais áreas do conhecimento do ENEM — Matemática, Ciências da Natureza, Ciências Humanas e Linguagens — validando o modelo de aprendizado adaptativo.
+O primeiro passo construiu as funcionalidades core para as principais áreas do conhecimento do ENEM — Matemática, Ciências da Natureza, Ciências Humanas e Linguagens — validando o modelo de aprendizado adaptativo. A plataforma opera no modelo **"Area-First"**, onde o aluno navega em ecossistemas focados em cada grande área antes de lidar com diagnósticos técnicos.
 
 **O MVP inclui:**
-- 📝 Prova de nivelamento para mapear o nível do aluno (todas as áreas)
-- 🗺️ Trilha de aprendizado personalizada (Aprenda → Pratique → Domine)
-- 💬 Chat com IA contextual e Micro-aulas geradas dinamicamente
-- 🏆 Sistema de streaks e conquistas
-- 📚 Banco de questões de vestibulares anteriores (ENEM, FUVEST, etc.)
+- 📝 Prova de nivelamento geral (pontapé inicial) e Diagnósticos Específicos por Área.
+- 🗺️ Trilha de aprendizado granular (Aprenda → Pratique → Domine).
+- 💬 Chat com IA (Mentor Socrático) e Micro-aulas geradas dinamicamente.
+- 🏆 Sistema de streaks e conquistas.
+- 📚 Banco de questões de vestibulares anteriores (ENEM, FUVEST, etc.) conectadas a um Grafo de Conhecimento.
 
 ## Stack Tecnológica
 

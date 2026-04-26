@@ -544,12 +544,4 @@
       gap: 1rem;
     }
   }
-</style>columns: 1fr;
-    }
-    
-    .prof-header {
-      flex-direction: column;
-      gap: 1rem;
-    }
-  }
 </style>

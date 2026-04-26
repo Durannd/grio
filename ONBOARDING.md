@@ -115,7 +115,8 @@ Seu dia a dia no projeto deve seguir estes passos básicos:
 ## 8. Dívidas Técnicas Resolvidas & Próximos Passos (To-Do)
 
 1. **Auth Segura**: Migrado para HttpOnly Cookies (✅ Resolvido).
-2. **Banco de Questões Reais**: Povoar o banco PostgreSQL com dados reais de vestibulares, associando cada questão a uma `Concept` do Neo4j.
-3. **Módulo de Prática (Estudar Conceito)**: Implementar a lógica de Micro-aulas geradas por IA e persistidas no Grafo.
+2. **Módulo de Prática (Estudar Conceito)**: Lógica de Micro-aulas e Mentor Socrático implementadas e persistidas no Grafo (✅ Resolvido).
+3. **Experiência Area-First (Griô 2.0)**: Pivot estratégico finalizado. Dashboard baseado em grandes Áreas, layout Liquid Glass 2.0 e navegação focada em ecossistema (✅ Resolvido).
+4. **Banco de Questões Reais**: Povoar o banco PostgreSQL com dados reais de vestibulares, associando cada questão a uma `Concept` do Neo4j (Em andamento).
 
 Boa sorte! A fundação do Griô está sólida como rocha e pronta para escalar.

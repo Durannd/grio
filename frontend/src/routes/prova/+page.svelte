@@ -263,7 +263,6 @@
       {/if}
     </div>
   </div>
-{/if}
 
 <style>
   .onboarding-page {
