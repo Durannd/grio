@@ -215,7 +215,7 @@
   .orbit {
     position: absolute;
     inset: 0;
-    border: 2px solid rgba(201, 160, 94, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     border-top-color: var(--primary);
     animation: spin 1.5s linear infinite;

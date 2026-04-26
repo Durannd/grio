@@ -135,30 +135,29 @@
   }
 </script>
 
-{#if submitting}
-  <div class="status-screen" in:fade>
-    <div class="loader-visual">
-      <div class="orbit"></div>
-      <div class="center-glow"></div>
-    </div>
-    <h2>Estamos analisando a sua trilha...</h2>
-    <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
+<div class="onboarding-page">
+  <div class="background-decor">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
   </div>
-{:else}
-  <div class="onboarding-page">
-    <div class="background-decor">
-      <div class="glow glow-1"></div>
-      <div class="glow glow-2"></div>
-    </div>
 
-    <div class="content-wrapper">
-      {#if loading}
-        <div class="loading-container" in:fade>
-          <div class="gri-loader"></div>
-          <p class="text-gradient">Preparando seu diagnóstico...</p>
+  <div class="content-wrapper">
+    {#if submitting}
+      <div class="status-screen" in:fade>
+        <div class="loader-visual">
+          <div class="orbit"></div>
+          <div class="center-glow"></div>
         </div>
-      {:else if questions.length > 0}
-        <header class="onboarding-header" in:fly={{ y: -20, duration: 600 }}>
+        <h2>Estamos analisando a sua trilha...</h2>
+        <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
+      </div>
+    {:else if loading}
+      <div class="loading-container" in:fade>
+        <div class="gri-loader"></div>
+        <p class="text-gradient">Preparando seu diagnóstico...</p>
+      </div>
+    {:else if questions.length > 0}
+      <header class="onboarding-header" in:fly={{ y: -20, duration: 600 }}>
           <h1 class="text-gradient">Avaliação de Proficiência</h1>
           <div class="header-actions">
             <p class="subtitle">

@@ -108,9 +108,11 @@
         <p class="page-subtitle">Acompanhe seu desempenho por área do conhecimento.</p>
       </div>
       <div class="header-actions">
-        <a href="/prova" class="btn btn-primary">
-          Novo Diagnóstico
-        </a>
+        {#if !user.is_diagnostic_completed}
+          <a href="/prova" class="btn btn-primary">
+            Novo Diagnóstico
+          </a>
+        {/if}
       </div>
     </div>
 

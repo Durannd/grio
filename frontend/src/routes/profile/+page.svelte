@@ -427,9 +427,9 @@
   }
 
   .proficiency-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
   }
 
   .proficiency-item {
@@ -537,6 +537,14 @@
 
     .info-grid {
       grid-template-columns: 1fr;
+    }
+    
+    .prof-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>columns: 1fr;
     }
     
     .prof-header {
