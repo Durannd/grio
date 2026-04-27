@@ -1,6 +1,7 @@
 <script lang="ts">
   import LoginForm from "$lib/components/LoginForm.svelte";
   import { goto } from "$app/navigation";
+  import { api } from "$lib/api";
 
   let errorMessage = "";
 
@@ -13,23 +14,11 @@
       formData.append("username", email);
       formData.append("password", password);
 
-      const response = await fetch("http://localhost:8000/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        credentials: "include",
-        body: formData,
-      });
+      await api.postForm("/auth/login", formData);
+      goto("/dashboard");
 
-      if (response.ok) {
-        goto("/dashboard");
-      } else {
-        const data = await response.json();
-        errorMessage = data.detail || "Email ou senha incorretos.";
-      }
-    } catch (error) {
-      errorMessage = "Não foi possível conectar ao servidor.";
+    } catch (error: any) {
+      errorMessage = error.message || "Não foi possível conectar ao servidor.";
     }
   }
 </script>
