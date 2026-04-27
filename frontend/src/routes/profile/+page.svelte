@@ -4,7 +4,7 @@
   import { goto } from '$app/navigation';
   import { formatPedagogicalCode } from '$lib/utils';
 
-  let learningPath: Array<{concept_name: string, description: string, score: number, is_inferred?: boolean}> = [];
+  let learningPath: Array<{area_id?: string, concept_name: string, description: string, score: number, is_inferred?: boolean}> = [];
   let user: any = null;
   let loading = true;
   let errorMessage = "";
@@ -13,7 +13,7 @@
   let activeTab = 'technical'; // 'profile' | 'technical'
 
   $: groupedPath = learningPath.reduce((acc: any, item) => {
-    const area = item.concept_name.substring(0, 2);
+    const area = item.area_id || (item.concept_name && !item.concept_name.startsWith('SKL-') ? item.concept_name.substring(0, 2) : 'MT');
     if (!acc[area]) acc[area] = [];
     acc[area].push(item);
     return acc;

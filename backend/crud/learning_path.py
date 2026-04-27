@@ -14,6 +14,7 @@ def get_user_learning_path(driver: Driver, user_id: int):
         path = []
         for record in result:
             path.append({
+                "area_id": record["id"][:2] if record["id"] else "MT",
                 "concept_name": record["id"], # Usando ID como nome (ex: MT_C1_H1)
                 "description": record["description"],
                 "score": record["score"],
@@ -22,9 +23,9 @@ def get_user_learning_path(driver: Driver, user_id: int):
 
         if not path:
             return [
-                {"concept_name": "Nivelamento: Matemática", "description": "Fundamentos de lógica e aritmética para o ENEM.", "score": 0.0},
-                {"concept_name": "Nivelamento: Linguagens", "description": "Estratégias de interpretação de texto e gêneros literários.", "score": 0.0},
-                {"concept_name": "Nivelamento: Humanas", "description": "Análise de processos históricos e sociais básicos.", "score": 0.0}
+                {"area_id": "MT", "concept_name": "Nivelamento: Matemática", "description": "Fundamentos de lógica e aritmética para o ENEM.", "score": 0.0},
+                {"area_id": "LC", "concept_name": "Nivelamento: Linguagens", "description": "Estratégias de interpretação de texto e gêneros literários.", "score": 0.0},
+                {"area_id": "CH", "concept_name": "Nivelamento: Humanas", "description": "Análise de processos históricos e sociais básicos.", "score": 0.0}
             ]
             
         return path
@@ -46,6 +47,7 @@ def get_full_learning_path(driver: Driver, user_id: int):
         for record in result:
             path.append({
                 "area": record["area"],
+                "area_id": record["id"][:2] if record["id"] else "MT",
                 "concept_name": record["id"],
                 "description": record["description"],
                 "score": record["score"],

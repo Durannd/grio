@@ -4,7 +4,7 @@
   import { goto } from '$app/navigation';
   import { formatPedagogicalCode } from '$lib/utils';
 
-  let learningPath: Array<{concept_name: string, description: string, score: number}> = [];
+  let learningPath: Array<{area_id: string, concept_name: string, description: string, score: number}> = [];
   let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = [];
   let user: any = null;
   let loading = true;
@@ -66,7 +66,7 @@
       };
       
       learningPath.forEach(item => {
-        const prefix = item.concept_name.substring(0, 2);
+        const prefix = item.area_id || (item.concept_name && !item.concept_name.startsWith('SKL-') ? item.concept_name.substring(0, 2) : 'MT');
         if (temp[prefix]) {
           temp[prefix].score += item.score;
           temp[prefix].count += 1;

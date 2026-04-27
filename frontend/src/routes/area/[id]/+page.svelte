@@ -5,7 +5,7 @@
   import { goto } from '$app/navigation';
   import { formatPedagogicalCode } from '$lib/utils';
 
-  let learningPath: Array<{concept_name: string, description: string, score: number, is_inferred?: boolean}> = [];
+  let learningPath: Array<{area_id?: string, concept_name: string, description: string, score: number, is_inferred?: boolean}> = [];
   let user: any = null;
   let loading = true;
   let errorMessage = "";
@@ -13,7 +13,7 @@
   $: areaId = $page.params.id;
   $: areaLabel = areaId === 'MT' ? 'Matemática e suas Tecnologias' : areaId === 'CN' ? 'Ciências da Natureza e suas Tecnologias' : areaId === 'LC' ? 'Linguagens, Códigos e suas Tecnologias' : 'Ciências Humanas e suas Tecnologias';
   
-  $: areaConcepts = learningPath.filter(c => c.concept_name.startsWith(areaId));
+  $: areaConcepts = learningPath.filter(c => (c.area_id && c.area_id === areaId) || (!c.area_id && c.concept_name && c.concept_name.startsWith(areaId)));
   $: areaScore = areaConcepts.length > 0 ? areaConcepts.reduce((acc, c) => acc + c.score, 0) / areaConcepts.length : 0;
 
   onMount(async () => {

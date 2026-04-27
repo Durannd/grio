@@ -6,6 +6,7 @@ from core.deps import get_current_user
 from models.user import User
 from crud.study import get_or_generate_microlesson
 from crud.user import update_user_streak
+from schemas.study import MicroLesson
 from core.translator import get_friendly_name, unmask_id
 
 router = APIRouter()
