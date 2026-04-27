@@ -11,22 +11,30 @@
   let loading = true;
   let error = "";
 
+  function stripContentTitle(content: string, skill_id: string): string {
+    const lines = content.split('\\n');
+    if (lines.length > 1 && lines[0].includes(skill_id.replace(/_/g, ''))) {
+      return lines.slice(1).join('\\n').trim();
+    }
+    return content;
+  }
+
   onMount(async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/study/${skill_id}`, {
-        credentials: 'include'
-      });
+      // Usando o serviço de API centralizado
+      const response = await api.get(`/study/${skill_id}`);
 
-      if (response.ok) {
-        microlesson = await response.json();
-      } else if (response.status === 404) {
+      if (response) {
+        microlesson = { ...response, content: stripContentTitle(response.content, response.skill_id) };
+      } else {
+        error = "Lição não encontrada para este conceito.";
+      }
+    } catch (e: any) {
+      if (e.message.includes('404')) {
         error = "Lição não encontrada para este conceito.";
       } else {
-        error = "Ocorreu um erro ao carregar a lição. Tente novamente mais tarde.";
+        error = e.message || "Ocorreu um erro ao carregar a lição.";
       }
-    } catch (e) {
-      console.error(e);
-      error = "Erro de conexão com o servidor.";
     } finally {
       loading = false;
     }
@@ -39,7 +47,7 @@
 
 <div class="study-container container">
   <div class="header-nav animate-slide-up stagger-1">
-    <a href="/area/{skill_id.substring(0, 2)}" class="btn btn-outline btn-sm">
+    <a href="/area/{skill_id.substring(0, 2)}" class="btn btn-outline">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="m15 18-6-6 6-6"/></svg>
       Voltar para Área
     </a>

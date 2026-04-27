@@ -72,7 +72,7 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
         3. FOCO: Analise as questões fornecidas na Base de Conhecimento para compreender o padrão técnico de avaliação. Explique a fundamentação teórica do conceito e sua aplicação prática baseada nesse padrão.
 
         FORMATO DA RESPOSTA (Markdown):
-        # [Título Técnico da Habilidade]
+        # [Crie um título técnico para a Habilidade, SEM incluir o código. Ex: "Progressão Temática e Estrutura Textual"]
         
         ## Fundamentação Teórica
         (Explique o conceito em 2 parágrafos diretos. Foque em definições, axiomas ou regras fundamentais)
