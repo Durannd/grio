@@ -1,8 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
-  
+  import user from '$lib/stores/userStore';
+
   let isLoaded = false;
+
+  $: diagnosticLink = $user?.is_diagnostic_completed ? '/dashboard' : '/prova';
+  $: diagnosticText = $user?.is_diagnostic_completed ? 'Ir para o Dashboard' : 'Iniciar Diagnóstico';
   
   onMount(() => {
     isLoaded = true;
@@ -23,7 +27,6 @@
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="hero-bg">
-      <img src="/grio_hero_background_1777003740278.png" alt="Ancestral Wisdom meets Tech" />
       <div class="overlay"></div>
     </div>
     
@@ -31,20 +34,15 @@
       {#if isLoaded}
         <div in:fly={{ y: 50, duration: 1000 }} class="hero-text">
           <span class="eyebrow">Bem-vindo ao Futuro do Saber</span>
-          <h1 class="text-gradient">Griô: Onde a Tradição Encontra a Inteligência</h1>
-          <p class="subtitle">Desbloqueie seu potencial acadêmico através de um diagnóstico guiado por IA que entende sua história e acelera seu aprendizado.</p>
-          
+          <h1 class="text-gradient">Griô: Inteligência Pedagógica que Acelera sua Aprovação</h1>
+          <p class="subtitle">Desbloqueie seu potencial acadêmico através de um diagnóstico guiado por IA que entende seu perfil e personaliza seu aprendizado.</p>
+
           <div class="cta-actions">
-            <a href="/prova" class="btn btn-primary">Iniciar Diagnóstico</a>
+            <a href={diagnosticLink} class="btn btn-primary">{diagnosticText}</a>
             <a href="/sobre" class="btn btn-outline">Conheça o Projeto</a>
           </div>
         </div>
       {/if}
-    </div>
-
-    <div class="scroll-hint">
-      <div class="mouse-icon"></div>
-      <span>Conheça a Metodologia</span>
     </div>
   </section>
 
@@ -53,8 +51,8 @@
     <div class="container grid-two-cols">
       <div class="manifesto-text">
         <h2 class="text-gradient">O Manifesto Griô</h2>
-        <p>Na tradição africana, o Griô não é apenas um contador de histórias; ele é o guardião da memória e o arquiteto do futuro. No projeto <strong>Griô</strong>, aplicamos essa essência ao vestibular.</p>
-        <p>Acreditamos que cada erro em uma prova é uma etapa no seu processo de aprendizado. Nossa tecnologia não apenas avalia; ela direciona seu progresso.</p>
+        <p>A Inteligência Griô redefine a preparação para o vestibular. Unimos ciência pedagógica avançada e inteligência artificial para criar uma jornada de aprendizado que respeita sua individualidade.</p>
+        <p>Acreditamos que cada resposta é um dado valioso. Nossa tecnologia não apenas avalia seu conhecimento; ela decodifica seus padrões para direcionar seu progresso com precisão.</p>
       </div>
       <div class="manifesto-visual glass-panel">
         <div class="stats-card">
@@ -100,14 +98,14 @@
     <div class="glass-panel text-center">
       <h2 class="text-gradient">Pronto para começar?</h2>
       <p>Sua aprovação universitária começa agora. Descubra sua proficiência.</p>
-      <a href="/prova" class="btn btn-primary btn-lg">Começar Agora</a>
+      <a href={diagnosticLink} class="btn btn-primary btn-lg">{diagnosticText === 'Iniciar Diagnóstico' ? 'Começar Agora' : diagnosticText}</a>
     </div>
   </section>
 </div>
 
 <style>
   .home-container {
-    overflow-x: hidden;
+    width: 100%;
   }
 
   /* Hero Section Styles */
@@ -123,13 +121,6 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-  }
-
-  .hero-bg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.4);
   }
 
   .hero-bg .overlay {
@@ -250,28 +241,6 @@
 
   .final-cta {
     padding-bottom: 8rem;
-  }
-
-  .scroll-hint {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-secondary);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .mouse-icon {
-    width: 20px;
-    height: 32px;
-    border: 2px solid var(--text-secondary);
-    border-radius: var(--radius-md);
   }
 
   @media (max-width: 900px) {

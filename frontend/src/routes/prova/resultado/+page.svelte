@@ -187,10 +187,8 @@
 
 <style>
   .results-page {
-    min-height: 100vh;
     padding-bottom: 6rem;
     width: 100%;
-    overflow-x: hidden;
   }
 
   .status-screen {
