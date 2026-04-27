@@ -271,7 +271,7 @@
     width: 20px;
     height: 32px;
     border: 2px solid var(--text-secondary);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
   }
 
   @media (max-width: 900px) {

@@ -223,6 +223,11 @@ input:focus {
   transform: translateY(1px);
 }
 
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(201, 160, 94, 0.4);
+}
+
 .btn-outline {
   background: transparent;
   color: var(--primary);

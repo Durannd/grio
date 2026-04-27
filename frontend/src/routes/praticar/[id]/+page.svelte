@@ -4,6 +4,7 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import axios from "axios";
+  import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { toasts } from "$lib/stores/toast";
 
   interface Option {
@@ -135,10 +136,7 @@
 
 {#if submitting}
   <div class="status-screen" in:fade>
-    <div class="loader-visual">
-      <div class="orbit"></div>
-      <div class="center-glow"></div>
-    </div>
+    <LoadingSpinner />
     <h2>Consolidando seu aprendizado...</h2>
     <p>Estamos atualizando seu mapa de proficiência com base nos seus novos resultados.</p>
   </div>
@@ -152,7 +150,7 @@
     <div class="content-wrapper">
       {#if loading}
         <div class="loading-container" in:fade>
-          <div class="gri-loader"></div>
+          <LoadingSpinner />
           <p class="text-gradient">Preparando seu simulado direcionado...</p>
         </div>
       {:else if questions.length > 0}

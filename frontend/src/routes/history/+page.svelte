@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
+  import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { goto } from '$app/navigation';
 
   let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = [];
@@ -45,10 +46,7 @@
 <div class="history-wrapper">
   {#if loading}
     <div class="status-screen" out:fade>
-      <div class="loader-visual">
-        <div class="orbit"></div>
-        <div class="center-glow"></div>
-      </div>
+      <LoadingSpinner />
       <p>Carregando histórico...</p>
     </div>
   {:else if errorMessage}

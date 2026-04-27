@@ -3,6 +3,7 @@
   import { page } from '$app/stores';
   import { fade } from 'svelte/transition';
   import snarkdown from 'snarkdown';
+  import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { formatPedagogicalCode } from '$lib/utils';
 
   let skill_id = $page.params.id;
@@ -46,10 +47,7 @@
 
   {#if loading}
     <div class="status-screen" out:fade>
-      <div class="loader-visual">
-        <div class="orbit"></div>
-        <div class="center-glow"></div>
-      </div>
+      <LoadingSpinner />
       <p>Buscando sua lição personalizada...</p>
     </div>
   {:else if error}

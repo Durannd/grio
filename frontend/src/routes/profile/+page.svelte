@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
   import { goto } from '$app/navigation';
+  import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { formatPedagogicalCode } from '$lib/utils';
 
   let learningPath: Array<{concept_name: string, description: string, score: number, is_inferred?: boolean}> = [];
@@ -50,10 +51,7 @@
 <div class="profile-wrapper">
   {#if loading}
     <div class="status-screen" out:fade>
-      <div class="loader-visual">
-        <div class="orbit"></div>
-        <div class="center-glow"></div>
-      </div>
+      <LoadingSpinner />
       <p>Sincronizando seus dados...</p>
     </div>
   {:else if errorMessage}

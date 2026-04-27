@@ -7,10 +7,13 @@
   import { goto } from '$app/navigation';
   import Chatbot from '$lib/components/Chatbot.svelte';
   import Toast from '$lib/components/Toast.svelte';
+  import { api } from '$lib/api';
+  import userStore from '$lib/stores/userStore';
 
-  let user: any = null;
+  const user = userStore; // Svelte store
+  $: ({ name: userName, email, avatar_url, is_diagnostic_completed } = $user || {});
+
   let showDropdown = false;
-  let hasDiagnostic = false;
 
   // Navbar scroll logic
   let lastScrollY = 0;
@@ -20,7 +23,7 @@
   function handleScroll() {
     if (!browser) return;
     const currentScrollY = window.scrollY;
-    
+
     if (Math.abs(currentScrollY - lastScrollY) < scrollThreshold) return;
 
     if (currentScrollY > lastScrollY && currentScrollY > 80) {
@@ -31,35 +34,13 @@
     lastScrollY = currentScrollY;
   }
 
-  async function loadUser() {
-    if (!browser) return;
-
-    try {
-      const response = await fetch("http://localhost:8000/api/v1/auth/me", {
-        credentials: "include"
-      });
-      if (response.ok) {
-        user = await response.json();
-        hasDiagnostic = user.is_diagnostic_completed === true;
-      } else {
-        user = null;
-      }
-    } catch (error) {
-      console.error("Erro ao carregar usuário:", error);
-      user = null;
-    }
-  }
-
   async function logout() {
     try {
-      await fetch("http://localhost:8000/api/v1/auth/logout", {
-        method: "POST",
-        credentials: "include"
-      });
+      await api.post('/auth/logout', {});
     } catch (error) {
-      console.error("Erro ao fazer logout:", error);
+      // api service já lida com o log
     }
-    user = null;
+    user.logout();
     showDropdown = false;
     goto("/login");
   }
@@ -68,18 +49,38 @@
     showDropdown = !showDropdown;
   }
 
+  function closeDropdown() {
+    showDropdown = false;
+  }
+
+  function handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      closeDropdown();
+    }
+  }
+
+  function clickOutside(node: HTMLElement) {
+    const handleClick = (event: MouseEvent) => {
+      if (node && !node.contains(event.target as Node) && !event.defaultPrevented) {
+        closeDropdown();
+      }
+    };
+
+    document.addEventListener('click', handleClick, true);
+
+    return {
+      destroy() {
+        document.removeEventListener('click', handleClick, true);
+      }
+    };
+  }
+
   onMount(() => {
-    // loadUser is handled by the reactive statement on mount
     if (browser) {
       window.addEventListener('scroll', handleScroll);
       return () => window.removeEventListener('scroll', handleScroll);
     }
   });
-
-  // Re-check when path changes (optional, but good for login/logout)
-  $: if ($page.url.pathname) {
-    if (browser) loadUser();
-  }
 </script>
 
 <div class="app-layout">
@@ -89,28 +90,28 @@
         <img src="/grio-logo.png" alt="Logotipo Griô" class="logo-img" />
       </a>
       <div class="links">
-        {#if user}
+        {#if $user}
           <a href="/dashboard">Dashboard</a>
           <a href="/sobre">Sobre</a>
-          
+
           <div class="user-profile">
-            <button class="profile-trigger" on:click={toggleDropdown}>
-              {#if user.avatar_url}
-                <img src={user.avatar_url} alt={user.name} class="avatar" />
+            <button class="profile-trigger" on:click={toggleDropdown} aria-haspopup="true" aria-expanded={showDropdown}>
+              {#if $user.avatar_url}
+                <img src={$user.avatar_url} alt={`Avatar de ${$user.name}`} class="avatar" />
               {:else}
-                <div class="avatar-placeholder">{user.name.charAt(0).toUpperCase()}</div>
+                <div class="avatar-placeholder">{$user.name.charAt(0).toUpperCase()}</div>
               {/if}
             </button>
-            
+
             {#if showDropdown}
-              <div class="profile-dropdown glass-panel" in:slide={{ duration: 200 }}>
+              <div class="profile-dropdown glass-panel" role="menu" in:slide={{ duration: 200 }} use:clickOutside on:keydown={handleKeydown}>
                 <div class="dropdown-header">
-                  <span class="user-name">{user.name}</span>
-                  <span class="user-email">{user.email}</span>
+                  <span class="user-name">{$user.name}</span>
+                  <span class="user-email">{$user.email}</span>
                 </div>
                 <div class="dropdown-divider"></div>
-                <button class="account-btn" on:click={() => { showDropdown = false; goto('/account'); }}>Minha Conta</button>
-                <button class="logout-btn" on:click={logout}>Sair</button>
+                <button class="account-btn" role="menuitem" on:click={() => { showDropdown = false; goto('/account'); }}>Minha Conta</button>
+                <button class="logout-btn" role="menuitem" on:click={logout}>Sair</button>
               </div>
             {/if}
           </div>

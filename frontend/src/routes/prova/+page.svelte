@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   import axios from "axios";
 
+  import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { toasts } from "$lib/stores/toast";
 
   interface Option {
@@ -150,16 +151,13 @@
   <div class="content-wrapper">
     {#if submitting}
       <div class="status-screen" in:fade>
-        <div class="loader-visual">
-          <div class="orbit"></div>
-          <div class="center-glow"></div>
-        </div>
+        <LoadingSpinner />
         <h2>Estamos analisando a sua trilha...</h2>
         <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
       </div>
     {:else if loading}
-      <div class="loading-container" in:fade>
-        <div class="gri-loader"></div>
+      <div class="status-screen" in:fade>
+        <LoadingSpinner />
         <p class="text-gradient">Preparando seu diagnóstico...</p>
       </div>
     {:else if questions.length > 0}
