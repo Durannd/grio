@@ -9,7 +9,7 @@ import os
 import json
 from google import genai
 from google.genai import types
-from core.translator import get_friendly_name
+from core.translator import get_friendly_name, mask_id
 
 router = APIRouter()
 
@@ -103,15 +103,22 @@ def get_diagnostic_report(
             """, user_id=current_user.id)
             proficiencies = [dict(record) for record in result if record.get("score", 0) >= 0]
     
+    # Mascarar IDs antes de retornar
+    masked_proficiencies = []
+    for p in proficiencies:
+        p_copy = p.copy()
+        p_copy["id"] = mask_id(p["id"])
+        masked_proficiencies.append(p_copy)
+
     if latest_attempt.analysis_json and latest_attempt.proficiencies_snapshot is not None:
         # NOTE: We still pass the filtered proficiencies here. The snapshot in DB remains complete.
         return {
             "status": "success",
             "analysis": latest_attempt.analysis_json,
-            "proficiencies": proficiencies,
+            "proficiencies": masked_proficiencies,
             "summary_stats": {
-                "total_skills_mapped": len(proficiencies),
-                "average_score": sum([p['score'] for p in proficiencies]) / len(proficiencies) if proficiencies else 0
+                "total_skills_mapped": len(masked_proficiencies),
+                "average_score": sum([p['score'] for p in masked_proficiencies]) / len(masked_proficiencies) if masked_proficiencies else 0
             },
             "snapshot": "historical" 
         }
@@ -131,13 +138,20 @@ def get_diagnostic_report(
     db.add(current_user)
     db.commit()
 
+    # Mascarar IDs antes de retornar no fluxo de 'new'
+    masked_new_proficiencies = []
+    for p in proficiencies:
+        p_copy = p.copy()
+        p_copy["id"] = mask_id(p["id"])
+        masked_new_proficiencies.append(p_copy)
+
     return {
         "status": "success",
         "analysis": analysis_data,
-        "proficiencies": proficiencies,
+        "proficiencies": masked_new_proficiencies,
         "summary_stats": {
-            "total_skills_mapped": len(proficiencies),
-            "average_score": sum([p['score'] for p in proficiencies]) / len(proficiencies) if proficiencies else 0
+            "total_skills_mapped": len(masked_new_proficiencies),
+            "average_score": sum([p['score'] for p in masked_new_proficiencies]) / len(masked_new_proficiencies) if masked_new_proficiencies else 0
         },
         "snapshot": "new"
     }
@@ -184,16 +198,23 @@ def get_assessment_attempt(
         db.add(attempt)
         db.commit()
     
+    # Mascarar IDs no histórico
+    masked_proficiencies = []
+    for p in proficiencies:
+        p_copy = p.copy()
+        p_copy["id"] = mask_id(p["id"])
+        masked_proficiencies.append(p_copy)
+    
     return {
         "status": "success",
         "id": attempt.id,
         "created_at": attempt.created_at,
         "type": attempt.type,
         "analysis": attempt.analysis_json,
-        "proficiencies": proficiencies,
+        "proficiencies": masked_proficiencies,
         "summary_stats": {
-            "total_skills_mapped": len(proficiencies),
-            "average_score": sum([p['score'] for p in proficiencies]) / len(proficiencies) if proficiencies else 0
+            "total_skills_mapped": len(masked_proficiencies),
+            "average_score": sum([p['score'] for p in masked_proficiencies]) / len(masked_proficiencies) if masked_proficiencies else 0
         },
         "snapshot": "historical"
     }
