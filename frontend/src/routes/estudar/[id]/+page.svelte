@@ -5,27 +5,24 @@
   import snarkdown from 'snarkdown';
   import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { formatPedagogicalCode } from '$lib/utils';
+  import { api } from '$lib/api';
 
   let skill_id = $page.params.id;
-  let microlesson: { skill_id: string, content: string, description: string, area: string } | null = null;
+  let microlesson: {
+    skill_id: string,
+    friendly_name: string,
+    content: string,
+    description: string,
+    area: string
+  } | null = null;
   let loading = true;
   let error = "";
 
-  function stripContentTitle(content: string, skill_id: string): string {
-    const lines = content.split('\\n');
-    if (lines.length > 1 && lines[0].includes(skill_id.replace(/_/g, ''))) {
-      return lines.slice(1).join('\\n').trim();
-    }
-    return content;
-  }
-
   onMount(async () => {
     try {
-      // Usando o serviço de API centralizado
       const response = await api.get(`/study/${skill_id}`);
-
       if (response) {
-        microlesson = { ...response, content: stripContentTitle(response.content, response.skill_id) };
+        microlesson = response;
       } else {
         error = "Lição não encontrada para este conceito.";
       }
@@ -76,6 +73,7 @@
       </header>
 
       <div class="markdown-body glass-panel">
+        <h1>{microlesson.friendly_name}</h1>
         {@html snarkdown(microlesson.content)}
       </div>
 

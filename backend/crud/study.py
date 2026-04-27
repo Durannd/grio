@@ -4,8 +4,10 @@ from google.genai import types
 import os
 import json
 from datetime import datetime, timedelta
+from core.translator import get_friendly_name
 
 def get_or_generate_microlesson(driver: Driver, skill_id: str):
+    friendly_name = get_friendly_name(skill_id)
     with driver.session() as session:
         # 1. Tentar buscar no Neo4j
         result = session.run("""
@@ -34,6 +36,7 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
         if is_cache_valid:
             return {
                 "skill_id": result["id"],
+                "friendly_name": friendly_name,
                 "description": result["description"],
                 "content": result["content"],
                 "area": result["area"]
@@ -57,7 +60,7 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
         
         prompt = f"""
         Você é um assistente de ensino especializado na Matriz de Referência do ENEM.
-        Sua tarefa é gerar uma explicação técnica e didática sobre uma Habilidade específica.
+        Sua tarefa é gerar uma explicação técnica e didática sobre uma Habilidade específica, focando apenas no conteúdo pedagógico.
 
         HABILIDADE: {result['id']}
         DESCRIÇÃO: {result['description']}
@@ -68,25 +71,25 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
 
         DIRETRIZES DE CONTEÚDO:
         1. TOM: Estritamente profissional, neutro e objetivo.
-        2. LINGUAGEM: Técnica e precisa. Evite qualquer tipo de saudação, personificação ou tratamento informal.
+        2. LINGUAGEM: Técnica e precisa. Evite qualquer tipo de saudação ou tratamento informal.
         3. FOCO: Analise as questões fornecidas na Base de Conhecimento para compreender o padrão técnico de avaliação. Explique a fundamentação teórica do conceito e sua aplicação prática baseada nesse padrão.
+        4. NÃO GERE UM TÍTULO. O título já é conhecido. Comece a resposta diretamente com o primeiro subtítulo.
 
         FORMATO DA RESPOSTA (Markdown):
-        # [Crie um título técnico para a Habilidade, SEM incluir o código. Ex: "Progressão Temática e Estrutura Textual"]
-        
         ## Fundamentação Teórica
         (Explique o conceito em 2 parágrafos diretos. Foque em definições, axiomas ou regras fundamentais)
-        
+
         ## Contexto de Avaliação (ENEM)
         (Explique como este conhecimento é testado na prova e qual o processo cognitivo exigido do candidato, citando nuances observadas nos exemplos)
-        
+
         ## Observação Técnica
         (Destaque um ponto de atenção recorrente, uma exceção ou um erro comum na aplicação desta habilidade)
 
         REGRAS:
         - Máximo de 250 palavras.
         - Use Markdown limpo.
-        - Proibido o uso de introduções como "Olá", "Eu sou o...", ou tratamentos como "você", "estudante", "jovem".
+        - Proibido o uso de introduções como "Olá", ou tratamentos como "você", "estudante", "jovem".
+        - Proibido gerar um título principal com '#'.
         """
 
         response = client.models.generate_content(
@@ -105,6 +108,7 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
 
         return {
             "skill_id": result["id"],
+            "friendly_name": friendly_name,
             "description": result["description"],
             "content": content,
             "area": result["area"]
