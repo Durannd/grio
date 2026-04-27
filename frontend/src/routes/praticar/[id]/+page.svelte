@@ -3,7 +3,7 @@
   import { fade, fly } from "svelte/transition";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import axios from "axios";
+  import { api } from "$lib/api";
   import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { toasts } from "$lib/stores/toast";
 
@@ -21,39 +21,30 @@
   }
 
   let skill_id = $page.params.id;
+  let friendly_name = "";
   let questions: Question[] = [];
   let currentQuestionIndex = 0;
   let loading = true;
   let submitting = false;
   let selectedAnswers: Record<string, number> = {};
-  let answersTime: Record<string, number> = {}; 
+  let answersTime: Record<string, number> = {};
   let startTime = Date.now();
   let progress = 0;
 
   onMount(async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/assessment/practice/${skill_id}`, {
-        credentials: "include"
-      });
+      const data = await api.get(`/assessment/practice/${skill_id}`);
+      questions = data.questions;
+      friendly_name = data.friendly_name;
 
-      if (response.status === 401) {
-        goto("/login");
-        return;
+      if (questions.length === 0) {
+          toasts.info("Você já resolveu todas as questões disponíveis para este conceito no momento!");
+          goto("/dashboard");
+          return;
       }
-
-      if (response.ok) {
-        const data = await response.json();
-        questions = data.questions;
-        
-        if (questions.length === 0) {
-            toasts.info("Você já resolveu todas as questões disponíveis para este conceito no momento!");
-            goto("/dashboard");
-            return;
-        }
-      }
-      loading = false;
     } catch (error) {
-      console.error("Erro ao buscar questões:", error);
+      // O serviço de API já exibe o toast de erro
+    } finally {
       loading = false;
     }
   });
@@ -97,24 +88,20 @@
   async function handleSubmit() {
     submitting = true;
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/assessment/submit",
-        {
-          user_id: 0,
-          type: "pratica_direcionada",
-          answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({
-            question_id: qId,
-            selected_option_id: aId,
-            time_seconds: Math.round(answersTime[qId] || 0),
-          })),
-        },
-        {
-          withCredentials: true
-        },
-      );
+      const payload = {
+        user_id: 0, // O backend substituirá pelo ID do token
+        type: "pratica_direcionada",
+        answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({
+          question_id: qId,
+          selected_option_id: aId,
+          time_seconds: Math.round(answersTime[qId] || 0),
+        })),
+      };
 
-      const attemptId = response.data.attempt_id;
-      const audit = response.data.audit_summary;
+      const response = await api.post("/assessment/submit", payload);
+
+      const attemptId = response.attempt_id;
+      const audit = response.audit_summary;
 
       if (audit && audit.has_warnings) {
         toasts.warning(
@@ -125,8 +112,6 @@
 
       goto(`/prova/resultado?id=${attemptId}`);
     } catch (e) {
-      console.error(e);
-      toasts.error("Houve um erro ao processar sua prática.");
       goto("/dashboard");
     } finally {
       submitting = false;
@@ -158,7 +143,7 @@
           <h1 class="text-gradient">Prática de Habilidade</h1>
           <p class="subtitle">
             Validando seu domínio sobre: <br/>
-            <span class="skill-focus">{skill_id}</span>
+            <span class="skill-focus">{friendly_name}</span>
           </p>
 
           <div class="progress-wrapper">
