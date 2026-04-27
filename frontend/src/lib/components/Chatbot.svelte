@@ -1,6 +1,10 @@
 <script>
   import { onMount } from 'svelte';
   import { fade, slide, fly } from 'svelte/transition';
+  import { page } from '$app/stores';
+
+  // Ocultar automaticamente em rotas específicas para manter a sobriedade visual
+  $: isHiddenRoute = ['/login', '/cadastro', '/prova'].includes($page.url.pathname);
 
   let isOpen = false;
   let message = "";
@@ -42,8 +46,9 @@
   }
 </script>
 
-<div class="chatbot-container">
-  {#if isOpen}
+{#if !isHiddenRoute}
+  <div class="chatbot-container" transition:fade>
+    {#if isOpen}
     <div class="chat-window" in:fly={{ y: 20, duration: 300 }} out:fade>
       <div class="chat-header">
         <img src="/grio-logo.png" alt="Logo" class="header-logo" />
@@ -84,6 +89,7 @@
     <img src="/grio-logo.png" alt="Logo Griô" class="btn-logo" />
   </button>
 </div>
+{/if}
 
 <style>
   .chatbot-container {

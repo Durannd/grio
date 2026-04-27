@@ -552,36 +552,6 @@
     padding: 2rem;
   }
 
-  .loader-visual {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin-bottom: 2rem;
-  }
-
-  .orbit {
-    position: absolute;
-    inset: 0;
-    border: 2px solid rgba(201, 160, 94, 0.2);
-    border-radius: 50%;
-    border-top-color: var(--primary);
-    animation: spin 1.5s linear infinite;
-  }
-
-  .center-glow {
-    position: absolute;
-    inset: 30%;
-    background: var(--primary);
-    filter: blur(15px);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes spin {
-    100% {
-      transform: rotate(360deg);
-    }
-  }
   .status-screen h2 {
     font-size: 2rem;
     margin-bottom: 1rem;

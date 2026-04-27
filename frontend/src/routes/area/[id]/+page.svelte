@@ -122,11 +122,6 @@
   .back-link { color: rgba(255,255,255,0.6); text-decoration: none; display: inline-block; margin-bottom: 1rem; }
   .back-link:hover { color: #FFF; }
   .status-screen { height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-  .loader-visual { position: relative; width: 60px; height: 60px; margin-bottom: 2rem; }
-  .orbit { position: absolute; inset: 0; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 50%; border-top-color: #FFF; animation: spin 1.5s linear infinite; }
-  .center-glow { position: absolute; inset: 30%; background: #FFF; filter: blur(10px); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
   .error-state { color: #EF4444; }
   .area-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
   .page-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: #FFF; }

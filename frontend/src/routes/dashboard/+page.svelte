@@ -197,37 +197,13 @@
 
   /* Status Screens */
   .status-screen {
-    height: 60vh;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-  }
-
-  .loader-visual {
-    position: relative;
-    width: 60px;
-    height: 60px;
-    margin-bottom: 2rem;
-  }
-
-  .orbit {
-    position: absolute;
-    inset: 0;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    border-top-color: #FFF;
-    animation: spin 1.5s linear infinite;
-  }
-
-  .center-glow {
-    position: absolute;
-    inset: 30%;
-    background: #FFF;
-    filter: blur(10px);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
+    min-height: 70vh;
   }
 
   @keyframes spin { 100% { transform: rotate(360deg); } }
