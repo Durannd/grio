@@ -117,34 +117,6 @@
     text-align: center;
   }
 
-  .loader-visual {
-    position: relative;
-    width: 60px;
-    height: 60px;
-    margin-bottom: 2rem;
-  }
-
-  .orbit {
-    position: absolute;
-    inset: 0;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    border-top-color: #FFF;
-    animation: spin 1.5s linear infinite;
-  }
-
-  .center-glow {
-    position: absolute;
-    inset: 30%;
-    background: #FFF;
-    filter: blur(10px);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-
   .error-state h2 {
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
