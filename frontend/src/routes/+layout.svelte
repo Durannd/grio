@@ -104,7 +104,7 @@
             </button>
 
             {#if showDropdown}
-              <div class="profile-dropdown glass-panel" role="menu" in:slide={{ duration: 200 }} use:clickOutside on:keydown={handleKeydown}>
+              <div class="profile-dropdown glass-panel" role="menu" tabindex="-1" in:slide={{ duration: 200 }} use:clickOutside on:keydown={handleKeydown}>
                 <div class="dropdown-header">
                   <span class="user-name">{$user.name}</span>
                   <span class="user-email">{$user.email}</span>
@@ -138,9 +138,7 @@
   .app-layout {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     width: 100%;
-    overflow-x: hidden;
     background-color: #0A0A0B;
     color: #FFF;
   }
