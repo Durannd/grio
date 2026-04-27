@@ -26,23 +26,23 @@
   </div>
 
   <section class="tech-stack mt-24">
-    <h2 class="text-center mb-12">Tecnologia de Vanguarda</h2>
+    <h2 class="text-center mb-12">Nossa Infraestrutura de Inteligência</h2>
     <div class="tech-grid">
       <div class="tech-item glass-card">
-        <h3>FastAPI</h3>
-        <p>Backend de alta performance para processamento assíncrono.</p>
+        <h3>Processamento em Tempo Real</h3>
+        <p>Arquitetura otimizada para fornecer feedback imediato e personalizado.</p>
       </div>
       <div class="tech-item glass-card">
-        <h3>Neo4j</h3>
-        <p>Banco de grafos para mapear conexões complexas entre habilidades.</p>
+        <h3>Grafos de Conhecimento</h3>
+        <p>Mapeamento não-linear que compreende as interconexões entre competências.</p>
       </div>
       <div class="tech-item glass-card">
-        <h3>Gemini IA</h3>
-        <p>Inteligência generativa para análise pedagógica personalizada.</p>
+        <h3>Modelos Generativos</h3>
+        <p>Inteligência artificial avançada para mentorias socráticas e análise pedagógica.</p>
       </div>
       <div class="tech-item glass-card">
-        <h3>SvelteKit</h3>
-        <p>Frontend reativo para uma experiência de usuário fluida e rápida.</p>
+        <h3>Interface Adaptativa</h3>
+        <p>Design focado na redução da carga cognitiva e na fluidez do aprendizado.</p>
       </div>
     </div>
   </section>
