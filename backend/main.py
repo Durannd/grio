@@ -1,13 +1,24 @@
 from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.errors import RateLimitExceeded
 from api.v1.endpoints import users, concepts, assessment, auth, learning_path, chatbot, assessment_report, study_plan, study
 from database import engine, Base
+from core.env import validate_environment
+from core.logger import logger
+from core.rate_limit import limiter
+from core.csrf_middleware import setup_csrf_middleware
 import models.user
 import models.question
 import models.assessment
 import os
 
+# Validar environment na startup
+validate_environment()
+
 Base.metadata.create_all(bind=engine)
+
+logger.info("Starting Griô backend...")
 
 app = FastAPI()
 
@@ -23,8 +34,23 @@ app.add_middleware(
     allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["*"],
+    allow_headers=["Content-Type", "Authorization", "X-CSRF-Token"],
 )
+
+# Adicionar Rate Limiting middleware (antes do CSRF)
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
+
+# Adicionar CSRF middleware
+setup_csrf_middleware(app)
+
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request, exc):
+    return Response(
+        content="Muitas requisições. Tente novamente em alguns minutos.",
+        status_code=429,
+        headers={"Retry-After": "60"}
+    )
 
 @app.middleware("http")
 async def add_security_headers(request, call_next):
