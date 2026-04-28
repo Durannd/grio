@@ -5,8 +5,9 @@
 
   let isLoaded = false;
 
-  $: diagnosticLink = $user?.is_diagnostic_completed ? '/dashboard' : '/prova';
-  $: diagnosticText = $user?.is_diagnostic_completed ? 'Ir para o Dashboard' : 'Iniciar Diagnóstico';
+  $: hasCompleted = $user && ($user.is_diagnostic_completed === 1 || $user.is_diagnostic_completed === true);
+  $: diagnosticLink = hasCompleted ? '/dashboard' : '/prova';
+  $: diagnosticText = hasCompleted ? 'Ir para o Dashboard' : 'Começar Agora';
   
   onMount(() => {
     isLoaded = true;
@@ -98,7 +99,7 @@
     <div class="glass-panel text-center">
       <h2 class="text-gradient">Pronto para começar?</h2>
       <p>Sua aprovação universitária começa agora. Descubra sua proficiência.</p>
-      <a href={diagnosticLink} class="btn btn-primary btn-lg">{diagnosticText === 'Iniciar Diagnóstico' ? 'Começar Agora' : diagnosticText}</a>
+      <a href={diagnosticLink} class="btn btn-primary btn-lg">{diagnosticText}</a>
     </div>
   </section>
 </div>

@@ -5,7 +5,7 @@ class UserBase(BaseModel):
     email: EmailStr
     name: str = Field(..., min_length=2, max_length=100)
     avatar_url: str | None = None
-    is_diagnostic_completed: int = 0
+    is_diagnostic_completed: bool = False
 
 class UserCreate(UserBase):
     password: str = Field(..., min_length=8, max_length=128)
