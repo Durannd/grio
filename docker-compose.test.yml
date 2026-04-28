@@ -9,4 +9,7 @@ services:
       - ./backend:/app
     environment:
       - PYTHONPATH=/app
+      - SECRET_KEY=grio_test_secret_key_fixed
+      - NEO4J_URI=bolt://mock:7687
+      - DATABASE_URL=sqlite:///./test.db
     command: pytest

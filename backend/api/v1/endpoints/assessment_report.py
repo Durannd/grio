@@ -9,7 +9,7 @@ import os
 import json
 from google import genai
 from google.genai import types
-from core.translator import get_friendly_name, mask_id
+from core.translator import get_friendly_name, mask_id, get_friendly_code
 
 router = APIRouter()
 
@@ -96,6 +96,7 @@ def get_diagnostic_report(
                 OPTIONAL MATCH (s)-[:PART_OF]->(c:Competence)-[:BELONGS_TO]->(a:Area)
                 RETURN s.id as id, 
                        s.description as description, 
+                       s.friendly_name as friendly_name,
                        r.score as score,
                        a.name as area,
                        COALESCE(r.is_inferred, false) as is_inferred,
@@ -107,7 +108,11 @@ def get_diagnostic_report(
     masked_proficiencies = []
     for p in proficiencies:
         p_copy = p.copy()
-        p_copy["id"] = mask_id(p["id"])
+        original_id = p["id"]
+        db_name = p.get("friendly_name")
+        p_copy["display_name"] = get_friendly_name(original_id, db_name)
+        p_copy["friendly_code"] = get_friendly_code(original_id)
+        p_copy["id"] = mask_id(original_id)
         masked_proficiencies.append(p_copy)
 
     if latest_attempt.analysis_json and latest_attempt.proficiencies_snapshot is not None:
@@ -142,7 +147,10 @@ def get_diagnostic_report(
     masked_new_proficiencies = []
     for p in proficiencies:
         p_copy = p.copy()
-        p_copy["id"] = mask_id(p["id"])
+        original_id = p["id"]
+        p_copy["display_name"] = get_friendly_name(original_id)
+        p_copy["friendly_code"] = get_friendly_code(original_id)
+        p_copy["id"] = mask_id(original_id)
         masked_new_proficiencies.append(p_copy)
 
     return {
@@ -198,11 +206,14 @@ def get_assessment_attempt(
         db.add(attempt)
         db.commit()
     
-    # Mascarar IDs no histórico
+    # Mascarar IDs no histórico e adicionar nomes amigáveis
     masked_proficiencies = []
     for p in proficiencies:
         p_copy = p.copy()
-        p_copy["id"] = mask_id(p["id"])
+        original_id = p["id"]
+        p_copy["display_name"] = get_friendly_name(original_id)
+        p_copy["friendly_code"] = get_friendly_code(original_id)
+        p_copy["id"] = mask_id(original_id)
         masked_proficiencies.append(p_copy)
     
     return {

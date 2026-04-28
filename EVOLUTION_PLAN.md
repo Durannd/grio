@@ -9,7 +9,7 @@ O Griô evoluiu de um MVP de Matemática para uma plataforma multi-disciplinar (
 
 ---
 
-## 🛠 Conquistas da Sessão (25/04/2026)
+## 🛠 Conquistas da Sessão (27/04/2026)
 
 ### 1. Segurança de Elite (Auth)
 - **Implementado**: Migração total de localStorage para **HttpOnly Cookies**.
@@ -53,11 +53,19 @@ O Griô evoluiu de um MVP de Matemática para uma plataforma multi-disciplinar (
 - **Impacto**: Elimina falsos negativos no dashboard e permite que a IA diferencie "Oportunidade" de "Deficiência".
 - **Status**: ✅ Concluído.
 
+### 9. Grio Shield & UX Profissional
+- **O que é**: Ofuscação total da arquitetura de dados técnica.
+- **Segurança**: IDs mascarados via Base32 (`SKL-XXXX`) e endpoints sensíveis (Concepts POST) blindados com JWT.
+- **Interface**: Sistema de `friendly_name` dinâmico. O Gemini gera nomes pedagógicos (ex: "Geometria Plana") automaticamente e os salva no Neo4j.
+- **Status**: ✅ Concluído.
+
 ---
 
 ### Fase Pivot: Experiência Area-First (Griô 2.0)
 - [x] **Interface Monumental**: Implementar os 4 cards de Área com estética Liquid Glass 2.0 e isolamento de Dados Técnicos em rota de Perfil.
 - [x] **Tradução Pedagógica**: Criar camada de tradução em memória para eliminar siglas técnicas (ex: CN_C1_H1) da visão do aluno e da LLM.
+- [x] **Grio Shield**: Ofuscação de IDs via Base32 e blindagem de endpoints sensíveis.
+- [x] **Nomes Dinâmicos**: Migração de friendly_names para o Neo4j com autoalimentação via IA (Opção A).
 - [x] **Filtro de Contexto LLM**: Refatorar payload do diagnóstico para enviar apenas interações reais, ocultando dados inferidos (Context Hygiene e Mentor Socrático robusto).
 - [x] **Refinamento de UI/UX (V1-V4)**: Layout "Warm Earthy Elegance" erradicado, grids responsivos implementados e fluxo de navegação unificado por Área.
 
@@ -75,3 +83,4 @@ O Griô evoluiu de um MVP de Matemática para uma plataforma multi-disciplinar (
 - [x] Suíte de testes backend (5/5 passando).
 - [x] Validação de carga de tokens (Sumário Técnico de Questões).
 - [x] Lógica de atualização de Streaks validada.
+- [x] Ofuscação de IP e IDs validada via Debug Script.

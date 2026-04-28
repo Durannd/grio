@@ -4,7 +4,7 @@
   import { goto } from '$app/navigation';
   import { formatPedagogicalCode } from '$lib/utils';
 
-  let learningPath: Array<{area_id: string, concept_name: string, description: string, score: number}> = [];
+  let learningPath: Array<{area_id: string, concept_name: string, display_name: string, friendly_code: string, description: string, score: number}> = [];
   let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = [];
   let user: any = null;
   let loading = true;

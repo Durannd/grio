@@ -24,7 +24,7 @@ Diferente de sistemas de ensino tradicionais baseados em tabelas estáticas, o G
 
 ### Entidades (Nodes)
 - **Question**: Item de avaliação com metadados, alternativas, explicação pedagógica e vetor de embedding.
-- **Skill (Habilidade)**: Códigos oficiais do ENEM/BNCC. Contém o `content` (micro-aula) e `last_enriched_at`.
+- **Skill (Habilidade)**: Códigos oficiais do ENEM/BNCC. Contém o `content` (micro-aula), `last_enriched_at` e `friendly_name` (nome pedagógico gerado por IA).
 - **Competence (Competência)**: Estruturas macro de conhecimento.
 - **Area (Área do Conhecimento)**: Matemática, Natureza, Humanas e Linguagens.
 - **User**: Perfil do estudante com propriedades de gamificação (`current_streak`, `last_activity_date`).
@@ -66,11 +66,14 @@ Cada submissão de prova passa por uma auditoria em tempo real para detectar com
 
 ---
 
-## 6. Segurança e Autenticação
+## 6. Segurança e Proteção de IP (Grio Shield)
 
-- **Auth**: Tokens JWT trafegados exclusivamente via **HttpOnly Cookies** com flags `Secure` e `SameSite="Lax"`.
-- **Cabeçalhos**: Implementação rigorosa de CSP (`default-src 'none'`), HSTS e proteção contra sniffing de MIME types no middleware do FastAPI.
-- **Ambientes**: Flags de segurança dinâmicas baseadas na variável de ambiente `ENV` (production vs development).
+Para proteger a Propriedade Intelectual (Matriz de Referência e Lógica de Grafos), o sistema utiliza múltiplas camadas de ofuscação:
+
+- **Ofuscação de IDs**: Todos os IDs técnicos (ex: `MT_C1_H1`) são mascarados via Base32 com prefixo `SKL-` antes de saírem do backend.
+- **Dinamismo de Nomes**: O sistema não expõe siglas técnicas na UI. Utiliza a propriedade `friendly_name` do Neo4j, autoalimentada pelo Gemini.
+- **Blindagem de API**: Todos os endpoints de escrita (`POST/PUT/DELETE`), incluindo a criação de conceitos, exigem autenticação JWT, exceto o onboarding público.
+- **CORS & Headers**: Restrição rigorosa de domínios permitidos e cabeçalhos de segurança HttpOnly (Secure/SameSite) trafegados via Cookie para mitigar interceptação de dados.
 
 ---
 

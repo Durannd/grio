@@ -14,6 +14,7 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
             RETURN s.id as id, 
                    s.description as description, 
                    s.content as content,
+                   s.friendly_name as friendly_name,
                    s.last_enriched_at as last_enriched_at,
                    a.name as area
         """, skill_id=skill_id).single()
@@ -29,11 +30,12 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
                 if datetime.now() - last_date < timedelta(days=1825):
                     is_cache_valid = True
             except:
-                pass # Caso o formato da data esteja corrompido, gera de novo
+                pass 
 
         if is_cache_valid:
             return {
                 "skill_id": result["id"],
+                "friendly_name": result["friendly_name"],
                 "description": result["description"],
                 "content": result["content"],
                 "area": result["area"]
@@ -57,54 +59,54 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
         
         prompt = f"""
         Você é um assistente de ensino especializado na Matriz de Referência do ENEM.
-        Sua tarefa é gerar uma explicação técnica e didática sobre uma Habilidade específica.
+        Sua tarefa é gerar uma explicação técnica e didática sobre uma Habilidade específica E criar um título amigável para ela.
 
         HABILIDADE: {result['id']}
         DESCRIÇÃO: {result['description']}
         ÁREA: {result['area']}
 
         BASE DE CONHECIMENTO (QUESTÕES REAIS DO ENEM):
-        {knowledge_base if knowledge_base else "Nenhum exemplo real encontrado para esta habilidade. Baseie-se apenas na descrição da habilidade."}
+        {knowledge_base if knowledge_base else "Nenhum exemplo real encontrado para esta habilidade. Baseie-se apenas na descrição."}
 
-        DIRETRIZES DE CONTEÚDO:
-        1. TOM: Estritamente profissional, neutro e objetivo.
-        2. LINGUAGEM: Técnica e precisa. Evite qualquer tipo de saudação, personificação ou tratamento informal.
-        3. FOCO: Analise as questões fornecidas na Base de Conhecimento para compreender o padrão técnico de avaliação. Explique a fundamentação teórica do conceito e sua aplicação prática baseada nesse padrão.
+        DIRETRIZES:
+        1. TITULO_AMIGAVEL: Crie um nome curto (máximo 4 palavras) que resuma o tema central desta habilidade para um aluno (ex: "Geometria Plana", "Cinemática Básica").
+        2. CONTEUDO: Explique o conceito de forma técnica, neutra e objetiva. Proibido saudações ou personificações.
 
-        FORMATO DA RESPOSTA (Markdown):
-        # [Título Técnico da Habilidade]
-        
-        ## Fundamentação Teórica
-        (Explique o conceito em 2 parágrafos diretos. Foque em definições, axiomas ou regras fundamentais)
-        
-        ## Contexto de Avaliação (ENEM)
-        (Explique como este conhecimento é testado na prova e qual o processo cognitivo exigido do candidato, citando nuances observadas nos exemplos)
-        
-        ## Observação Técnica
-        (Destaque um ponto de atenção recorrente, uma exceção ou um erro comum na aplicação desta habilidade)
-
-        REGRAS:
-        - Máximo de 250 palavras.
-        - Use Markdown limpo.
-        - Proibido o uso de introduções como "Olá", "Eu sou o...", ou tratamentos como "você", "estudante", "jovem".
+        FORMATO JSON:
+        {{
+          "titulo_amigavel": "string",
+          "conteudo_markdown": "string (Markdown formatado)"
+        }}
         """
 
-        response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-            contents=prompt
-        )
+        try:
+            response = client.models.generate_content(
+                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
+            )
+            data = json.loads(response.text)
+            friendly_name = data.get("titulo_amigavel", "Tópico de Estudo")
+            content = data.get("conteudo_markdown", "# Erro ao gerar conteúdo")
+        except Exception as e:
+            print(f"Erro no processamento da IA: {e}")
+            friendly_name = "Tópico Especial"
+            content = response.text if 'response' in locals() else "Erro técnico na geração."
 
-        content = response.text
-
-        # 4. Persistir no Neo4j
+        # Persistir no Neo4j de forma idempotente
         today = datetime.now().isoformat()
         session.run("""
             MATCH (s:Skill {id: $skill_id})
-            SET s.content = $content, s.last_enriched_at = $today
-        """, skill_id=skill_id, content=content, today=today)
+            SET s.content = $content, 
+                s.last_enriched_at = $today,
+                s.friendly_name = COALESCE(s.friendly_name, $friendly_name)
+        """, skill_id=skill_id, content=content, today=today, friendly_name=friendly_name)
 
         return {
             "skill_id": result["id"],
+            "friendly_name": friendly_name,
             "description": result["description"],
             "content": content,
             "area": result["area"]

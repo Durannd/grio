@@ -19,15 +19,47 @@ def load_translations():
             print(f"Erro ao carregar skill_translations.json: {e}")
             _translations = {}
 
-def get_friendly_name(skill_id: str) -> str:
+def get_friendly_name(skill_id: str, db_friendly_name: str = None) -> str:
     """
     Retorna o nome amigável para uma sigla de habilidade.
-    Exemplo: 'CN_C1_H1' -> 'Fenômenos Ondulatórios'
+    Prioridade:
+    1. Nome vindo do Banco de Dados (Neo4j)
+    2. Tradução manual no JSON
+    3. Código formatado (ex: Hab. 01)
     """
-    # Se receber um ID mascarado, tenta desmascarar primeiro
+    if db_friendly_name and not db_friendly_name.startswith("Hab. "):
+         return db_friendly_name
+
     actual_id = unmask_id(skill_id)
     load_translations()
-    return _translations.get(actual_id, f"Tópico {actual_id}")
+    
+    if actual_id in _translations:
+        return _translations[actual_id]
+        
+    # Se o banco mandou um "Hab. XX" ou nada, tenta gerar o código bonito
+    return get_friendly_code(skill_id)
+
+def get_friendly_code(skill_id: str) -> str:
+    """
+    Gera um código visualmente limpo para o usuário.
+    Exemplo: 'MT_C1_H01' -> 'Hab. 01'
+    """
+    actual_id = unmask_id(skill_id)
+    if not actual_id:
+        return "Geral"
+    
+    # Extrai o número da habilidade (final da string)
+    import re
+    match = re.search(r'H(\d+)$', actual_id)
+    if match:
+        return f"Hab. {int(match.group(1)):02d}"
+    
+    # Fallback para competência se não houver habilidade
+    match_comp = re.search(r'C(\d+)$', actual_id)
+    if match_comp:
+        return f"Comp. {int(match_comp.group(1)):02d}"
+        
+    return "Módulo"
 
 def mask_id(original_id: str) -> str:
     """

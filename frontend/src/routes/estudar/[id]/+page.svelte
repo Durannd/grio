@@ -6,7 +6,7 @@
   import { formatPedagogicalCode } from '$lib/utils';
 
   let skill_id = $page.params.id;
-  let microlesson: { skill_id: string, content: string, description: string, area: string } | null = null;
+  let microlesson: { skill_id: string, friendly_name: string, content: string, description: string, area: string } | null = null;
   let loading = true;
   let error = "";
 
@@ -33,14 +33,14 @@
 </script>
 
 <svelte:head>
-  <title>Grio - Estudar {microlesson ? formatPedagogicalCode(microlesson.skill_id) : skill_id}</title>
+  <title>Grio - Estudar {microlesson ? microlesson.friendly_name : 'Lição'}</title>
 </svelte:head>
 
 <div class="study-container container">
   <div class="header-nav animate-slide-up stagger-1">
-    <a href="/area/{skill_id.substring(0, 2)}" class="btn btn-outline btn-sm">
+    <a href="/dashboard" class="btn btn-outline btn-sm">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="m15 18-6-6 6-6"/></svg>
-      Voltar para Área
+      Voltar ao Dashboard
     </a>
   </div>
 
@@ -65,7 +65,7 @@
     <article class="lesson-content animate-slide-up stagger-2">
       <header class="lesson-header glass-panel mb-8">
         <div class="area-badge">{microlesson.area}</div>
-        <h1>{formatPedagogicalCode(microlesson.skill_id)}</h1>
+        <h1>{microlesson.friendly_name || 'Habilidade ENEM'}</h1>
         <p class="description">{microlesson.description}</p>
       </header>
 
@@ -79,7 +79,7 @@
           <p>Agora que você revisou este conceito, que tal testar seus conhecimentos com um micro-simulado direcionado?</p>
           <div class="actions mt-6">
             <a href="/praticar/{microlesson.skill_id}" class="btn btn-primary">Praticar Agora</a>
-            <a href="/area/{skill_id.substring(0, 2)}" class="btn btn-outline ml-4">Voltar para Área</a>
+            <a href="/dashboard" class="btn btn-outline ml-4">Voltar ao Painel</a>
           </div>
         </div>
       </footer>

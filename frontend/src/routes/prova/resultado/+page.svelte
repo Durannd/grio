@@ -157,11 +157,12 @@
               {#each skills as skill}
                 <div class="skill-item glass-card">
                   <div class="skill-info">
-                    <span class="code">{formatPedagogicalCode(skill.id)}</span>
+                    <span class="code">{skill.friendly_code}</span>
                     <span class="score" style="color: {getScoreColor(skill.score)}">
                       {(skill.score * 100).toFixed(0)}%
                     </span>
                   </div>
+                  <h4 style="color: #FFF; margin-bottom: 0.5rem; font-size: 1rem;">{skill.display_name}</h4>
                   <p class="desc">{skill.description}</p>
                   <div class="bar-bg">
                     <div

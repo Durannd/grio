@@ -142,8 +142,8 @@
                     <div class="proficiency-item glass-panel" class:inferred={concept.is_inferred}>
                       <div class="prof-header">
                         <div class="prof-title-wrap">
-                          <span class="prof-code">{concept.concept_name}</span>
-                          <h4>{formatPedagogicalCode(concept.concept_name)}</h4>
+                          <span class="prof-code">{concept.friendly_code}</span>
+                          <h4>{concept.display_name}</h4>
                         </div>
                         {#if concept.is_inferred}
                           <div class="inferred-badge">POTENCIAL</div>
