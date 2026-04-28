@@ -6,7 +6,7 @@ def get_user_learning_path(driver: Driver, user_id: int):
         result = session.run(
             "MATCH (u:User {id: $user_id})-[r:HAS_PROFICIENCY]->(s:Skill) "
             "WHERE r.score >= 0 "
-            "RETURN s.id AS id, s.description AS description, r.score AS score, COALESCE(r.is_inferred, false) AS is_inferred "
+            "RETURN s.id AS id, s.description AS description, s.friendly_name AS friendly_name, r.score AS score, COALESCE(r.is_inferred, false) AS is_inferred "
             "ORDER BY r.score ASC",
             user_id=user_id
         )
@@ -15,7 +15,8 @@ def get_user_learning_path(driver: Driver, user_id: int):
         for record in result:
             path.append({
                 "area_id": record["id"][:2] if record["id"] else "MT",
-                "concept_name": record["id"], # Usando ID como nome (ex: MT_C1_H1)
+                "concept_name": record["id"],
+                "friendly_name": record["friendly_name"],
                 "description": record["description"],
                 "score": record["score"],
                 "is_inferred": record["is_inferred"]
@@ -37,7 +38,8 @@ def get_full_learning_path(driver: Driver, user_id: int):
             OPTIONAL MATCH (u:User {id: $user_id})-[r:HAS_PROFICIENCY]->(s)
             RETURN a.name AS area,
                    s.id AS id, 
-                   s.description AS description, 
+                   s.description AS description,
+                   s.friendly_name AS friendly_name,
                    COALESCE(r.score, 0.0) AS score, 
                    COALESCE(r.is_inferred, false) AS is_inferred
             ORDER BY a.name, s.id ASC
@@ -49,6 +51,7 @@ def get_full_learning_path(driver: Driver, user_id: int):
                 "area": record["area"],
                 "area_id": record["id"][:2] if record["id"] else "MT",
                 "concept_name": record["id"],
+                "friendly_name": record["friendly_name"],
                 "description": record["description"],
                 "score": record["score"],
                 "is_inferred": record["is_inferred"]

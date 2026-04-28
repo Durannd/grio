@@ -101,7 +101,7 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
             MATCH (s:Skill {id: $skill_id})
             SET s.content = $content, 
                 s.last_enriched_at = $today,
-                s.friendly_name = COALESCE(s.friendly_name, $friendly_name)
+                s.friendly_name = $friendly_name
         """, skill_id=skill_id, content=content, today=today, friendly_name=friendly_name)
 
         return {
