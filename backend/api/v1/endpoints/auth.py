@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Cookie
+from fastapi import APIRouter, Depends, HTTPException, status, Response, Cookie, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import timedelta
@@ -7,6 +7,7 @@ import os
 from database import get_db
 from crud.user import get_user_by_email
 from core.security import verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from core.rate_limit import limiter, get_rate_limit
 from schemas.user import User, UserCreate
 from crud.user import create_user
 from core.deps import get_current_user
@@ -19,7 +20,9 @@ class Token(BaseModel):
     token_type: str
 
 @router.post("/login")
+@limiter.limit(get_rate_limit("login"))
 def login_for_access_token(
+    request: Request,
     response: Response,
     db: Session = Depends(get_db),
     form_data: OAuth2PasswordRequestForm = Depends()
@@ -59,7 +62,9 @@ def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 @router.post("/signup")
+@limiter.limit(get_rate_limit("signup"))
 def signup(
+    request: Request,
     response: Response,
     user_in: UserCreate,
     db: Session = Depends(get_db)
@@ -89,3 +94,16 @@ def signup(
     )
     
     return {"message": "Signup successful"}
+
+
+@router.get("/csrf-token")
+@limiter.limit("30/minute")
+def get_csrf_token(request: Request):
+    """Retorna um token CSRF para requisições POST/PUT/DELETE"""
+    from core.csrf import generate_csrf_token, get_csrf_token_expiry
+    
+    token, _ = generate_csrf_token()
+    return {
+        "csrf_token": token,
+        "expires_at": get_csrf_token_expiry()
+    }
