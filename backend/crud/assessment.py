@@ -172,6 +172,12 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
         proficiencies_snapshot=enriched_proficiencies
     )
     db.add(new_attempt)
+    
+    # Atualizar status do usuário se for um diagnóstico inicial/geral
+    if submission.type in ["diagnostico", "inicial"]:
+        from models.user import User
+        db.query(User).filter(User.id == submission.user_id).update({"is_diagnostic_completed": True})
+    
     db.commit()
     db.refresh(new_attempt)
 

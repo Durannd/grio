@@ -57,8 +57,3 @@ export function logoutUser() {
   user.set(null);
   isLoading.set(false);
 }
-
-// Inicialização automática no navegador
-if (browser) {
-  loadUser();
-}

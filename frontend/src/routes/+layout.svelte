@@ -8,7 +8,7 @@
   import Chatbot from '$lib/components/Chatbot.svelte';
   import Toast from '$lib/components/Toast.svelte';
   import { api } from '$lib/api';
-  import { user, isLoading } from '$lib/stores/userStore';
+  import { user, isLoading, loadUser } from '$lib/stores/userStore';
 
   $: ({ name: userName, email, avatar_url, is_diagnostic_completed } = $user || {});
 
@@ -75,9 +75,11 @@
     };
   }
 
-  onMount(() => {
+  onMount(async () => {
     if (browser) {
       window.addEventListener('scroll', handleScroll);
+      // Garante que o usuário seja carregado sempre que o layout for montado/atualizado
+      await loadUser();
       return () => window.removeEventListener('scroll', handleScroll);
     }
   });
