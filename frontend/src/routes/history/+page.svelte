@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
+  import { PUBLIC_API_BASE_URL } from '$env/static/public';
   import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { goto } from '$app/navigation';
 
@@ -15,14 +16,14 @@
         credentials: "include"
       };
 
-      const userRes = await fetch("http://localhost:8000/api/v1/auth/me", fetchOptions);
+      const userRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, fetchOptions);
       if (userRes.status === 401) {
         goto("/login");
         return;
       }
       user = await userRes.json();
 
-      const historyRes = await fetch("http://localhost:8000/api/v1/assessment-report/history", fetchOptions);
+      const historyRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/assessment-report/history`, fetchOptions);
       if (historyRes.ok) {
         const hData = await historyRes.json();
         history = hData.history;

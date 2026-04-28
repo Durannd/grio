@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
   import { goto } from '$app/navigation';
+  import { PUBLIC_API_BASE_URL } from '$env/static/public';
   import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { formatPedagogicalCode } from '$lib/utils';
 
@@ -17,20 +18,20 @@
         credentials: "include"
       };
 
-      const userRes = await fetch("http://localhost:8000/api/v1/auth/me", fetchOptions);
+      const userRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, fetchOptions);
       if (userRes.status === 401) {
         goto("/login");
         return;
       }
       user = await userRes.json();
 
-      const pathRes = await fetch("http://localhost:8000/api/v1/learning-path", fetchOptions);
+      const pathRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/learning-path`, fetchOptions);
       if (pathRes.ok) {
         const data = await pathRes.json();
         learningPath = data.learning_path;
       }
 
-      const historyRes = await fetch("http://localhost:8000/api/v1/assessment-report/history", fetchOptions);
+      const historyRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/assessment-report/history`, fetchOptions);
       if (historyRes.ok) {
         const hData = await historyRes.json();
         history = hData.history;
@@ -38,7 +39,6 @@
 
       loading = false;
     } catch (error) {
-      console.error("Error loading dashboard:", error);
       errorMessage = "Houve um erro ao carregar seus dados. Por favor, tente novamente mais tarde.";
       loading = false;
     }

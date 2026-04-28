@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { goto } from "$app/navigation";
+  import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import axios from "axios";
 
   import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
@@ -34,8 +35,8 @@
     try {
       const area = $page.url.searchParams.get("area");
       const url = area 
-        ? `http://localhost:8000/api/v1/assessment/diagnostico/${area}` 
-        : "http://localhost:8000/api/v1/assessment";
+        ? `${PUBLIC_API_BASE_URL}/api/v1/assessment/diagnostico/${area}` 
+        : `${PUBLIC_API_BASE_URL}/api/v1/assessment`;
         
       const response = await fetch(url, {
         credentials: "include"
@@ -97,7 +98,7 @@
     submitting = true;
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/assessment/submit",
+        `${PUBLIC_API_BASE_URL}/api/v1/assessment/submit`,
         {
           user_id: 0, // O backend sobrescreve isso com o ID real do token
           answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({

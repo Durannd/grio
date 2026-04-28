@@ -2,12 +2,13 @@
   import { onMount } from "svelte";
   import { fly, fade, scale } from "svelte/transition";
   import { goto } from "$app/navigation";
+  import { PUBLIC_API_BASE_URL } from "$env/static/public";
 
   let user: any = null;
 
   onMount(async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/v1/auth/me", {
+      const response = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, {
         credentials: "include"
       });
       if (response.ok) {
@@ -16,7 +17,7 @@
         goto("/login");
       }
     } catch (error) {
-      console.error("Erro ao carregar usuário:", error);
+      // Error handling done via API service
     }
   });
 </script>
