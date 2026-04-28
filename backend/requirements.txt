@@ -2,6 +2,8 @@ fastapi
 uvicorn[standard]
 sqlalchemy
 pydantic
+email_validator
+slowapi
 pytest
 httpx
 neo4j
@@ -12,3 +14,4 @@ python-jose[cryptography]
 python-multipart
 google-genai
 python-dotenv
+redis

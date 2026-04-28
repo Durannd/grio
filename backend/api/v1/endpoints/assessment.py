@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from database import get_db
 from crud.question import get_assessment_questions
@@ -7,16 +7,17 @@ from schemas.assessment import AssessmentSubmission
 from crud.assessment import process_assessment_submission
 from crud.user import update_user_streak
 from core.neo4j import get_driver
-
-router = APIRouter()
-
-from schemas.question import Assessment, Question
 from core.deps import get_current_user
+from core.rate_limit import limiter, get_rate_limit
 from models.user import User
 from core.translator import get_friendly_name
 
+router = APIRouter()
+
 @router.get("/", response_model=Assessment)
+@limiter.limit(get_rate_limit("assessment"))
 def read_assessment(
+    request: Request,
     current_user: User = Depends(get_current_user)
 ):
     driver = get_driver()
@@ -77,7 +78,9 @@ def read_assessment(
     return {"questions": questions}
 
 @router.get("/practice/{skill_id}", response_model=Assessment)
+@limiter.limit(get_rate_limit("assessment"))
 def read_practice_assessment(
+    request: Request,
     skill_id: str,
     current_user: User = Depends(get_current_user)
 ):
@@ -116,7 +119,9 @@ def read_practice_assessment(
     return {"questions": questions, "friendly_name": friendly_name}
 
 @router.get("/diagnostico/{area}", response_model=Assessment)
+@limiter.limit(get_rate_limit("assessment"))
 def read_diagnostic_assessment_by_area(
+    request: Request,
     area: str,
     current_user: User = Depends(get_current_user)
 ):
@@ -157,7 +162,9 @@ def read_diagnostic_assessment_by_area(
     return {"questions": questions}
 
 @router.post("/submit")
+@limiter.limit(get_rate_limit("assessment"))
 def submit_assessment(
+    request: Request,
     submission: AssessmentSubmission, 
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
