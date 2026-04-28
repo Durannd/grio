@@ -7,12 +7,12 @@ client = TestClient(app)
 
 def test_submit_assessment(client, neo4j_driver):
     # Create a test user
-    user_response = client.post("/api/v1/users/", json={"name": "Test User", "email": "test-assessment@example.com", "password": "test"})
+    user_response = client.post("/api/v1/users/", json={"name": "Test User", "email": "test-assessment@example.com", "password": "Password123"})
     assert user_response.status_code == 200
     user_id = user_response.json()["id"]
 
     # Login to get token (now via cookie)
-    login_response = client.post("/api/v1/auth/login", data={"username": "test-assessment@example.com", "password": "test"})
+    login_response = client.post("/api/v1/auth/login", data={"username": "test-assessment@example.com", "password": "Password123"})
     assert login_response.status_code == 200
     assert "access_token" in login_response.cookies
 
