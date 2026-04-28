@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from core.neo4j import get_driver
 from core.deps import get_current_user
+from core.rate_limit import limiter, get_rate_limit
 from models.user import User
 from schemas.chatbot import MentorRequest, MentorResponse
 from google import genai
@@ -11,12 +12,76 @@ from core.translator import get_friendly_name
 router = APIRouter()
 
 @router.post("/mentor", response_model=MentorResponse)
+@limiter.limit(get_rate_limit("mentor"))
 def socratic_mentor(
-    request: MentorRequest,
+    request: Request,
+    mentor_request: MentorRequest,
     current_user: User = Depends(get_current_user)
 ):
+    from core.logger import logger
+    import logging
+    
+    # Configurar logger
+    if not logger:
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger(__name__)
+    
     driver = get_driver()
+    
+    # Suportar assistência genérica ou específica por questão
+    if mentor_request.question_id == "general":
+        # Modo de assistência geral
+        system_instruction = """
+        Você é um Mentor Educacional do Griô, especializado em preparação para o ENEM.
+        Seu objetivo é ajudar o estudante com dúvidas sobre conceitos, estratégias de estudo e resolução de problemas.
+        Seja encorajador, motivacional e focado no aprendizado.
+        
+        DIRETRIZES:
+        1. TOM: Profissional, amigável e motivacional.
+        2. MÉTODO: Explique conceitos de forma clara, usando exemplos quando possível.
+        3. LINGUAGEM: PROIBIÇÃO EXTREMA DO USO DE EMOJIS. Não use gírias ou jargões técnicos sem explicar.
+        4. CONCISÃO: Respostas claras e diretas, máximo 4 frases.
+        """
+        
+        client = genai.Client()
+        history = []
+        
+        for msg in mentor_request.chat_history:
+            history.append({
+                "role": "user" if msg.role == "user" else "model",
+                "parts": [{"text": msg.content}]
+            })
+        
+        try:
+            response = client.models.generate_content(
+                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                contents=history,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction
+                )
+            )
+            
+            return {
+                "response": response.text,
+                "skill_targeted": None,
+                "is_correct": False
+            }
+        except Exception as e:
+            logger.error(f"Gemini API error in general chat: {str(e)}")
+            raise HTTPException(
+                status_code=500,
+                detail="Erro ao processar sua mensagem. Tente novamente em alguns momentos."
+            )
+    
+    # Modo específico por questão
     with driver.session() as session:
+        # Validar question_id
+        if not mentor_request.question_id or not isinstance(mentor_request.question_id, str):
+            raise HTTPException(
+                status_code=400,
+                detail="question_id inválido"
+            )
+        
         # 1. Buscar contexto completo da questão no Neo4j
         result = session.run("""
             MATCH (q:Question {id: $id})
@@ -28,10 +93,17 @@ def socratic_mentor(
                    q.option_d as opt_d, q.option_e as opt_e,
                    collect(s.description) as skill_descriptions,
                    collect(s.code) as skill_codes
-        """, id=request.question_id).single()
+        """, id=mentor_request.question_id).single()
 
         if not result:
             raise HTTPException(status_code=404, detail="Questão não encontrada")
+
+        # Validar selected_option_id
+        if not (1 <= mentor_request.selected_option_id <= 5):
+            raise HTTPException(
+                status_code=400,
+                detail="selected_option_id deve estar entre 1 e 5"
+            )
 
         # Mapeamento de opções
         options = {
@@ -40,7 +112,7 @@ def socratic_mentor(
         }
         option_map = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E"}
         
-        user_letter = option_map.get(request.selected_option_id)
+        user_letter = option_map.get(mentor_request.selected_option_id)
         is_correct = user_letter == result["correct_answer"]
         
         # 2. Configurar o Prompt Socrático
@@ -57,7 +129,7 @@ def socratic_mentor(
         Habilidades Relacionadas: {skills_context}
         
         RESPOSTA DO ESTUDANTE:
-        O estudante selecionou a opção {user_letter}: "{options.get(request.selected_option_id)}"
+        O estudante selecionou a opção {user_letter}: "{options.get(mentor_request.selected_option_id)}"
         Status: {'Correto' if is_correct else 'Incorreto'}
         
         DIRETRIZES DE RESPOSTA:
@@ -71,27 +143,31 @@ def socratic_mentor(
         # 3. Chamar o Gemini
         client = genai.Client()
         
-        # Se não houver histórico, começamos com a mensagem de contexto do sistema
-        # Se houver histórico, a última mensagem do usuário já está lá
         history = []
-        for msg in request.chat_history:
+        for msg in mentor_request.chat_history:
             history.append({"role": "user" if msg.role == "user" else "model", "parts": [{"text": msg.content}]})
             
-        # Caso seja o início da conversa (histórico vazio), criamos a mensagem de gatilho
         if not history:
-            input_text = f"O aluno acabou de responder a questão {request.question_id} e {'acertou' if is_correct else 'errou'}. Inicie a orientação."
+            input_text = f"O aluno acabou de responder a questão {mentor_request.question_id} e {'acertou' if is_correct else 'errou'}. Inicie a orientação."
             history.append({"role": "user", "parts": [{"text": input_text}]})
 
-        response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-            contents=history,
-            config=types.GenerateContentConfig(
-                system_instruction=system_instruction
+        try:
+            response = client.models.generate_content(
+                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                contents=history,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction
+                )
             )
-        )
 
-        return {
-            "response": response.text,
-            "skill_targeted": result["skill_codes"][0] if result["skill_codes"] else None,
-            "is_correct": is_correct
-        }
+            return {
+                "response": response.text,
+                "skill_targeted": result["skill_codes"][0] if result["skill_codes"] else None,
+                "is_correct": is_correct
+            }
+        except Exception as e:
+            logger.error(f"Gemini API error: {str(e)}")
+            raise HTTPException(
+                status_code=500,
+                detail="Erro ao processar sua mensagem. Tente novamente em alguns momentos."
+            )
