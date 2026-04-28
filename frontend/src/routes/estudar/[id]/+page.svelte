@@ -8,9 +8,6 @@
   import { api } from '$lib/api';
 
   let skill_id = $page.params.id;
-<<<<<<< HEAD
-  let microlesson: { skill_id: string, friendly_name: string, content: string, description: string, area: string } | null = null;
-=======
   let microlesson: {
     skill_id: string,
     friendly_name: string,
@@ -18,7 +15,6 @@
     description: string,
     area: string
   } | null = null;
->>>>>>> 55ea45a92963ac45581ed41eb3d5affbb45795f3
   let loading = true;
   let error = "";
 
@@ -48,11 +44,7 @@
 
 <div class="study-container container">
   <div class="header-nav animate-slide-up stagger-1">
-<<<<<<< HEAD
     <a href="/dashboard" class="btn btn-outline btn-sm">
-=======
-    <a href="/area/{skill_id.substring(0, 2)}" class="btn btn-outline">
->>>>>>> 55ea45a92963ac45581ed41eb3d5affbb45795f3
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="m15 18-6-6 6-6"/></svg>
       Voltar ao Dashboard
     </a>
