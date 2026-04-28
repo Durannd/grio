@@ -74,14 +74,28 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
             )
             audit_data = json.loads(audit_resp.text)["audit"]
             confidence_map = {item["question_id"]: item["confidence_score"] for item in audit_data}
-        except:
-            confidence_map = {res["question_id"]: 1.0 for res in detailed_results}
+        except Exception as e:
+            from core.logger import logger
+            logger.error(f"Gemini audit failed, using conservative fallback: {str(e)}")
+            # Usar heurística local para scores conservadores
+            confidence_map = {}
+            for res in detailed_results:
+                time_spent = res.get("time_seconds", 30)
+                difficulty = res.get("difficulty", "Médio")
+                
+                if time_spent < 5:
+                    confidence_map[res["question_id"]] = 0.1
+                elif time_spent < 10 and difficulty in ["Médio", "Difícil"]:
+                    confidence_map[res["question_id"]] = 0.4
+                else:
+                    confidence_map[res["question_id"]] = 1.0
 
         # --- Processar Proficiências com Pesos ---
         scores = defaultdict(float)
         totals = defaultdict(int)
 
-        print(f"DEBUG: Processando {len(detailed_results)} resultados para auditoria.")
+        from core.logger import logger
+        logger.debug(f"Processing {len(detailed_results)} assessment results for audit.")
 
         for res in detailed_results:
             q_id = res["question_id"]
@@ -111,7 +125,7 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
             # Cap final de segurança: nada passa de 1.0 (obviamente) mas ajuda a debugar
             score = min(score, 1.0)
             proficiencies_data.append({"id": item_id, "score": float(score)})
-            print(f"DEBUG: Skill {item_id} -> Score Final: {score}")
+            logger.debug(f"Skill {item_id} -> Final Score: {score}")
         
         enriched_proficiencies = []
         if proficiencies_data:
