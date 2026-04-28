@@ -3,6 +3,7 @@
   import { fly, fade, scale } from "svelte/transition";
   import axios from "axios";
   import { formatPedagogicalCode } from "$lib/utils";
+  import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { page } from "$app/stores";
 
   let report = null;
@@ -57,10 +58,7 @@
 <div class="results-page">
   {#if loading}
     <div class="status-screen" out:fade>
-      <div class="loader-visual">
-        <div class="orbit"></div>
-        <div class="center-glow"></div>
-      </div>
+      <LoadingSpinner />
       <h2>Estamos analisando a sua trilha...</h2>
       <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
     </div>
@@ -190,10 +188,8 @@
 
 <style>
   .results-page {
-    min-height: 100vh;
     padding-bottom: 6rem;
     width: 100%;
-    overflow-x: hidden;
   }
 
   .status-screen {
@@ -204,31 +200,6 @@
     justify-content: center;
     text-align: center;
     padding: 1.5rem;
-  }
-
-  .loader-visual {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    margin-bottom: 2rem;
-  }
-
-  .orbit {
-    position: absolute;
-    inset: 0;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    border-top-color: var(--primary);
-    animation: spin 1.5s linear infinite;
-  }
-
-  .center-glow {
-    position: absolute;
-    inset: 30%;
-    background: var(--primary);
-    filter: blur(15px);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
   }
 
   .dashboard {

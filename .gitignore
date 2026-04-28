@@ -40,7 +40,6 @@ ENV/
 # ---------------------
 # Variáveis de ambiente (NUNCA subir)
 # ---------------------
-.env
 .env.*
 !.env.example
 
@@ -99,4 +98,4 @@ htmlcov/
 .cache/
 .openclaude/
 .claude/
-
+.openclaude-profile.json

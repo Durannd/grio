@@ -3,29 +3,39 @@
   import { page } from '$app/stores';
   import { fade } from 'svelte/transition';
   import snarkdown from 'snarkdown';
+  import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { formatPedagogicalCode } from '$lib/utils';
+  import { api } from '$lib/api';
 
   let skill_id = $page.params.id;
+<<<<<<< HEAD
   let microlesson: { skill_id: string, friendly_name: string, content: string, description: string, area: string } | null = null;
+=======
+  let microlesson: {
+    skill_id: string,
+    friendly_name: string,
+    content: string,
+    description: string,
+    area: string
+  } | null = null;
+>>>>>>> 55ea45a92963ac45581ed41eb3d5affbb45795f3
   let loading = true;
   let error = "";
 
   onMount(async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/study/${skill_id}`, {
-        credentials: 'include'
-      });
-
-      if (response.ok) {
-        microlesson = await response.json();
-      } else if (response.status === 404) {
+      const response = await api.get(`/study/${skill_id}`);
+      if (response) {
+        microlesson = response;
+      } else {
+        error = "Lição não encontrada para este conceito.";
+      }
+    } catch (e: any) {
+      if (e.message.includes('404')) {
         error = "Lição não encontrada para este conceito.";
       } else {
-        error = "Ocorreu um erro ao carregar a lição. Tente novamente mais tarde.";
+        error = e.message || "Ocorreu um erro ao carregar a lição.";
       }
-    } catch (e) {
-      console.error(e);
-      error = "Erro de conexão com o servidor.";
     } finally {
       loading = false;
     }
@@ -38,7 +48,11 @@
 
 <div class="study-container container">
   <div class="header-nav animate-slide-up stagger-1">
+<<<<<<< HEAD
     <a href="/dashboard" class="btn btn-outline btn-sm">
+=======
+    <a href="/area/{skill_id.substring(0, 2)}" class="btn btn-outline">
+>>>>>>> 55ea45a92963ac45581ed41eb3d5affbb45795f3
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="m15 18-6-6 6-6"/></svg>
       Voltar ao Dashboard
     </a>
@@ -46,10 +60,7 @@
 
   {#if loading}
     <div class="status-screen" out:fade>
-      <div class="loader-visual">
-        <div class="orbit"></div>
-        <div class="center-glow"></div>
-      </div>
+      <LoadingSpinner />
       <p>Buscando sua lição personalizada...</p>
     </div>
   {:else if error}
@@ -70,6 +81,7 @@
       </header>
 
       <div class="markdown-body glass-panel">
+        <h1>{microlesson.friendly_name}</h1>
         {@html snarkdown(microlesson.content)}
       </div>
 
@@ -112,34 +124,6 @@
     justify-content: center;
     text-align: center;
   }
-
-  .loader-visual {
-    position: relative;
-    width: 60px;
-    height: 60px;
-    margin-bottom: 2rem;
-  }
-
-  .orbit {
-    position: absolute;
-    inset: 0;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    border-top-color: #FFF;
-    animation: spin 1.5s linear infinite;
-  }
-
-  .center-glow {
-    position: absolute;
-    inset: 30%;
-    background: #FFF;
-    filter: blur(10px);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
   .error-state h2 {
     margin-top: 1.5rem;
