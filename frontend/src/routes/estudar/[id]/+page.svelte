@@ -7,6 +7,16 @@
   import { formatPedagogicalCode } from '$lib/utils';
   import { api } from '$lib/api';
 
+  const areaLabels: Record<string, string> = {
+    'MT': 'Matemática',
+    'CN': 'Ciências da Natureza',
+    'LC': 'Linguagens e Códigos',
+    'CH': 'Ciências Humanas'
+  };
+
+  $: areaCode = microlesson?.skill_id?.substring(0, 2) || '';
+  $: areaLabel = areaLabels[areaCode] || 'Área';
+
   let skill_id = $page.params.id;
   let microlesson: {
     skill_id: string,
@@ -44,9 +54,8 @@
 
 <div class="study-container container">
   <div class="header-nav animate-slide-up stagger-1">
-    <a href="/dashboard" class="btn btn-outline btn-sm">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="m15 18-6-6 6-6"/></svg>
-      Voltar ao Dashboard
+    <a href={areaCode ? `/area/${areaCode}` : '/dashboard'} class="back-link">
+      ← Voltar para {areaLabel}
     </a>
   </div>
 
@@ -82,7 +91,7 @@
           <p>Agora que você revisou este conceito, que tal testar seus conhecimentos com um micro-simulado direcionado?</p>
           <div class="actions mt-6">
             <a href="/praticar/{microlesson.skill_id}" class="btn btn-primary">Praticar Agora</a>
-            <a href="/dashboard" class="btn btn-outline ml-4">Voltar ao Painel</a>
+            <a href={areaCode ? `/area/${areaCode}` : '/dashboard'} class="btn btn-outline ml-4">Voltar para {areaLabel}</a>
           </div>
         </div>
       </footer>
@@ -101,9 +110,16 @@
     margin-bottom: 2.5rem;
   }
 
-  .btn-sm {
-    padding: 0.6rem 1.25rem;
-    font-size: 0.85rem;
+  .back-link {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: #FFF;
   }
 
   /* Status Screens */
