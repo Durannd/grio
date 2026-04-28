@@ -58,7 +58,8 @@ def generate_ai_analysis(proficiencies: list):
         )
         return json.loads(response.text)
     except Exception as e:
-        print(f"AI Generation Error: {e}")
+        from core.logger import logger
+        logger.error(f"AI Generation Error: {e}", exc_info=True)
         return {
             "title": "Diagnóstico Griô", 
             "summary": "Ocorreu um erro ao gerar a análise detalhada, mas seus dados estão salvos.", 

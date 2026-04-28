@@ -2,6 +2,7 @@
   import CadastroForm from "$lib/components/CadastroForm.svelte";
   import { goto } from "$app/navigation";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import { loadUser } from "$lib/stores/userStore";
 
   let errorMessage = "";
 
@@ -20,6 +21,9 @@
       });
 
       if (response.ok) {
+        const { invalidateAll } = await import('$app/navigation');
+        await loadUser();
+        await invalidateAll();
         // Redireciona para a tela de boas-vindas após o cadastro
         goto("/welcome");
       } else {

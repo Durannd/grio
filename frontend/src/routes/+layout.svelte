@@ -8,9 +8,8 @@
   import Chatbot from '$lib/components/Chatbot.svelte';
   import Toast from '$lib/components/Toast.svelte';
   import { api } from '$lib/api';
-  import userStore from '$lib/stores/userStore';
+  import { user, isLoading } from '$lib/stores/userStore';
 
-  const user = userStore; // Svelte store
   $: ({ name: userName, email, avatar_url, is_diagnostic_completed } = $user || {});
 
   let showDropdown = false;
@@ -40,9 +39,10 @@
     } catch (error) {
       // api service já lida com o log
     }
-    user.logout();
+    user.set(null);
     showDropdown = false;
-    goto("/login");
+    await invalidateAll();
+    goto("/");
   }
 
   function toggleDropdown() {
@@ -90,7 +90,9 @@
         <img src="/grio-logo.png" alt="Logotipo Griô" class="logo-img" />
       </a>
       <div class="links">
-        {#if $user}
+        {#if $isLoading}
+          <div class="avatar-placeholder skeleton-pulse"></div>
+        {:else if $user}
           <a href="/dashboard">Dashboard</a>
           <a href="/sobre">Sobre</a>
 
@@ -334,5 +336,16 @@
     .nav-content {
       padding: 0 1rem;
     }
+  }
+
+  .skeleton-pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
   }
 </style>

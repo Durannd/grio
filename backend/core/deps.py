@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from models.user import User
 from database import get_db
 from core.security import SECRET_KEY, ALGORITHM
+from core.redis_client import is_token_blacklisted
 
 def get_current_user(
     access_token: str = Cookie(None),
@@ -20,7 +21,10 @@ def get_current_user(
     try:
         payload = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
+        jti: str = payload.get("jti")
         if email is None:
+            raise credentials_exception
+        if jti and is_token_blacklisted(jti):
             raise credentials_exception
     except JWTError:
         raise credentials_exception

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
 from crud.question import get_assessment_questions
@@ -11,8 +11,13 @@ from core.deps import get_current_user
 from core.rate_limit import limiter, get_rate_limit
 from models.user import User
 from core.translator import get_friendly_name
+import re
 
 router = APIRouter()
+
+# Security: Input validation patterns
+SKILL_ID_PATTERN = re.compile(r'^[A-Z]{2,3}(-[0-9]+)?$')
+VALID_AREAS = {"MT", "CN", "LC", "CH"}
 
 @router.get("/", response_model=Assessment)
 @limiter.limit(get_rate_limit("assessment"))
@@ -84,6 +89,11 @@ def read_practice_assessment(
     skill_id: str,
     current_user: User = Depends(get_current_user)
 ):
+    if not SKILL_ID_PATTERN.match(skill_id):
+        raise HTTPException(
+            status_code=400,
+            detail=f"skill_id inválido: {skill_id}. Formato esperado: XX ou XXX-123"
+        )
     friendly_name = get_friendly_name(skill_id)
     driver = get_driver()
     with driver.session() as session:
@@ -125,6 +135,11 @@ def read_diagnostic_assessment_by_area(
     area: str,
     current_user: User = Depends(get_current_user)
 ):
+    if area not in VALID_AREAS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Área inválida: {area}. Valores aceitos: {', '.join(sorted(VALID_AREAS))}"
+        )
     area_map = {"MT": "Matemática", "CN": "Natureza", "LC": "Linguagens", "CH": "Humanas"}
     mapped_area = area_map.get(area, area)
     
@@ -169,7 +184,22 @@ def submit_assessment(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    # Overwrite the user_id from the token to ensure security
-    submission.user_id = current_user.id
-    update_user_streak(db, current_user)
-    return process_assessment_submission(db, submission)
+    if current_user.is_diagnostic_in_progress:
+        raise HTTPException(
+            status_code=429,
+            detail="Diagnóstico em andamento. Aguarde a conclusão."
+        )
+
+    current_user.is_diagnostic_in_progress = True
+    db.add(current_user)
+    db.commit()
+
+    try:
+        # Overwrite the user_id from the token to ensure security
+        submission.user_id = current_user.id
+        update_user_streak(db, current_user)
+        return process_assessment_submission(db, submission)
+    finally:
+        current_user.is_diagnostic_in_progress = False
+        db.add(current_user)
+        db.commit()

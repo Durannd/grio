@@ -43,7 +43,8 @@ Para facilitar o desenvolvimento, tudo o que o backend precisa roda em container
 Ao rodar `docker-compose up -d --build`, ele levanta os seguintes serviços:
 1.  **postgres**: Banco relacional na porta `5432`.
 2.  **neo4j**: Banco de grafos na porta `7687` (bolt) e interface de visualização em `http://localhost:7474`.
-3.  **backend**: Nossa API rodando na porta `8000` (`http://localhost:8000`).
+3.  **redis**: Sistema de cache e segurança (blacklist de tokens) na porta `6379`.
+4.  **backend**: Nossa API rodando na porta `8000` (`http://localhost:8000`).
 
 **Como interagir com o backend Dockerizado:**
 *   **Reiniciar a API:** Se você alterar código fora das pastas dinâmicas ou precisar forçar um reinício:
@@ -69,10 +70,13 @@ docker-compose exec backend pytest -v
 
 ## 5. Autenticação e Segurança
 
-Implementamos o fluxo completo de autenticação via **HttpOnly Cookies**:
+Implementamos o fluxo completo de autenticação via **HttpOnly Cookies** e Hardening de Segurança:
 
 *   **Hashing de Senhas**: Usamos a biblioteca oficial **`bcrypt`**.
 *   **Segurança JWT**: O token não é mais armazenado no `localStorage`, prevenindo ataques XSS. Ele é trafegado via Cookie HttpOnly.
+*   **Token Revocation (Blacklist)**: Utilizamos o **Redis** para invalidar tokens JTI após o logout, garantindo que sessões encerradas não possam ser reutilizadas (Fix #13).
+*   **Alta Entropia**: A `SECRET_KEY` agora exige um mínimo de **64 caracteres** (Fix #1).
+*   **Rate Limiting**: Throttling de requisições baseado em `user_id` via Redis (Fix #3).
 *   **Dependência `get_current_user`**: Se você for criar uma nova rota que precisa de login (ex: `/perfil`), basta passar isso no endpoint:
     ```python
     def meu_endpoint(user: User = Depends(get_current_user)):

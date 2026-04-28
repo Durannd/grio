@@ -22,8 +22,11 @@ async function fetchApi(path: string, options: RequestInit = {}): Promise<unknow
     const response = await fetch(`${BASE_URL}${path}`, mergedOptions);
 
     if (response.status === 401) {
-      goto('/login');
-      toasts.error('Sua sessão expirou. Por favor, faça login novamente.');
+      // Não redireciona se estivermos apenas verificando a sessão atual
+      if (path !== '/auth/me') {
+        goto('/login');
+        toasts.error('Sua sessão expirou. Por favor, faça login novamente.');
+      }
       throw new Error('Unauthorized');
     }
 

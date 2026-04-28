@@ -8,6 +8,7 @@ from core.env import validate_environment
 from core.logger import logger
 from core.rate_limit import limiter
 from core.csrf_middleware import setup_csrf_middleware
+from core.error_handler import global_exception_handler
 import models.user
 import models.question
 import models.assessment
@@ -21,6 +22,7 @@ Base.metadata.create_all(bind=engine)
 logger.info("Starting Griô backend...")
 
 app = FastAPI()
+app.add_exception_handler(Exception, global_exception_handler)
 
 # CORS origins from environment variable
 allowed_origins_str = os.getenv(

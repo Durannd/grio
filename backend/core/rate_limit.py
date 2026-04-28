@@ -9,20 +9,36 @@ from slowapi.errors import RateLimitExceeded
 from fastapi import HTTPException
 import os
 
+
+def get_user_or_ip_key(request):
+    """Rate limit por user_id (autenticado) ou IP (anônimo)"""
+    access_token = request.cookies.get("access_token")
+    if access_token:
+        try:
+            from core.security import SECRET_KEY, ALGORITHM
+            from jose import jwt
+            payload = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
+            email = payload.get("sub")
+            if email:
+                return f"user:{email}"
+        except Exception:
+            pass
+    return get_remote_address(request)
+
+
 # Configurar limiter com Redis (se disponível) ou em-memory fallback
 redis_url = os.getenv("REDIS_URL", None)
 
 if redis_url:
     limiter = Limiter(
-        key_func=get_remote_address,
+        key_func=get_user_or_ip_key,
         storage_uri=redis_url,
         default_limits=["200/minute"]  # Global fallback
     )
 else:
     # Fallback para em-memory (não persistente entre restarts)
-    from slowapi.util import get_remote_address
     limiter = Limiter(
-        key_func=get_remote_address,
+        key_func=get_user_or_ip_key,
         default_limits=["200/minute"]
     )
 

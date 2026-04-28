@@ -1,45 +1,50 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
   import { fade, fly } from 'svelte/transition';
   import { goto } from '$app/navigation';
-  import { PUBLIC_API_BASE_URL } from '$env/static/public';
   import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { formatPedagogicalCode } from '$lib/utils';
+  import { user, loadUser } from '$lib/stores/userStore';
+  import { api } from '$lib/api';
 
   let learningPath: Array<{area_id: string, concept_name: string, display_name: string, friendly_code: string, description: string, score: number}> = [];
   let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = [];
-  let user: any = null;
   let loading = true;
   let errorMessage = "";
 
+  $: currentUser = $user;
+
+  // Guarda reativa: se o usuário deslogar, sai do dashboard imediatamente
+  $: if (browser && !loading && !currentUser) {
+    goto('/login');
+  }
+
   onMount(async () => {
     try {
-      const fetchOptions = {
-        credentials: "include"
-      };
+      if (!$user) {
+        await loadUser();
+      }
 
-      const userRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, fetchOptions);
-      if (userRes.status === 401) {
+      // Se após o load ainda não houver usuário, redireciona
+      if (!$user) {
         goto("/login");
         return;
       }
-      user = await userRes.json();
 
-      const pathRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/learning-path`, fetchOptions);
-      if (pathRes.ok) {
-        const data = await pathRes.json();
-        learningPath = data.learning_path;
-      }
+      const [pathData, historyData] = await Promise.all([
+        api.get('/learning-path'),
+        api.get('/assessment-report/history')
+      ]);
 
-      const historyRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/assessment-report/history`, fetchOptions);
-      if (historyRes.ok) {
-        const hData = await historyRes.json();
-        history = hData.history;
-      }
+      learningPath = (pathData as any).learning_path;
+      history = (historyData as any).history;
 
       loading = false;
-    } catch (error) {
-      errorMessage = "Houve um erro ao carregar seus dados. Por favor, tente novamente mais tarde.";
+    } catch (error: any) {
+      if (error.message !== 'Unauthorized') {
+        errorMessage = "Houve um erro ao carregar seus dados. Por favor, tente novamente mais tarde.";
+      }
       loading = false;
     }
   });
@@ -99,14 +104,14 @@
       <p>{errorMessage}</p>
       <button class="btn btn-outline mt-4" on:click={() => window.location.reload()}>Tentar Novamente</button>
     </div>
-  {:else}
+  {:else if currentUser}
     <div class="dashboard-header animate-fade-in">
       <div>
-        <h1 class="page-title">Bem-vindo(a), <span class="text-gradient">{user.name.split(' ')[0]}</span></h1>
+        <h1 class="page-title">Bem-vindo(a), <span class="text-gradient">{currentUser.name.split(' ')[0]}</span></h1>
         <p class="page-subtitle">Acompanhe seu desempenho por área do conhecimento.</p>
       </div>
       <div class="header-actions">
-        {#if !user.is_diagnostic_completed}
+        {#if !currentUser.is_diagnostic_completed}
           <a href="/prova" class="btn btn-primary">
             Novo Diagnóstico
           </a>
