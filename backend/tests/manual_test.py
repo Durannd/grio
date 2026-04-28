@@ -4,7 +4,7 @@ import pytest
 def test_submit_assessment_manual(client):
     # Dados do usuário e da prova
     email = "manual-test@example.com"
-    password = "test"
+    password = "Password123"
     user_data = {"name": "Manual Test User", "email": email, "password": password}
 
     # Criar usuário

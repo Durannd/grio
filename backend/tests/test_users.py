@@ -1,7 +1,7 @@
 def test_create_user(client):
     response = client.post(
         "/api/v1/users/",
-        json={"email": "test@example.com", "name": "Teste", "password": "password123"},
+        json={"email": "test@example.com", "name": "Teste", "password": "Password123"},
     )
     assert response.status_code == 200
     data = response.json()
