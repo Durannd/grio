@@ -4,6 +4,7 @@ from google.genai import types
 import os
 import json
 from datetime import datetime, timedelta
+from core.translator import get_friendly_code
 
 def get_or_generate_microlesson(driver: Driver, skill_id: str):
     with driver.session() as session:
@@ -91,11 +92,19 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
             friendly_name = data.get("titulo_amigavel", "Tópico de Estudo")
             content = data.get("conteudo_markdown", "# Erro ao gerar conteúdo")
         except Exception as e:
-            print(f"Erro no processamento da IA: {e}")
-            friendly_name = "Tópico Especial"
-            content = response.text if 'response' in locals() else "Erro técnico na geração."
+            from core.logger import logger
+            logger.error(f"Gemini microlesson generation failed for {skill_id}: {e}")
+            # Retorna resposta temporária SEM persistir no Neo4j
+            # Próximo acesso tentará gerar novamente
+            return {
+                "skill_id": result["id"],
+                "friendly_name": result["friendly_name"] or get_friendly_code(skill_id),
+                "description": result["description"],
+                "content": "# Conteúdo temporariamente indisponível\n\nNão foi possível gerar a lição neste momento. Tente novamente em alguns instantes.",
+                "area": result["area"]
+            }
 
-        # Persistir no Neo4j de forma idempotente
+        # Persistir no Neo4j somente em caso de sucesso
         today = datetime.now().isoformat()
         session.run("""
             MATCH (s:Skill {id: $skill_id})
