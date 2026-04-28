@@ -1,17 +1,24 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
   import { fade, slide, fly } from 'svelte/transition';
   import { page } from '$app/stores';
+  import { api } from '$lib/api';
+
+  interface ChatMessage {
+    role: 'user' | 'model';
+    content: string;
+  }
 
   // Ocultar automaticamente em rotas específicas para manter a sobriedade visual
-  $: isHiddenRoute = ['/login', '/cadastro', '/prova'].includes($page.url.pathname);
+  $: isHiddenRoute = ['/login', '/cadastro'].includes($page.url.pathname);
 
   let isOpen = false;
   let message = "";
   let messages = [
-    { text: "Olá! Sou o assistente do Griô. Como posso te ajudar hoje?", isBot: true }
+    { text: "Olá! Sou o assistente do Griô. Como posso te ajudar? 📚", isBot: true }
   ];
   let isLoading = false;
+  let chatHistory: ChatMessage[] = [];
 
   function toggleChat() {
     isOpen = !isOpen;
@@ -22,27 +29,42 @@
 
     const userMessage = message;
     messages = [...messages, { text: userMessage, isBot: false }];
+    chatHistory = [...chatHistory, { role: 'user', content: userMessage }];
     message = "";
     isLoading = true;
 
     try {
-      // TODO: Implement real API call to /api/v1/chatbot/question
-      // For now, simulating a response
-      setTimeout(() => {
-        messages = [...messages, { 
-          text: "Estou processando sua dúvida sobre '" + userMessage + "'. Em breve poderei buscar questões específicas no meu banco!", 
-          isBot: true 
-        }];
-        isLoading = false;
-      }, 1000);
+      // Nota: O endpoint /mentor requer question_id. 
+      // Esta é uma implementação genérica para assistência geral.
+      // Em contexto de prova, pode ser extendido com question_id
+      const response = await api.post('/chatbot/mentor', {
+        question_id: 'general',
+        selected_option_id: 0,
+        chat_history: chatHistory,
+        user_message: userMessage
+      });
+
+      if (response && response.response) {
+        const botMessage = response.response;
+        messages = [...messages, { text: botMessage, isBot: true }];
+        chatHistory = [...chatHistory, { role: 'model', content: botMessage }];
+      } else {
+        throw new Error('Resposta inválida do servidor');
+      }
     } catch (error) {
-      console.error("Erro no chatbot:", error);
+      const errorMessage = "Desculpe, tive um problema ao processar sua mensagem. Tente novamente.";
+      messages = [...messages, { text: errorMessage, isBot: true }];
+      // Não adiciona erro ao histórico
+    } finally {
       isLoading = false;
     }
   }
 
-  function handleKeydown(e) {
-    if (e.key === 'Enter') sendMessage();
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   }
 </script>
 

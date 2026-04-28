@@ -18,13 +18,13 @@ async function loadUser() {
   if (!browser) return;
 
   try {
-    const userData: User = await api.get('/auth/me');
+    const userData: User = await api.get('/auth/me') as User;
     if (userData) {
       userStore.set(userData);
     } else {
       userStore.set(null);
     }
-  } catch (error) {
+  } catch (error: unknown) {
     // A api.get já lida com o log e toast de erro
     userStore.set(null);
   }
