@@ -1,7 +1,8 @@
 <script lang="ts">
   import LoginForm from "$lib/components/LoginForm.svelte";
-  import { goto } from "$app/navigation";
+  import { goto, invalidateAll } from "$app/navigation";
   import { api } from "$lib/api";
+  import { loadUser } from "$lib/stores/userStore";
 
   let errorMessage = "";
 
@@ -15,6 +16,9 @@
       formData.append("password", password);
 
       await api.postForm("/auth/login", formData);
+      // Forçar recarregamento do usuário para atualizar a Navbar
+      await loadUser();
+      await invalidateAll(); // Garante que o layout perceba a mudança
       goto("/dashboard");
 
     } catch (error: any) {

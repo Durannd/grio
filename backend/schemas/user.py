@@ -22,9 +22,13 @@ class UserCreate(UserBase):
     @field_validator('name')
     @classmethod
     def validate_name(cls, v):
-        if not re.match(r'^[a-zA-ZÀ-ÿ\s]+$', v):
-            raise ValueError('Nome deve conter apenas letras e espaços')
-        return v
+        if not re.match(r'^[a-zA-ZÀ-ÿ\s\-]{2,50}$', v):
+            raise ValueError('Nome deve conter apenas letras, espaços e hífens (2-50 caracteres)')
+        dangerous_patterns = ['<', '>', '&', '"', "'", 'javascript', 'onerror', 'onload', 'script']
+        v_lower = v.lower()
+        if any(pattern in v_lower for pattern in dangerous_patterns):
+            raise ValueError('Nome contém caracteres não permitidos')
+        return v.strip()
 
 class User(UserBase):
     id: int

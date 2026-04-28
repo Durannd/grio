@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
-  import user from '$lib/stores/userStore';
+  import { user } from '$lib/stores/userStore';
 
   let isLoaded = false;
 

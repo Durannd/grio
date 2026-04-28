@@ -23,8 +23,8 @@ def validate_environment():
             missing_vars.append(f"  - {var}: {description}")
         else:
             # Validações específicas
-            if var == "SECRET_KEY" and len(value) < 32:
-                invalid_vars.append(f"  - {var}: Must be at least 32 characters (currently {len(value)})")
+            if var == "SECRET_KEY" and len(value) < 64:
+                invalid_vars.append(f"  - {var}: Must be at least 64 characters (currently {len(value)})")
             elif var == "GEMINI_API_KEY" and len(value) < 20:
                 invalid_vars.append(f"  - {var}: Looks too short for a valid API key")
     

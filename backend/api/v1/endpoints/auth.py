@@ -46,14 +46,30 @@ def login_for_access_token(
         value=access_token,
         httponly=True,
         max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
-        samesite="lax",
+        samesite="strict",
         secure=is_production,
     )
     
     return {"message": "Login successful"}
 
 @router.post("/logout")
-def logout(response: Response):
+def logout(response: Response, access_token: str = Cookie(None)):
+    if access_token:
+        try:
+            from jose import jwt as jwt_decode
+            from core.security import SECRET_KEY, ALGORITHM
+            from core.redis_client import blacklist_token
+            import time
+
+            payload = jwt_decode.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
+            jti = payload.get("jti")
+            exp = payload.get("exp")
+            if jti and exp:
+                ttl = int(exp - time.time())
+                if ttl > 0:
+                    blacklist_token(jti, ttl)
+        except Exception:
+            pass  # Token inválido/expirado, não precisa revogar
     response.delete_cookie(key="access_token")
     return {"message": "Logout successful"}
 
@@ -89,7 +105,7 @@ def signup(
         value=access_token,
         httponly=True,
         max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
-        samesite="lax",
+        samesite="strict",
         secure=is_production,
     )
     

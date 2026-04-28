@@ -10,34 +10,55 @@ export interface User {
   is_diagnostic_completed: boolean;
 }
 
-const initialUser: User | null = null;
+// Store central de usuário
+export const user = writable<User | null>(null);
+export const isLoading = writable<boolean>(true);
 
-const userStore = writable<User | null>(initialUser);
-
-async function loadUser() {
+/**
+ * Carrega os dados do usuário atual a partir da API com lógica de retry.
+ */
+export async function loadUser(retryCount = 0) {
   if (!browser) return;
 
+  // Só mostra o estado de carregamento global na primeira tentativa
+  if (retryCount === 0) isLoading.set(true);
+  
   try {
-    const userData: User = await api.get('/auth/me') as User;
-    if (userData) {
-      userStore.set(userData);
+    console.log(`[UserStore] Tentando carregar usuário... (Tentativa ${retryCount + 1})`);
+    const userData = await api.get('/auth/me') as User;
+    
+    if (userData && userData.id) {
+      console.log('[UserStore] Usuário identificado:', userData.email);
+      user.set(userData);
     } else {
-      userStore.set(null);
+      user.set(null);
     }
-  } catch (error: unknown) {
-    // A api.get já lida com o log e toast de erro
-    userStore.set(null);
+    // Sucesso: garante que o loading pare
+    isLoading.set(false);
+  } catch (error: any) {
+    console.warn(`[UserStore] Erro no carregamento (Tentativa ${retryCount + 1}):`, error.message);
+    
+    // Se for 401, tentamos mais uma vez após um breve respiro (processamento de cookie)
+    if (error.message === 'Unauthorized' && retryCount < 2) {
+      await new Promise(resolve => setTimeout(resolve, 400));
+      return loadUser(retryCount + 1);
+    }
+    
+    // Se falhou todas as vezes, limpa o usuário e encerra o loading
+    user.set(null);
+    isLoading.set(false);
   }
 }
 
-// Carrega o usuário quando a store é inicializada no navegador
+/**
+ * Limpa o estado do usuário localmente.
+ */
+export function logoutUser() {
+  user.set(null);
+  isLoading.set(false);
+}
+
+// Inicialização automática no navegador
 if (browser) {
   loadUser();
 }
-
-export default {
-  subscribe: userStore.subscribe,
-  set: userStore.set,
-  load: loadUser,
-  logout: () => userStore.set(null),
-};

@@ -58,8 +58,9 @@ O primeiro passo construiu as funcionalidades core para as principais áreas do 
 |--------|-----------|--------|
 | Frontend | **SvelteKit** | Performance e leveza mobile |
 | Backend | **Python + FastAPI** | Ecossistema de IA maduro |
-| Banco Relacional | **PostgreSQL** | Dados de usuários, autenticação e histórico imutável de avaliações |
-| Banco em Grafo | **Neo4j** | Grafo de conhecimento e proficiência (estado cognitivo atual) |
+| Cache & Seg. | **Redis** | Invalidação de tokens (Logout) e Rate Limiting |
+| Banco Relacional | **PostgreSQL** | Dados de usuários, autenticação e histórico imutável |
+| Banco em Grafo | **Neo4j** | Grafo de conhecimento e proficiência |
 | IA | **Gemini API** | Tutor inteligente |
 
 ## Roadmap

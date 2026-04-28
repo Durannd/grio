@@ -114,6 +114,7 @@ async def get_study_plan(
                 
                 return plan_data
             except Exception as e:
-                print(f"Erro ao processar IA: {e}")
+                from core.logger import logger
+                logger.error(f"Erro ao processar plano de estudos IA: {e}", exc_info=True)
                 # Fallback em caso de erro na resposta da IA
                 return {"status": "error", "message": "Não foi possível gerar o plano no momento."}
