@@ -226,6 +226,7 @@ def get_assessment_attempt(
         "summary_stats": {
             "total_skills_mapped": len(masked_proficiencies),
             "average_score": sum([p['score'] for p in masked_proficiencies]) / len(masked_proficiencies) if masked_proficiencies else 0
+
         },
         "snapshot": "historical"
     }

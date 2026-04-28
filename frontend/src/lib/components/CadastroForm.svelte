@@ -70,7 +70,7 @@
   }
 
   .lock-icon {
-    width: 24px;
-    height: 24px;
+    width: 14px;
+    height: 14px;
   }
 </style>

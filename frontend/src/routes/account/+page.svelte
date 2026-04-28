@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { fly, fade } from "svelte/transition";
+  import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { goto } from "$app/navigation";
 
   let user: any = null;
@@ -55,7 +56,9 @@
 
 <div class="account-page container section-padding">
   {#if loading}
-    <div class="loading-state">Carregando...</div>
+    <div class="status-screen" out:fade>
+      <LoadingSpinner />
+    </div>
   {:else if user}
     <div class="account-layout">
       <aside class="account-sidebar animate-slide-up">

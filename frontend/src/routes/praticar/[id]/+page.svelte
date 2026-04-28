@@ -3,7 +3,8 @@
   import { fade, fly } from "svelte/transition";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import axios from "axios";
+  import { api } from "$lib/api";
+  import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { toasts } from "$lib/stores/toast";
 
   interface Option {
@@ -20,39 +21,30 @@
   }
 
   let skill_id = $page.params.id;
+  let friendly_name = "";
   let questions: Question[] = [];
   let currentQuestionIndex = 0;
   let loading = true;
   let submitting = false;
   let selectedAnswers: Record<string, number> = {};
-  let answersTime: Record<string, number> = {}; 
+  let answersTime: Record<string, number> = {};
   let startTime = Date.now();
   let progress = 0;
 
   onMount(async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/assessment/practice/${skill_id}`, {
-        credentials: "include"
-      });
+      const data = await api.get(`/assessment/practice/${skill_id}`);
+      questions = data.questions;
+      friendly_name = data.friendly_name;
 
-      if (response.status === 401) {
-        goto("/login");
-        return;
+      if (questions.length === 0) {
+          toasts.info("Você já resolveu todas as questões disponíveis para este conceito no momento!");
+          goto("/dashboard");
+          return;
       }
-
-      if (response.ok) {
-        const data = await response.json();
-        questions = data.questions;
-        
-        if (questions.length === 0) {
-            toasts.info("Você já resolveu todas as questões disponíveis para este conceito no momento!");
-            goto("/dashboard");
-            return;
-        }
-      }
-      loading = false;
     } catch (error) {
-      console.error("Erro ao buscar questões:", error);
+      // O serviço de API já exibe o toast de erro
+    } finally {
       loading = false;
     }
   });
@@ -96,24 +88,20 @@
   async function handleSubmit() {
     submitting = true;
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/assessment/submit",
-        {
-          user_id: 0,
-          type: "pratica_direcionada",
-          answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({
-            question_id: qId,
-            selected_option_id: aId,
-            time_seconds: Math.round(answersTime[qId] || 0),
-          })),
-        },
-        {
-          withCredentials: true
-        },
-      );
+      const payload = {
+        user_id: 0, // O backend substituirá pelo ID do token
+        type: "pratica_direcionada",
+        answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({
+          question_id: qId,
+          selected_option_id: aId,
+          time_seconds: Math.round(answersTime[qId] || 0),
+        })),
+      };
 
-      const attemptId = response.data.attempt_id;
-      const audit = response.data.audit_summary;
+      const response = await api.post("/assessment/submit", payload);
+
+      const attemptId = response.attempt_id;
+      const audit = response.audit_summary;
 
       if (audit && audit.has_warnings) {
         toasts.warning(
@@ -124,8 +112,6 @@
 
       goto(`/prova/resultado?id=${attemptId}`);
     } catch (e) {
-      console.error(e);
-      toasts.error("Houve um erro ao processar sua prática.");
       goto("/dashboard");
     } finally {
       submitting = false;
@@ -135,10 +121,7 @@
 
 {#if submitting}
   <div class="status-screen" in:fade>
-    <div class="loader-visual">
-      <div class="orbit"></div>
-      <div class="center-glow"></div>
-    </div>
+    <LoadingSpinner />
     <h2>Consolidando seu aprendizado...</h2>
     <p>Estamos atualizando seu mapa de proficiência com base nos seus novos resultados.</p>
   </div>
@@ -152,7 +135,7 @@
     <div class="content-wrapper">
       {#if loading}
         <div class="loading-container" in:fade>
-          <div class="gri-loader"></div>
+          <LoadingSpinner />
           <p class="text-gradient">Preparando seu simulado direcionado...</p>
         </div>
       {:else if questions.length > 0}
@@ -160,7 +143,7 @@
           <h1 class="text-gradient">Prática de Habilidade</h1>
           <p class="subtitle">
             Validando seu domínio sobre: <br/>
-            <span class="skill-focus">{skill_id}</span>
+            <span class="skill-focus">{friendly_name}</span>
           </p>
 
           <div class="progress-wrapper">
@@ -348,13 +331,6 @@
   .loading-container { padding: 10rem 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
 
   .status-screen { height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; }
-  .loader-visual { position: relative; width: 100px; height: 100px; margin-bottom: 2rem; }
-  .orbit { position: absolute; inset: 0; border: 2px solid rgba(201, 160, 94, 0.2); border-radius: 50%; border-top-color: var(--primary); animation: spin 1.5s linear infinite; }
-  .center-glow { position: absolute; inset: 30%; background: var(--primary); filter: blur(15px); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
-
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-
   .status-screen h2 { font-size: 2rem; margin-bottom: 1rem; color: #fff; }
   .status-screen p { color: var(--text-secondary); }
 

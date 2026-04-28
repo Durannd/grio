@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   import axios from "axios";
 
+  import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { toasts } from "$lib/stores/toast";
 
   interface Option {
@@ -150,16 +151,13 @@
   <div class="content-wrapper">
     {#if submitting}
       <div class="status-screen" in:fade>
-        <div class="loader-visual">
-          <div class="orbit"></div>
-          <div class="center-glow"></div>
-        </div>
+        <LoadingSpinner />
         <h2>Estamos analisando a sua trilha...</h2>
         <p>Cruzando dados de competências e habilidades para gerar seu plano.</p>
       </div>
     {:else if loading}
-      <div class="loading-container" in:fade>
-        <div class="gri-loader"></div>
+      <div class="status-screen" in:fade>
+        <LoadingSpinner />
         <p class="text-gradient">Preparando seu diagnóstico...</p>
       </div>
     {:else if questions.length > 0}
@@ -554,36 +552,6 @@
     padding: 2rem;
   }
 
-  .loader-visual {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin-bottom: 2rem;
-  }
-
-  .orbit {
-    position: absolute;
-    inset: 0;
-    border: 2px solid rgba(201, 160, 94, 0.2);
-    border-radius: 50%;
-    border-top-color: var(--primary);
-    animation: spin 1.5s linear infinite;
-  }
-
-  .center-glow {
-    position: absolute;
-    inset: 30%;
-    background: var(--primary);
-    filter: blur(15px);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes spin {
-    100% {
-      transform: rotate(360deg);
-    }
-  }
   .status-screen h2 {
     font-size: 2rem;
     margin-bottom: 1rem;

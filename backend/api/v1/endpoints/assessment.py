@@ -13,6 +13,7 @@ router = APIRouter()
 from schemas.question import Assessment, Question
 from core.deps import get_current_user
 from models.user import User
+from core.translator import get_friendly_name
 
 @router.get("/", response_model=Assessment)
 def read_assessment(
@@ -80,6 +81,7 @@ def read_practice_assessment(
     skill_id: str,
     current_user: User = Depends(get_current_user)
 ):
+    friendly_name = get_friendly_name(skill_id)
     driver = get_driver()
     with driver.session() as session:
         # Busca questões vinculadas à Habilidade específica (Skill) que o usuário ainda não respondeu
@@ -87,13 +89,13 @@ def read_practice_assessment(
             MATCH (s:Skill {id: $skill_id})<-[:EVALUATES]-(q:Question)
             WHERE NOT (:User {id: $user_id})-[:ANSWERED]->(q)
             WITH q, rand() as r ORDER BY r
-            RETURN q.id as id, q.text as text, q.difficulty as difficulty, 
+            RETURN q.id as id, q.text as text, q.difficulty as difficulty,
                    q.answer as correct_answer,
                    q.option_a as option_a, q.option_b as option_b, q.option_c as option_c,
                    q.option_d as option_d, q.option_e as option_e
             LIMIT 10
         """, skill_id=skill_id, user_id=current_user.id)
-        
+
         questions = []
         for record in result:
             options = [
@@ -110,8 +112,8 @@ def read_practice_assessment(
                 "concept_name": f"Prática: {skill_id}",
                 "options": options
             })
-            
-    return {"questions": questions}
+
+    return {"questions": questions, "friendly_name": friendly_name}
 
 @router.get("/diagnostico/{area}", response_model=Assessment)
 def read_diagnostic_assessment_by_area(

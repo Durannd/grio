@@ -29,3 +29,4 @@ class Question(QuestionBase):
 
 class Assessment(BaseModel):
     questions: List[Question]
+    friendly_name: Optional[str] = None
