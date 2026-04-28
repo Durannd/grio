@@ -4,7 +4,7 @@ import { PUBLIC_API_BASE_URL } from '$env/static/public';
 
 const BASE_URL = `${PUBLIC_API_BASE_URL}/api/v1`;
 
-async function fetchApi(path: string, options: RequestInit = {}) {
+async function fetchApi(path: string, options: RequestInit = {}): Promise<unknown> {
   const defaultOptions: RequestInit = {
     credentials: 'include',
     headers: {
@@ -39,20 +39,21 @@ async function fetchApi(path: string, options: RequestInit = {}) {
     }
 
     return await response.json();
-  } catch (error) {
-    console.error('API Fetch Error:', error);
-    if (!(error instanceof Error && error.message === 'Unauthorized')) {
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error('API Fetch Error:', err);
+    if (!(err instanceof Error && err.message === 'Unauthorized')) {
       toasts.error('Não foi possível conectar ao servidor. Verifique sua conexão.');
     }
-    throw error;
+    throw err;
   }
 }
 
 export const api = {
   get: (path: string, options?: RequestInit) => fetchApi(path, { ...options, method: 'GET' }),
-  post: (path: string, data: any, options?: RequestInit) =>
+  post: <T>(path: string, data: T, options?: RequestInit) =>
     fetchApi(path, { ...options, method: 'POST', body: JSON.stringify(data) }),
-  put: (path: string, data: any, options?: RequestInit) =>
+  put: <T>(path: string, data: T, options?: RequestInit) =>
     fetchApi(path, { ...options, method: 'PUT', body: JSON.stringify(data) }),
   delete: (path: string, options?: RequestInit) => fetchApi(path, { ...options, method: 'DELETE' }),
   postForm: (path: string, formData: URLSearchParams, options?: RequestInit) => {
