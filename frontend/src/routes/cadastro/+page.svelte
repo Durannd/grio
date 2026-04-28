@@ -1,6 +1,7 @@
 <script lang="ts">
   import CadastroForm from "$lib/components/CadastroForm.svelte";
   import { goto } from "$app/navigation";
+  import { PUBLIC_API_BASE_URL } from "$env/static/public";
 
   let errorMessage = "";
 
@@ -9,7 +10,7 @@
     errorMessage = "";
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/auth/signup", {
+      const response = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
