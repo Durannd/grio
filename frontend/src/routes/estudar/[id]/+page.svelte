@@ -73,7 +73,6 @@
       </header>
 
       <div class="markdown-body glass-panel">
-        <h1>{microlesson.friendly_name}</h1>
         {@html snarkdown(microlesson.content)}
       </div>
 

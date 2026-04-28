@@ -59,24 +59,33 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
         client = genai.Client()
         
         prompt = f"""
-        Você é um assistente de ensino especializado na Matriz de Referência do ENEM.
-        Sua tarefa é gerar uma explicação técnica e didática sobre uma Habilidade específica E criar um título amigável para ela.
+        Você é um professor especialista que cria micro-aulas para estudantes do ENEM.
+        Gere uma explicação didática sobre o tema descrito abaixo.
 
-        HABILIDADE: {result['id']}
-        DESCRIÇÃO: {result['description']}
-        ÁREA: {result['area']}
+        TEMA: {result['description']}
+        ÁREA DO CONHECIMENTO: {result['area']}
 
-        BASE DE CONHECIMENTO (QUESTÕES REAIS DO ENEM):
-        {knowledge_base if knowledge_base else "Nenhum exemplo real encontrado para esta habilidade. Baseie-se apenas na descrição."}
+        CONTEXTO INTERNO (USE APENAS COMO REFERÊNCIA, NÃO CITE):
+        {knowledge_base if knowledge_base else "Sem exemplos disponíveis."}
 
-        DIRETRIZES:
-        1. TITULO_AMIGAVEL: Crie um nome curto (máximo 4 palavras) que resuma o tema central desta habilidade para um aluno (ex: "Geometria Plana", "Cinemática Básica").
-        2. CONTEUDO: Explique o conceito de forma técnica, neutra e objetiva. Proibido saudações ou personificações.
+        REGRAS OBRIGATÓRIAS:
+        1. TITULO_AMIGAVEL: Crie um nome curto e claro (2-4 palavras) que resuma o tema para um aluno.
+           Exemplos: "Geometria Plana", "Cinemática Básica", "Interpretação de Gráficos".
+           NÃO use siglas, códigos ou identificadores técnicos.
+        2. CONTEUDO: Micro-aula em Markdown bem formatado.
+           - Use títulos (##), listas, **negrito** para conceitos-chave e > para dicas.
+           - Linguagem clara, direta e acessível para ensino médio.
+           - Inclua exemplos práticos ORIGINAIS (NÃO copie os exercícios do contexto).
+        3. PROIBIDO:
+           - Citar, reproduzir ou referenciar os exercícios/questões do contexto interno.
+           - Mencionar códigos de habilidade (como MT_C1_H01, H23, etc.).
+           - Saudações, personificações ou frases como "Olá, aluno!".
+           - Começar com o título da habilidade (o sistema já exibe isso).
 
         FORMATO JSON:
         {{
-          "titulo_amigavel": "string",
-          "conteudo_markdown": "string (Markdown formatado)"
+          "titulo_amigavel": "string (2-4 palavras)",
+          "conteudo_markdown": "string (Markdown formatado, começando com ## subtítulo)"
         }}
         """
 
