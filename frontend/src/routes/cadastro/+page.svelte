@@ -4,10 +4,10 @@
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import { loadUser } from "$lib/stores/userStore";
 
-  let errorMessage = "";
+  let errorMessage = $state("");
 
-  async function handleSubmit(event: any) {
-    const { name, email, password } = event.detail;
+  async function handleSubmit(data: any) {
+    const { name, email, password } = data;
     errorMessage = "";
 
     try {
@@ -42,7 +42,7 @@
     <p>Comece sua jornada de estudos agora mesmo.</p>
   </div>
 
-  <CadastroForm on:submit={handleSubmit} />
+  <CadastroForm onsubmit={handleSubmit} />
 
   {#if errorMessage}
     <p class="error-msg animate-slide-up stagger-3">{errorMessage}</p>
