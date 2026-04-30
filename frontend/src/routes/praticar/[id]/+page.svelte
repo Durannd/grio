@@ -181,7 +181,7 @@
                   <span class="enem-badge"
                     >{formatEnemId(currentQuestion.id)}</span
                   >
-                  <span class="concept-tag">Foco: {skill_id}</span>
+                  <span class="concept-tag">Foco: {friendly_name}</span>
                 </div>
                 <div class="difficulty-badge">
                   <span class="dot {currentQuestion.difficulty.toLowerCase()}"

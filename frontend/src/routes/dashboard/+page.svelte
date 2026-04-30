@@ -174,7 +174,7 @@
         <div class="glass-panel text-center profile-panel">
           <h2 class="section-title">Dados Técnicos</h2>
           <p class="mt-2 mb-4">Acesse seu perfil para visualizar a análise granular de competências e habilidades (Matriz ENEM).</p>
-          <a href="/profile" class="btn btn-secondary" style="width: 100%;">Acessar Perfil Completo</a>
+          <a href="/account?tab=technical" class="btn btn-secondary" style="width: 100%;">Acessar Perfil Completo</a>
         </div>
       </section>
     </div>
