@@ -89,29 +89,34 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
         }}
         """
 
-        try:
-            response = client.models.generate_content(
-                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
+        max_retries = 3
+        base_delay = 2 # seconds
+        
+        for attempt in range(max_retries):
+            try:
+                response = client.models.generate_content(
+                    model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json"
+                    )
                 )
-            )
-            data = json.loads(response.text)
-            friendly_name = data.get("titulo_amigavel", "Tópico de Estudo")
-            content = data.get("conteudo_markdown", "# Erro ao gerar conteúdo")
-        except Exception as e:
-            from core.logger import logger
-            logger.error(f"Gemini microlesson generation failed for {skill_id}: {e}")
-            # Retorna resposta temporária SEM persistir no Neo4j
-            # Próximo acesso tentará gerar novamente
-            return {
-                "skill_id": result["id"],
-                "friendly_name": result["friendly_name"] or get_friendly_code(skill_id),
-                "description": result["description"],
-                "content": "# Conteúdo temporariamente indisponível\n\nNão foi possível gerar a lição neste momento. Tente novamente em alguns instantes.",
-                "area": result["area"]
-            }
+                data = json.loads(response.text)
+                friendly_name = data.get("titulo_amigavel", "Tópico de Estudo")
+                content = data.get("conteudo_markdown", "# Erro ao gerar conteúdo")
+                break # Success, exit loop
+            except Exception as e:
+                from core.logger import logger
+                logger.warning(f"Gemini microlesson generation failed (attempt {attempt + 1}/{max_retries}) for {skill_id}: {e}")
+                
+                if attempt < max_retries - 1:
+                    import time
+                    import random
+                    delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                    time.sleep(delay)
+                else:
+                    logger.error(f"Gemini microlesson generation completely failed after {max_retries} attempts for {skill_id}: {e}")
+                    raise ValueError("GEMINI_API_BUSY")
 
         # Persistir no Neo4j somente em caso de sucesso
         today = datetime.now().isoformat()

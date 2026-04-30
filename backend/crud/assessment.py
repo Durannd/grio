@@ -64,19 +64,34 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
           ]
         }}
         """
-        try:
-            audit_resp = client.models.generate_content(
-                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-                contents=audit_prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
+        max_retries = 3
+        base_delay = 2
+        confidence_map = None
+
+        for attempt in range(max_retries):
+            try:
+                audit_resp = client.models.generate_content(
+                    model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    contents=audit_prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json"
+                    )
                 )
-            )
-            audit_data = json.loads(audit_resp.text)["audit"]
-            confidence_map = {item["question_id"]: item["confidence_score"] for item in audit_data}
-        except Exception as e:
-            from core.logger import logger
-            logger.error(f"Gemini audit failed, using conservative fallback: {str(e)}")
+                audit_data = json.loads(audit_resp.text)["audit"]
+                confidence_map = {item["question_id"]: item["confidence_score"] for item in audit_data}
+                break
+            except Exception as e:
+                from core.logger import logger
+                logger.warning(f"Gemini audit failed (attempt {attempt + 1}/{max_retries}): {str(e)}")
+                if attempt < max_retries - 1:
+                    import time
+                    import random
+                    delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                    time.sleep(delay)
+                else:
+                    logger.error(f"Gemini audit completely failed, using conservative fallback: {str(e)}")
+        
+        if confidence_map is None:
             # Usar heurística local para scores conservadores
             confidence_map = {}
             for res in detailed_results:

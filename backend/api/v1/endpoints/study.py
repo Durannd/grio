@@ -21,7 +21,13 @@ def read_microlesson(
     actual_skill_id = unmask_id(skill_id)
     driver = get_driver()
     update_user_streak(db, current_user)
-    lesson = get_or_generate_microlesson(driver, actual_skill_id)
+    try:
+        lesson = get_or_generate_microlesson(driver, actual_skill_id)
+    except ValueError as e:
+        if str(e) == "GEMINI_API_BUSY":
+            raise HTTPException(status_code=503, detail="O servidor de Inteligência Artificial está com alta demanda. Por favor, tente novamente em alguns instantes.")
+        raise
+    
     if not lesson:
         raise HTTPException(status_code=404, detail="Habilidade não encontrada")
     return lesson

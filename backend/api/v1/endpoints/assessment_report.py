@@ -48,25 +48,36 @@ def generate_ai_analysis(proficiencies: list):
     """
     
     client = genai.Client()
-    try:
-        response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json"
+    max_retries = 3
+    base_delay = 2
+
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
             )
-        )
-        return json.loads(response.text)
-    except Exception as e:
-        from core.logger import logger
-        logger.error(f"AI Generation Error: {e}", exc_info=True)
-        return {
-            "title": "Diagnóstico Griô", 
-            "summary": "Ocorreu um erro ao gerar a análise detalhada, mas seus dados estão salvos.", 
-            "strengths": [], 
-            "weaknesses": [], 
-            "action_plan": "Continue explorando os módulos para acumular mais dados."
-        }
+            return json.loads(response.text)
+        except Exception as e:
+            from core.logger import logger
+            logger.warning(f"AI Generation Error in Assessment Report (attempt {attempt + 1}/{max_retries}): {e}")
+            if attempt < max_retries - 1:
+                import time
+                import random
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                time.sleep(delay)
+            else:
+                logger.error(f"AI Generation Error completely failed: {e}", exc_info=True)
+                return {
+                    "title": "Diagnóstico Griô", 
+                    "summary": "O servidor de Inteligência Artificial está com alta demanda no momento. Ocorreu um erro ao gerar a análise detalhada, mas seus dados estão salvos. Tente novamente mais tarde.", 
+                    "strengths": [], 
+                    "weaknesses": [], 
+                    "action_plan": "Continue explorando os módulos para acumular mais dados."
+                }
 
 @router.get("/report")
 def get_diagnostic_report(

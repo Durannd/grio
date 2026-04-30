@@ -92,29 +92,39 @@ async def get_study_plan(
             """
             
             client = genai.Client()
-            response = client.models.generate_content(
-                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
-                )
-            )
+            max_retries = 3
+            base_delay = 2
             
-            try:
-                plan_data = json.loads(response.text)
-                
-                # Associar o plano gerado à última tentativa
-                if latest_attempt:
-                    plan_data["attempt_id"] = latest_attempt.id
-                
-                # 4. Salvar no Cache do Postgres
-                current_user.study_plan_cache = json.dumps(plan_data)
-                db.add(current_user)
-                db.commit()
-                
-                return plan_data
-            except Exception as e:
-                from core.logger import logger
-                logger.error(f"Erro ao processar plano de estudos IA: {e}", exc_info=True)
-                # Fallback em caso de erro na resposta da IA
-                return {"status": "error", "message": "Não foi possível gerar o plano no momento."}
+            for attempt in range(max_retries):
+                try:
+                    response = client.models.generate_content(
+                        model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                        contents=prompt,
+                        config=types.GenerateContentConfig(
+                            response_mime_type="application/json"
+                        )
+                    )
+                    plan_data = json.loads(response.text)
+                    
+                    # Associar o plano gerado à última tentativa
+                    if latest_attempt:
+                        plan_data["attempt_id"] = latest_attempt.id
+                    
+                    # 4. Salvar no Cache do Postgres
+                    current_user.study_plan_cache = json.dumps(plan_data)
+                    db.add(current_user)
+                    db.commit()
+                    
+                    return plan_data
+                except Exception as e:
+                    from core.logger import logger
+                    logger.warning(f"Erro ao gerar plano de estudos IA (attempt {attempt + 1}/{max_retries}): {e}")
+                    
+                    if attempt < max_retries - 1:
+                        import time
+                        import random
+                        delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                        time.sleep(delay)
+                    else:
+                        logger.error(f"Erro crítico ao processar plano de estudos IA: {e}", exc_info=True)
+                        raise HTTPException(status_code=503, detail="O servidor de Inteligência Artificial está com alta demanda. Por favor, tente novamente em alguns instantes.")

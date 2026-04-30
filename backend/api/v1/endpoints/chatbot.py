@@ -52,26 +52,37 @@ def socratic_mentor(
                 "parts": [{"text": msg.content}]
             })
         
-        try:
-            response = client.models.generate_content(
-                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-                contents=history,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_instruction
+        max_retries = 3
+        base_delay = 2
+        
+        for attempt in range(max_retries):
+            try:
+                response = client.models.generate_content(
+                    model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    contents=history,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_instruction
+                    )
                 )
-            )
-            
-            return {
-                "response": response.text,
-                "skill_targeted": None,
-                "is_correct": False
-            }
-        except Exception as e:
-            logger.error(f"Gemini API error in general chat: {str(e)}")
-            raise HTTPException(
-                status_code=500,
-                detail="Erro ao processar sua mensagem. Tente novamente em alguns momentos."
-            )
+                
+                return {
+                    "response": response.text,
+                    "skill_targeted": None,
+                    "is_correct": False
+                }
+            except Exception as e:
+                logger.warning(f"Gemini API error in general chat (attempt {attempt + 1}/{max_retries}): {str(e)}")
+                if attempt < max_retries - 1:
+                    import time
+                    import random
+                    delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                    time.sleep(delay)
+                else:
+                    logger.error(f"Gemini API completely failed in general chat: {str(e)}")
+                    raise HTTPException(
+                        status_code=503,
+                        detail="O servidor de Inteligência Artificial está com alta demanda. Tente novamente em alguns momentos."
+                    )
     
     # Modo específico por questão
     with driver.session() as session:
@@ -151,23 +162,34 @@ def socratic_mentor(
             input_text = f"O aluno acabou de responder a questão {mentor_request.question_id} e {'acertou' if is_correct else 'errou'}. Inicie a orientação."
             history.append({"role": "user", "parts": [{"text": input_text}]})
 
-        try:
-            response = client.models.generate_content(
-                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-                contents=history,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_instruction
+        max_retries = 3
+        base_delay = 2
+        
+        for attempt in range(max_retries):
+            try:
+                response = client.models.generate_content(
+                    model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    contents=history,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_instruction
+                    )
                 )
-            )
 
-            return {
-                "response": response.text,
-                "skill_targeted": result["skill_codes"][0] if result["skill_codes"] else None,
-                "is_correct": is_correct
-            }
-        except Exception as e:
-            logger.error(f"Gemini API error: {str(e)}")
-            raise HTTPException(
-                status_code=500,
-                detail="Erro ao processar sua mensagem. Tente novamente em alguns momentos."
-            )
+                return {
+                    "response": response.text,
+                    "skill_targeted": result["skill_codes"][0] if result["skill_codes"] else None,
+                    "is_correct": is_correct
+                }
+            except Exception as e:
+                logger.warning(f"Gemini API error in specific question chat (attempt {attempt + 1}/{max_retries}): {str(e)}")
+                if attempt < max_retries - 1:
+                    import time
+                    import random
+                    delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                    time.sleep(delay)
+                else:
+                    logger.error(f"Gemini API completely failed in specific question chat: {str(e)}")
+                    raise HTTPException(
+                        status_code=503,
+                        detail="O servidor de Inteligência Artificial está com alta demanda. Tente novamente em alguns momentos."
+                    )
