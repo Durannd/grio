@@ -1,24 +1,44 @@
-<script lang="ts">
+﻿<script lang="ts">
   import { browser } from '$app/environment';
   import '../app.css';
   import { fade, slide } from 'svelte/transition';
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
+  import { goto, invalidateAll } from '$app/navigation';
   import Chatbot from '$lib/components/Chatbot.svelte';
   import Toast from '$lib/components/Toast.svelte';
   import { api } from '$lib/api';
   import { user, loadingStore, loadUser } from '$lib/stores/userStore';
-  import DOMPurify from 'isomorphic-dompurify';
 
-  $: ({ name: userName, email, avatar_url, is_diagnostic_completed } = $user || {});
-  $: safeName = userName ? DOMPurify.sanitize(userName) : '';
+  interface Props {
+    children?: import('svelte').Snippet;
+  }
 
-  let showDropdown = false;
+  let { children }: Props = $props();
+
+  let userName = $derived($user?.name || '');
+  let userEmail = $derived($user?.email || '');
+  let userAvatar = $derived($user?.avatar_url || '');
+
+  let safeName = $derived(userName || '');
+
+  let showDropdown = $state(false);
+
+  // Route Guard: Redirect to /prova if diagnostic is not completed
+  $effect(() => {
+    if (browser && $user && !$loadingStore) {
+      const isDiagnosticRoute = $page.url.pathname === '/prova';
+      const isPublicRoute = ['/', '/login', '/cadastro', '/sobre', '/welcome'].includes($page.url.pathname);
+      
+      if (!$user.is_diagnostic_completed && !isDiagnosticRoute && !isPublicRoute) {
+        goto('/prova');
+      }
+    }
+  });
 
   // Navbar scroll logic
   let lastScrollY = 0;
-  let navbarHidden = false;
+  let navbarHidden = $state(false);
   let scrollThreshold = 10;
 
   function handleScroll() {
@@ -39,7 +59,7 @@
     try {
       await api.post('/auth/logout', {});
     } catch (error) {
-      // api service já lida com o log
+      // api service jÃ¡ lida com o log
     }
     user.set(null);
     showDropdown = false;
@@ -77,11 +97,11 @@
     };
   }
 
-  onMount(async () => {
+  onMount(() => {
     if (browser) {
       window.addEventListener('scroll', handleScroll);
-      // Garante que o usuário seja carregado sempre que o layout for montado/atualizado
-      await loadUser();
+      // Garante que o usuÃ¡rio seja carregado sempre que o layout for montado/atualizado
+      loadUser();
       return () => window.removeEventListener('scroll', handleScroll);
     }
   });
@@ -91,7 +111,7 @@
   <nav class="glass-nav" class:nav-hidden={navbarHidden}>
     <div class="nav-content container">
       <a href="/" class="brand">
-        <img src="/grio-logo.png" alt="Logotipo Griô" class="logo-img" />
+        <img src="/grio-logo.png" alt="Logotipo GriÃ´" class="logo-img" />
       </a>
       <div class="links">
         {#if $loadingStore}
@@ -101,7 +121,7 @@
           <a href="/sobre">Sobre</a>
 
           <div class="user-profile">
-            <button class="profile-trigger" on:click={toggleDropdown} aria-haspopup="true" aria-expanded={showDropdown}>
+            <button class="profile-trigger" onclick={toggleDropdown} aria-haspopup="true" aria-expanded={showDropdown}>
               {#if $user.avatar_url}
                 <img src={$user.avatar_url} alt={`Avatar de ${safeName}`} class="avatar" />
               {:else}
@@ -110,14 +130,14 @@
             </button>
 
             {#if showDropdown}
-              <div class="profile-dropdown glass-panel" role="menu" tabindex="-1" in:slide={{ duration: 200 }} use:clickOutside on:keydown={handleKeydown}>
+              <div class="profile-dropdown glass-panel" role="menu" tabindex="-1" in:slide={{ duration: 200 }} use:clickOutside onkeydown={handleKeydown}>
                 <div class="dropdown-header">
                   <span class="user-name">{safeName}</span>
                   <span class="user-email">{$user.email}</span>
                 </div>
                 <div class="dropdown-divider"></div>
-                <button class="account-btn" role="menuitem" on:click={() => { showDropdown = false; goto('/account'); }}>Minha Conta</button>
-                <button class="logout-btn" role="menuitem" on:click={logout}>Sair</button>
+                <button class="account-btn" role="menuitem" onclick={() => { showDropdown = false; goto('/account'); }}>Minha Conta</button>
+                <button class="logout-btn" role="menuitem" onclick={logout}>Sair</button>
               </div>
             {/if}
           </div>
@@ -132,7 +152,7 @@
 
   {#key $page.url.pathname}
     <div class="page-transition-wrapper container" in:fade={{ duration: 300, delay: 150 }} out:fade={{ duration: 150 }}>
-      <slot />
+      {@render children?.()}
     </div>
   {/key}
 
@@ -353,3 +373,4 @@
     50% { opacity: 0.8; }
   }
 </style>
+

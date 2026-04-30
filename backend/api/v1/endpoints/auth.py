@@ -116,9 +116,19 @@ def signup(
 @limiter.limit("30/minute")
 def get_csrf_token(request: Request):
     """Retorna um token CSRF para requisições POST/PUT/DELETE"""
-    from core.csrf import generate_csrf_token, get_csrf_token_expiry
+    from core.csrf import csrf_validator, get_csrf_token_expiry
     
-    token, _ = generate_csrf_token()
+    client_ip = request.headers.get("x-forwarded-for")
+    if client_ip:
+        client_ip = client_ip.split(',')[0].strip()
+    else:
+        client_ip = request.client.host if request.client else "unknown"
+        
+    user_agent = request.headers.get("user-agent", "")
+    session_id = f"{client_ip}:{user_agent}"
+    
+    token = csrf_validator.issue_token(session_id)
+    
     return {
         "csrf_token": token,
         "expires_at": get_csrf_token_expiry()

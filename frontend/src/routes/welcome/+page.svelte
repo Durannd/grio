@@ -2,22 +2,15 @@
   import { onMount } from "svelte";
   import { fly, fade, scale } from "svelte/transition";
   import { goto } from "$app/navigation";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import { api } from "$lib/api";
 
-  let user: any = null;
+  let user: any = $state(null);
 
   onMount(async () => {
     try {
-      const response = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, {
-        credentials: "include"
-      });
-      if (response.ok) {
-        user = await response.json();
-      } else {
-        goto("/login");
-      }
+      user = await api.get("/auth/me");
     } catch (error) {
-      // Error handling done via API service
+      // api service lida com unauthorized
     }
   });
 </script>

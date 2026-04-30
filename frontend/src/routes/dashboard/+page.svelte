@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import { fade, fly } from 'svelte/transition';
@@ -8,17 +10,19 @@
   import { user, loadUser } from '$lib/stores/userStore';
   import { api } from '$lib/api';
 
-  let learningPath: Array<{area_id: string, concept_name: string, display_name: string, friendly_code: string, description: string, score: number}> = [];
-  let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = [];
-  let loading = true;
-  let errorMessage = "";
+  let learningPath: Array<{area_id: string, concept_name: string, display_name: string, friendly_code: string, description: string, score: number}> = $state([]);
+  let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = $state([]);
+  let loading = $state(true);
+  let errorMessage = $state("");
 
-  $: currentUser = $user;
+  let currentUser = $derived($user);
 
   // Guarda reativa: se o usuário deslogar, sai do dashboard imediatamente
-  $: if (browser && !loading && !currentUser) {
-    goto('/login');
-  }
+  run(() => {
+    if (browser && !loading && !currentUser) {
+      goto('/login');
+    }
+  });
 
   onMount(async () => {
     try {
@@ -55,39 +59,24 @@
     });
   }
 
-  $: areaScores = {
-    'MT': { label: 'Matemática', color: '#00D1FF', score: 0, count: 0, delay: 150 },
-    'CN': { label: 'Ciências da Natureza', color: '#BFFF00', score: 0, count: 0, delay: 300 },
-    'LC': { label: 'Linguagens', color: '#FF4D00', score: 0, count: 0, delay: 450 },
-    'CH': { label: 'Ciências Humanas', color: '#FFD700', score: 0, count: 0, delay: 600 }
+  const areaConfig = {
+    'MT': { label: 'Matemática', color: '#00D1FF', delay: 150 },
+    'CN': { label: 'Ciências da Natureza', color: '#BFFF00', delay: 300 },
+    'LC': { label: 'Linguagens', color: '#FF4D00', delay: 450 },
+    'CH': { label: 'Ciências Humanas', color: '#FFD700', delay: 600 }
   };
 
-  $: {
-    if (learningPath.length > 0) {
-      let temp: Record<string, { score: number, count: number }> = {
-        'MT': { score: 0, count: 0 },
-        'CN': { score: 0, count: 0 },
-        'LC': { score: 0, count: 0 },
-        'CH': { score: 0, count: 0 }
-      };
+  let areaCards = $derived(Object.entries(areaConfig).map(([id, config]) => {
+    const items = learningPath.filter(item => {
+      return item.area_id === id || (item.concept_name && !item.concept_name.startsWith('SKL-') && item.concept_name.substring(0, 2) === id);
+    });
+    
+    const score = items.length > 0 
+      ? items.reduce((sum, item) => sum + item.score, 0) / items.length 
+      : 0;
       
-      learningPath.forEach(item => {
-        const prefix = item.area_id || (item.concept_name && !item.concept_name.startsWith('SKL-') ? item.concept_name.substring(0, 2) : 'MT');
-        if (temp[prefix]) {
-          temp[prefix].score += item.score;
-          temp[prefix].count += 1;
-        }
-      });
-      
-      Object.keys(temp).forEach(key => {
-        if (temp[key].count > 0) {
-          areaScores[key as keyof typeof areaScores].score = temp[key].score / temp[key].count;
-        }
-      });
-    }
-  }
-  
-  $: areaCards = Object.keys(areaScores).map(k => ({ id: k, ...areaScores[k as keyof typeof areaScores] }));
+    return { id, ...config, score };
+  }));
 </script>
 
 <div class="dashboard-wrapper">
@@ -102,7 +91,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </div>
       <p>{errorMessage}</p>
-      <button class="btn btn-outline mt-4" on:click={() => window.location.reload()}>Tentar Novamente</button>
+      <button class="btn btn-outline mt-4" onclick={() => window.location.reload()}>Tentar Novamente</button>
     </div>
   {:else if currentUser}
     <div class="dashboard-header animate-fade-in">

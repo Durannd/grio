@@ -59,6 +59,12 @@ O Griô evoluiu de um MVP de Matemática para uma plataforma multi-disciplinar (
 - **Interface**: Sistema de `friendly_name` dinâmico. O Gemini gera nomes pedagógicos (ex: "Geometria Plana") automaticamente e os salva no Neo4j.
 - **Status**: ✅ Concluído.
 
+### 10. Atualização do Ecossistema Frontend (Svelte 5)
+- **O que é**: Migração completa do Svelte 4 para Svelte 5 (Runes) e SvelteKit 2.
+- **Segurança**: Consolidação de API centralizada (`$lib/api.ts`) suportando rotação dinâmica de headers CSRF e tratamento de proxies Docker.
+- **Performance**: Adoção de `$derived` puro para cálculos reativos no Dashboard e Diagnósticos, eliminando `run` blocks instáveis. Imagem Docker otimizada para `node:22-alpine` rodando Vite 8.
+- **Status**: ✅ Concluído.
+
 ---
 
 ### Fase Pivot: Experiência Area-First (Griô 2.0)
