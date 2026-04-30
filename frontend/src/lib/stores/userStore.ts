@@ -12,7 +12,8 @@ export interface User {
 
 // Store central de usuário
 export const user = writable<User | null>(null);
-export const isLoading = writable<boolean>(true);
+export const loadingStore = writable<boolean>(true);
+export const loading = loadingStore;
 
 /**
  * Carrega os dados do usuário atual a partir da API com lógica de retry.
@@ -21,7 +22,7 @@ export async function loadUser(retryCount = 0) {
   if (!browser) return;
 
   // Só mostra o estado de carregamento global na primeira tentativa
-  if (retryCount === 0) isLoading.set(true);
+  if (retryCount === 0) loadingStore.set(true);
   
   try {
     console.log(`[UserStore] Tentando carregar usuário... (Tentativa ${retryCount + 1})`);
@@ -34,7 +35,7 @@ export async function loadUser(retryCount = 0) {
       user.set(null);
     }
     // Sucesso: garante que o loading pare
-    isLoading.set(false);
+    loadingStore.set(false);
   } catch (error: any) {
     console.warn(`[UserStore] Erro no carregamento (Tentativa ${retryCount + 1}):`, error.message);
     
@@ -46,7 +47,7 @@ export async function loadUser(retryCount = 0) {
     
     // Se falhou todas as vezes, limpa o usuário e encerra o loading
     user.set(null);
-    isLoading.set(false);
+    loadingStore.set(false);
   }
 }
 
@@ -55,5 +56,5 @@ export async function loadUser(retryCount = 0) {
  */
 export function logoutUser() {
   user.set(null);
-  isLoading.set(false);
+  loadingStore.set(false);
 }

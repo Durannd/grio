@@ -8,9 +8,11 @@
   import Chatbot from '$lib/components/Chatbot.svelte';
   import Toast from '$lib/components/Toast.svelte';
   import { api } from '$lib/api';
-  import { user, isLoading, loadUser } from '$lib/stores/userStore';
+  import { user, loadingStore, loadUser } from '$lib/stores/userStore';
+  import DOMPurify from 'isomorphic-dompurify';
 
   $: ({ name: userName, email, avatar_url, is_diagnostic_completed } = $user || {});
+  $: safeName = userName ? DOMPurify.sanitize(userName) : '';
 
   let showDropdown = false;
 
@@ -92,7 +94,7 @@
         <img src="/grio-logo.png" alt="Logotipo Griô" class="logo-img" />
       </a>
       <div class="links">
-        {#if $isLoading}
+        {#if $loadingStore}
           <div class="avatar-placeholder skeleton-pulse"></div>
         {:else if $user}
           <a href="/dashboard">Dashboard</a>
@@ -101,16 +103,16 @@
           <div class="user-profile">
             <button class="profile-trigger" on:click={toggleDropdown} aria-haspopup="true" aria-expanded={showDropdown}>
               {#if $user.avatar_url}
-                <img src={$user.avatar_url} alt={`Avatar de ${$user.name}`} class="avatar" />
+                <img src={$user.avatar_url} alt={`Avatar de ${safeName}`} class="avatar" />
               {:else}
-                <div class="avatar-placeholder">{$user.name.charAt(0).toUpperCase()}</div>
+                <div class="avatar-placeholder">{safeName.charAt(0).toUpperCase()}</div>
               {/if}
             </button>
 
             {#if showDropdown}
               <div class="profile-dropdown glass-panel" role="menu" tabindex="-1" in:slide={{ duration: 200 }} use:clickOutside on:keydown={handleKeydown}>
                 <div class="dropdown-header">
-                  <span class="user-name">{$user.name}</span>
+                  <span class="user-name">{safeName}</span>
                   <span class="user-email">{$user.email}</span>
                 </div>
                 <div class="dropdown-divider"></div>
