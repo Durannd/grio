@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from models.user import User
-from schemas.user import UserCreate
+from schemas.user import UserCreate, UserUpdate
 from core.security import get_password_hash
 
 def get_user_by_email(db: Session, email: str):
@@ -14,6 +14,21 @@ def create_user(db: Session, user: UserCreate):
         hashed_password=hashed_password,
         avatar_url=user.avatar_url
     )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+def update_user(db: Session, db_user: User, user_update: UserUpdate):
+    update_data = user_update.model_dump(exclude_unset=True)
+    if "password" in update_data:
+        hashed_password = get_password_hash(update_data["password"])
+        del update_data["password"]
+        update_data["hashed_password"] = hashed_password
+        
+    for key, value in update_data.items():
+        setattr(db_user, key, value)
+        
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
