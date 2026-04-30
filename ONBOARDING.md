@@ -8,7 +8,7 @@ Bem-vindo ao onboarding técnico do **Griô**! Este documento foi elaborado para
 
 O projeto é um **Monorepo** dividido claramente em duas grandes áreas:
 *   **Backend**: API em Python com FastAPI, responsável por toda a lógica de negócios, autenticação e comunicação com os bancos de dados.
-*   **Frontend**: Aplicação SPA/SSR moderna feita com SvelteKit.
+*   **Frontend**: Aplicação moderna feita com SvelteKit 2 e Svelte 5 (Runes). Roda em Node 22 (Alpine) para suporte ao Vite 8.
 
 Trabalhamos com uma arquitetura **Poliglota de Persistência** (dois bancos de dados rodando simultaneamente):
 1.  **PostgreSQL**: Armazena dados relacionais clássicos (Usuários e, no futuro, as Questões em si).
@@ -86,13 +86,14 @@ Implementamos o fluxo completo de autenticação via **HttpOnly Cookies** e Hard
 
 ## 6. Frontend (SvelteKit)
 
-Localizado na pasta `frontend/`. O SvelteKit é focado em simplicidade reativa.
+Localizado na pasta `frontend/`. O SvelteKit é focado em simplicidade reativa e, nesta versão, utilizamos o **Svelte 5 (Runes)**.
 
 *   **Design System (`src/app.css`)**: Não estamos usando frameworks como Tailwind ou Bootstrap. Desenvolvemos nossa própria folha de estilo usando **Variáveis CSS** no topo do arquivo. Nosso tema atual é o "Liquid Glass 2.0", focado em fundos escuros (#0A0A0B), bordas finas e detalhes neon por Área do Conhecimento.
 *   **Fluxo de Páginas**: 
     - As páginas ficam em `src/routes/`.
     - Os formulários e componentes ficam em `src/lib/components/`.
-*   **Autenticação**: O frontend envia `credentials: 'include'` em todas as requisições para que o navegador anexe automaticamente o Cookie JWT.
+*   **Autenticação e API**: Todas as requisições devem usar o serviço centralizado `$lib/api.ts`, que lida automaticamente com tokens CSRF, interceptação de erros e cookies `HttpOnly` (`credentials: 'include'`). Evite usar `fetch` nativo nos componentes.
+*   **Reatividade**: Use `$state()` para variáveis reativas e `$derived()` para valores computados. Evite o antigo `$:`.
 
 ---
 
