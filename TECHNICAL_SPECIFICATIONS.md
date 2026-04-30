@@ -14,24 +14,24 @@ A arquitetura do Griô é dividida em três pilares fundamentais, selecionados p
 - **Inteligência Artificial**: **Google Gemini (Família 1.5 e 2.0)**.
     - `gemini-2.5-flash`: Utilizado para auditoria pedagógica, geração de micro-aulas via RAG e **Mentoria Socrática** (focada no encorajamento e crescimento, com proibição absoluta de personas/emojis). Operações blindadas com *Context Hygiene* no Cypher (evita vazamento de dados inferidos para a LLM).
     - `text-embedding-004`: Gerador de vetores de alta dimensionalidade (768d) para busca semântica e similaridade de questões.
-- **Frontend**: **SvelteKit** com TypeScript. Focado em uma experiência de usuário (UX) fluida ("Warm Earthy Elegance"), utilizando store de estado para Toasts e animações reativas.
+- **Frontend**: **SvelteKit 2** com **Svelte 5 (Runes)** e TypeScript. Focado em uma experiência de usuário (UX) fluida ("Warm Earthy Elegance"), utilizando store de estado unificado e chamadas de API centralizadas (`$lib/api.ts`). O ambiente Docker roda otimizado em `node:22-alpine` para suporte ao **Vite 8**.
 
 ---
 
 ## 2. Arquitetura de Grafos (Knowledge Graph)
 
-Diferente de sistemas de ensino tradicionais baseados em tabelas estáticas, o Griô modela o conhecimento como uma rede viva no Neo4j.
+Diferente de sistemas de ensino tradicionais baseados em tabelas estáticas, o Griô modela o conhecimento como uma rede viva no Neo4j, suportando uma dupla taxonomia para maior precisão de RAG e diagnóstico.
 
 ### Entidades (Nodes)
 - **Question**: Item de avaliação com metadados, alternativas, explicação pedagógica e vetor de embedding.
-- **Skill (Habilidade)**: Códigos oficiais do ENEM/BNCC. Contém o `content` (micro-aula), `last_enriched_at` e `friendly_name` (nome pedagógico gerado por IA).
-- **Competence (Competência)**: Estruturas macro de conhecimento.
+- **Skill / Competence (Matriz ENEM)**: Códigos oficiais do ENEM/BNCC. A Skill contém o `content` (micro-aula), `last_enriched_at` e `friendly_name` (nome pedagógico gerado por IA).
+- **Topic / Subtopic (Taxonomia Granular)**: Camada de agregação de conteúdo para busca semântica refinada.
 - **Area (Área do Conhecimento)**: Matemática, Natureza, Humanas e Linguagens.
 - **User**: Perfil do estudante com propriedades de gamificação (`current_streak`, `last_activity_date`).
 
 ### Relacionamentos (Edges)
-- `(Question)-[:EVALUATES]->(Skill)`
-- `(Skill)-[:PART_OF]->(Competence)`
+- `(Question)-[:REQUIRES_SKILL]->(Skill)` e `(Question)-[:COVERS_TOPIC]->(Subtopic)`
+- `(Skill)-[:BELONGS_TO]->(Competence)` e `(Subtopic)-[:PART_OF]->(Topic)`
 - `(User)-[:HAS_PROFICIENCY {score: float}]->(Skill)`: Define o nível de domínio em tempo real.
 - `(User)-[:ANSWERED {time_seconds: int, is_correct: bool}]->(Question)`
 

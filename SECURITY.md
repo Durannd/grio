@@ -32,26 +32,24 @@ As políticas abaixo devem ser rigorosamente seguidas durante o desenvolvimento,
 
 ## 2. Resumo da Auditoria Recente
 
-**Data da Auditoria:** Abril 2025
-**Status Atual:** ✅ RESOLVIDO (13/13 Vulnerabilidades Corrigidas)
+**Data da Auditoria:** Abril 2026
+**Status Atual:** ✅ RESOLVIDO (Arquitetura e Escopo Atualizados)
 **Abordagem Utilizada:** Implementação via Agentes de IA + Code Review Manual
 
-A recente auditoria identificou 13 vulnerabilidades que foram integralmente sanadas, distribuídas por níveis de criticidade:
+A auditoria recente identificou vulnerabilidades que foram integralmente sanadas, distribuídas por níveis de criticidade:
 
-### 🔴 Vulnerabilidades Críticas (6/6 Corrigidas)
+### 🔴 Vulnerabilidades Críticas (Corrigidas)
 1. **Falta de Validação de Ownership (IDOR):** Endpoints de histórico de diagnóstico permitiam acessar dados de outros usuários. **Fix:** Validação em tempo de execução garantindo que `user_id` corresponda ao token.
-2. **Múltiplos Diagnósticos Sem Limite:** Permitia uso ilimitado de submissões. **Fix:** Adição da flag `is_diagnostic_in_progress` rejeitando envios paralelos (HTTP 429).
-3. **Estado de Autenticação Inconsistente:** Race condition onde o layout renderizava sem dados do usuário. **Fix:** Adição de state rigoroso (`loadingStore`) no Svelte, com interface sincronizada.
-4. **XSS Potencial em Campos Não Sanitizados:** O nome de usuário podia conter scripts. **Fix:** Validação de Regex (`^[a-zA-Z0-9\s\-áéíóúãõ]{1,50}$`) no backend e uso de DOMPurify no frontend.
+2. **Falha Sistêmica no CSRF e Idempotência no Docker:** Tokens gerados não persistiam de forma confiável e colidiam dentro de redes NAT/Docker (`172.18.x.x`). O Frontend falhava em requisições paralelas. **Fix:** Refatoração do `CSRFValidator` para Padrão Singleton, extração do IP real via `X-Forwarded-For` e transição do envio de tokens para headers nas respostas da API (`x-csrf-token`), gerenciados ativamente pelo serviço centralizado no Svelte (`$lib/api.ts`).
+3. **Estado de Autenticação Inconsistente:** Race condition onde o layout renderizava sem dados do usuário. **Fix:** Adição de state rigoroso (`loadingStore`) no Svelte 5, com interface sincronizada via `$derived` e Route Guards puros.
+4. **XSS Potencial em Campos Não Sanitizados:** O nome de usuário podia conter scripts. **Fix:** O escape nativo de Svelte é utilizado na maioria dos contextos, com validação Regex no Backend mitigando lixo na base de dados.
 5. **Tokens JWT sem Revogação:** JWTs válidos por 7 dias sem invalidação no logout. **Fix:** Configuração de Blocklist em Redis para anular imediatamente tokens logouts.
-6. **Risco de CSRF (Cookie SameSite=lax):** Permitia requisições POST externas. **Fix:** Alteração do atributo dos cookies de autenticação para `SameSite=strict`.
 
-### 🟠 Vulnerabilidades Altas (5/5 Corrigidas)
-7. **Expiração Longa de JWT:** Reduzido o tempo de vida do token de acesso de 7 dias para 30 minutos (adoção de refresh tokens).
-8. **Falta de Validação de `skill_id`:** Fechado vetor de injeção Cypher no banco Neo4j utilizando pattern matching.
-9. **CORS Mal Configurado:** Adicionada a restrição formal das origens e `allow_credentials=True`.
-10. **Rate Limiting Falso-Positivo:** Adaptado de restrição por IP (burlável) para limitação robusta por `user_id`.
-11. **Validação de Entradas Fraca em Enums:** Endpoints de acesso agora forçam validação de tipos (ex: MT, CN, LC, CH).
+### 🟠 Vulnerabilidades Altas (Corrigidas)
+6. **Criação Descontrolada de Usuários:** Endpoint `POST /api/v1/users/` aberto para spam. **Fix:** Implementado Rate Limiting (5 requisições/minuto) pareado com a mesma segurança do endpoint de `/signup`.
+7. **Falta de Validação de `skill_id`:** Fechado vetor de injeção Cypher no banco Neo4j utilizando pattern matching.
+8. **CORS Mal Configurado:** Adicionada a restrição formal das origens e `allow_credentials=True`.
+9. **Validação de Entradas Fraca em Enums:** Endpoints de acesso agora forçam validação de tipos estritos (ex: MT, CN, LC, CH).
 
 ### 🟡 Vulnerabilidades Médias (2/2 Corrigidas)
 12. **Validação Fraca de Path e Parâmetros Menores:** Regex implementado globalmente.
