@@ -7,7 +7,7 @@
 *Knowledge is a collective heritage, not a commodity.*
 
 [![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow?style=for-the-badge)](https://github.com/Durannd/grio)
-[![Stack](https://img.shields.io/badge/stack-SvelteKit%20%7C%20FastAPI%20%7C%20Neo4j-blueviolet?style=for-the-badge)](https://github.com/Durannd/grio)
+[![Stack](https://img.shields.io/badge/stack-SvelteKit%202%20%7C%20Svelte%205%20%7C%20FastAPI%20%7C%20Neo4j-blueviolet?style=for-the-badge)](https://github.com/Durannd/grio)
 
 </div>
 

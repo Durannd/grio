@@ -20,20 +20,37 @@
     options: Option[];
   }
 
-  let skill_id = $page.params.id;
-  let friendly_name = "";
-  let questions: Question[] = [];
-  let currentQuestionIndex = 0;
-  let loading = true;
-  let submitting = false;
-  let selectedAnswers: Record<string, number> = {};
+  interface PracticeData {
+    questions: Question[];
+    friendly_name: string;
+  }
+
+  interface SubmitResponse {
+    attempt_id: number;
+    audit_summary: {
+      has_warnings: boolean;
+    };
+  }
+
+  let skill_id = $derived($page.params.id);
+  let friendly_name = $state("");
+  let questions: Question[] = $state([]);
+  let currentQuestionIndex = $state(0);
+  let loading = $state(true);
+  let submitting = $state(false);
+  let selectedAnswers: Record<string, number> = $state({});
   let answersTime: Record<string, number> = {};
   let startTime = Date.now();
-  let progress = 0;
+
+  let progress = $derived(
+    questions.length > 0
+      ? ((currentQuestionIndex + 1) / questions.length) * 100
+      : 0
+  );
 
   onMount(async () => {
     try {
-      const data = await api.get(`/assessment/practice/${skill_id}`);
+      const data = await api.get(`/assessment/practice/${$page.params.id}`) as PracticeData;
       questions = data.questions;
       friendly_name = data.friendly_name;
 
@@ -49,11 +66,7 @@
     }
   });
 
-  $: currentQuestion = questions[currentQuestionIndex];
-  $: progress =
-    questions.length > 0
-      ? ((currentQuestionIndex + 1) / questions.length) * 100
-      : 0;
+  let currentQuestion = $derived(questions[currentQuestionIndex]);
 
   function selectOption(questionId: string, optionId: number) {
     const timeSpent = (Date.now() - startTime) / 1000;
@@ -98,7 +111,7 @@
         })),
       };
 
-      const response = await api.post("/assessment/submit", payload);
+      const response = await api.post("/assessment/submit", payload) as SubmitResponse;
 
       const attemptId = response.attempt_id;
       const audit = response.audit_summary;
@@ -187,7 +200,7 @@
                     class="option-item"
                     class:selected={selectedAnswers[currentQuestion.id] ===
                       option.id}
-                    on:click={() => selectOption(currentQuestion.id, option.id)}
+                    onclick={() => selectOption(currentQuestion.id, option.id)}
                   >
                     <div class="option-marker">
                       {String.fromCharCode(64 + option.id)}
@@ -203,7 +216,7 @@
         <footer class="onboarding-footer">
           <button
             class="btn btn-outline"
-            on:click={prevQuestion}
+            onclick={prevQuestion}
             disabled={currentQuestionIndex === 0}
           >
             Anterior
@@ -212,7 +225,7 @@
           {#if currentQuestionIndex === questions.length - 1}
             <button 
               class="btn btn-primary" 
-              on:click={handleSubmit} 
+              onclick={handleSubmit} 
               disabled={!selectedAnswers[currentQuestion.id] || submitting}
             >
               Finalizar Prática
@@ -220,7 +233,7 @@
           {:else}
             <button
               class="btn btn-primary"
-              on:click={nextQuestion}
+              onclick={nextQuestion}
               disabled={!selectedAnswers[currentQuestion.id]}
             >
               Próxima Questão

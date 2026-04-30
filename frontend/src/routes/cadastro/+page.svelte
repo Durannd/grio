@@ -1,37 +1,24 @@
 <script lang="ts">
   import CadastroForm from "$lib/components/CadastroForm.svelte";
-  import { goto } from "$app/navigation";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import { goto, invalidateAll } from "$app/navigation";
+  import { api } from "$lib/api";
   import { loadUser } from "$lib/stores/userStore";
 
-  let errorMessage = "";
+  let errorMessage = $state("");
 
-  async function handleSubmit(event: any) {
-    const { name, email, password } = event.detail;
+  async function handleSubmit(data: any) {
+    const { name, email, password } = data;
     errorMessage = "";
 
     try {
-      const response = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      if (response.ok) {
-        const { invalidateAll } = await import('$app/navigation');
-        await loadUser();
-        await invalidateAll();
-        // Redireciona para a tela de boas-vindas após o cadastro
-        goto("/welcome");
-      } else {
-        const data = await response.json();
-        errorMessage = data.detail || "Não foi possível realizar o cadastro.";
-      }
-    } catch (error) {
-      errorMessage = "Não foi possível conectar ao servidor.";
+      await api.post("/auth/signup", { name, email, password });
+      
+      await loadUser();
+      await invalidateAll();
+      // Redireciona para a tela de boas-vindas após o cadastro
+      goto("/welcome");
+    } catch (error: any) {
+      errorMessage = error.message || "Não foi possível realizar o cadastro.";
     }
   }
 </script>
@@ -42,7 +29,7 @@
     <p>Comece sua jornada de estudos agora mesmo.</p>
   </div>
 
-  <CadastroForm on:submit={handleSubmit} />
+  <CadastroForm onsubmit={handleSubmit} />
 
   {#if errorMessage}
     <p class="error-msg animate-slide-up stagger-3">{errorMessage}</p>

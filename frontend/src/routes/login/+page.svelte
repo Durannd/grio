@@ -4,10 +4,10 @@
   import { api } from "$lib/api";
   import { loadUser } from "$lib/stores/userStore";
 
-  let errorMessage = "";
+  let errorMessage = $state("");
 
-  async function handleSubmit(event: any) {
-    const { email, password } = event.detail;
+  async function handleSubmit(data: any) {
+    const { email, password } = data;
     errorMessage = "";
 
     try {
@@ -33,7 +33,7 @@
     <p>Bem-vindo de volta ao seu painel de estudos.</p>
   </div>
 
-  <LoginForm on:submit={handleSubmit} />
+  <LoginForm onsubmit={handleSubmit} />
 
   {#if errorMessage}
     <p class="error-msg animate-slide-up stagger-3">{errorMessage}</p>

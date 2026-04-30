@@ -6,7 +6,7 @@ Valida tokens CSRF em requisições POST/PUT/DELETE
 from fastapi import Request, HTTPException, status
 from fastapi.responses import JSONResponse
 import json
-from core.csrf import validate_csrf_token, generate_csrf_token
+from core.csrf import csrf_validator
 from core.logger import logger
 
 
@@ -27,9 +27,6 @@ class CSRFMiddleware:
     
     # Métodos HTTP que não precisam de CSRF
     SAFE_METHODS = {"GET", "HEAD", "OPTIONS"}
-    
-    # Armazenar tokens por sessão (em produção, usar Redis)
-    _token_store: dict[str, str] = {}
     
     def __init__(self, app):
         """Inicializar middleware com a aplicação"""
@@ -69,9 +66,8 @@ class CSRFMiddleware:
             
             # Obter token armazenado da sessão
             session_id = self._get_session_id(request)
-            stored_hash = self._token_store.get(session_id)
             
-            if not stored_hash or not validate_csrf_token(csrf_token, stored_hash):
+            if not csrf_validator.validate(session_id, csrf_token):
                 logger.warning(f"CSRF validation failed for {request.method} {request.url.path} from {request.client.host}")
                 response = JSONResponse(
                     status_code=status.HTTP_403_FORBIDDEN,
@@ -80,12 +76,9 @@ class CSRFMiddleware:
                 await response(scope, receive, send)
                 return
             
-            # Token válido, consumir o token (usar uma só vez por segurança)
-            self._token_store.pop(session_id, None)
-            
-            # Gerar novo token para a próxima requisição
-            new_token, new_hash = generate_csrf_token()
-            self._token_store[session_id] = new_hash
+            # Nota: Não consumimos o token imediatamente para permitir requisições paralelas do frontend.
+            # O frontend deve atualizar o token via header da resposta se necessário.
+            new_token = csrf_validator.issue_token(session_id)
             
         except Exception as e:
             logger.error(f"CSRF middleware error: {str(e)}")
@@ -131,11 +124,16 @@ class CSRFMiddleware:
     
     def _get_session_id(self, request: Request) -> str:
         """Obtém ID da sessão do usuário (usa IP + User-Agent como fallback)"""
-        # Idealmente, usar ID de sessão próprio ou ID do usuário autenticado
+        # Prioriza X-Forwarded-For se estiver atrás de um proxy (ex: Docker)
+        client_ip = request.headers.get("x-forwarded-for")
+        if client_ip:
+            client_ip = client_ip.split(',')[0].strip()
+        else:
+            client_ip = request.client.host if request.client else "unknown"
+            
         user_agent = request.headers.get("user-agent", "")
-        client_host = request.client.host if request.client else "unknown"
         
-        return f"{client_host}:{user_agent}"
+        return f"{client_ip}:{user_agent}"
 
 
 def setup_csrf_middleware(app):

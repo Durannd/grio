@@ -14,23 +14,22 @@
     'CH': 'Ciências Humanas'
   };
 
-  $: areaCode = microlesson?.skill_id?.substring(0, 2) || '';
-  $: areaLabel = areaLabels[areaCode] || 'Área';
 
-  let skill_id = $page.params.id;
-  let microlesson: {
-    skill_id: string,
-    friendly_name: string,
-    content: string,
-    description: string,
-    area: string
-  } | null = null;
-  let loading = true;
-  let error = "";
+  let skill_id = $derived($page.params.id);
+  interface Microlesson {
+    skill_id: string;
+    friendly_name: string;
+    content: string;
+    description: string;
+    area: string;
+  }
+  let microlesson = $state<Microlesson | null>(null);
+  let loading = $state(true);
+  let error = $state("");
 
   onMount(async () => {
     try {
-      const response = await api.get(`/study/${skill_id}`);
+      const response = await api.get(`/study/${$page.params.id}`) as Microlesson;
       if (response) {
         microlesson = response;
       } else {
@@ -46,6 +45,8 @@
       loading = false;
     }
   });
+  let areaCode = $derived(microlesson?.skill_id?.substring(0, 2) || '');
+  let areaLabel = $derived(areaLabels[areaCode] || 'Área');
 </script>
 
 <svelte:head>

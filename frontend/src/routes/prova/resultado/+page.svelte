@@ -1,17 +1,42 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { fly, fade, scale } from "svelte/transition";
-  import axios from "axios";
   import { formatPedagogicalCode } from "$lib/utils";
   import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { page } from "$app/stores";
+  import { api } from "$lib/api";
 
-  let report = null;
-  let loading = true;
-  let error = null;
+  interface Proficiency {
+    concept_name: string;
+    display_name: string;
+    friendly_code: string;
+    description: string;
+    score: number;
+    area: string;
+  }
+
+  interface AssessmentReport {
+    status: string;
+    proficiencies: Proficiency[];
+    analysis: {
+      title: string;
+      summary: string;
+      strengths: string[];
+      weaknesses: string[];
+      action_plan: string;
+    } | null;
+    summary_stats: {
+      average_score: number;
+      total_skills_mapped: number;
+    };
+  }
+
+  let report = $state<AssessmentReport | null>(null);
+  let loading = $state(true);
+  let error = $state<string | null>(null);
 
   // Mapeamento de cores por área
-  const areaColors = {
+  const areaColors: Record<string, string> = {
     "Matemática e suas Tecnologias": "#C9A05E",
     "Ciências da Natureza e suas Tecnologias": "#22C55E",
     "Ciências Humanas e suas Tecnologias": "#EF4444",
@@ -23,13 +48,10 @@
     try {
       const id = $page.url.searchParams.get("id");
       const url = id 
-        ? `http://localhost:8000/api/v1/assessment-report/history/${id}`
-        : "http://localhost:8000/api/v1/assessment-report/report";
+        ? `/assessment-report/history/${id}`
+        : "/assessment-report/report";
         
-      const res = await axios.get(url, {
-        withCredentials: true
-      });
-      report = res.data;
+      report = await api.get(url) as AssessmentReport;
     } catch (e) {
       error = "Não foi possível carregar seu diagnóstico.";
       console.error(e);
@@ -45,14 +67,14 @@
   }
 
   // Agrupar habilidades por área
-  $: groupedSkills = report?.proficiencies
-    ? report.proficiencies.reduce((acc, p) => {
+  let groupedSkills = $derived(report?.proficiencies
+    ? report.proficiencies.reduce((acc: Record<string, Proficiency[]>, p) => {
         const area = p.area || "Geral";
         if (!acc[area]) acc[area] = [];
         acc[area].push(p);
         return acc;
       }, {})
-    : {};
+    : {});
 </script>
 
 <div class="results-page">

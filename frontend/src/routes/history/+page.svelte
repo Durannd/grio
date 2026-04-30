@@ -4,28 +4,20 @@
   import { PUBLIC_API_BASE_URL } from '$env/static/public';
   import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { goto } from '$app/navigation';
+  import { api } from '$lib/api';
+  import type { User } from '$lib/stores/userStore';
 
-  let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = [];
-  let user: any = null;
-  let loading = true;
-  let errorMessage = "";
+  let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = $state([]);
+  let user: User | null = $state(null);
+  let loading = $state(true);
+  let errorMessage = $state("");
 
   onMount(async () => {
     try {
-      const fetchOptions = {
-        credentials: "include"
-      };
+      user = await api.get("/auth/me") as User;
 
-      const userRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, fetchOptions);
-      if (userRes.status === 401) {
-        goto("/login");
-        return;
-      }
-      user = await userRes.json();
-
-      const historyRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/assessment-report/history`, fetchOptions);
-      if (historyRes.ok) {
-        const hData = await historyRes.json();
+      const hData = await api.get("/assessment-report/history") as { history: any[] };
+      if (hData && hData.history) {
         history = hData.history;
       }
 
@@ -53,7 +45,7 @@
   {:else if errorMessage}
     <div class="status-screen error-state">
       <p>{errorMessage}</p>
-      <button class="btn btn-outline mt-4" on:click={() => window.location.reload()}>Tentar Novamente</button>
+      <button class="btn btn-outline mt-4" onclick={() => window.location.reload()}>Tentar Novamente</button>
     </div>
   {:else}
     <div class="history-header animate-fade-in">
