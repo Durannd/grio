@@ -8,8 +8,8 @@ from database import get_db
 from crud.user import get_user_by_email
 from core.security import verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 from core.rate_limit import limiter, get_rate_limit
-from schemas.user import User, UserCreate
-from crud.user import create_user
+from schemas.user import User, UserCreate, UserUpdate
+from crud.user import create_user, update_user
 from core.deps import get_current_user
 from pydantic import BaseModel
 
@@ -76,6 +76,15 @@ def logout(response: Response, access_token: str = Cookie(None)):
 @router.get("/me", response_model=User)
 def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+@router.put("/me", response_model=User)
+def update_users_me(
+    user_in: UserUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Atualiza os dados do usuário autenticado atual."""
+    return update_user(db=db, db_user=current_user, user_update=user_in)
 
 @router.post("/signup")
 @limiter.limit(get_rate_limit("signup"))
