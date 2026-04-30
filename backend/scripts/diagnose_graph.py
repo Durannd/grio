@@ -14,13 +14,16 @@ def run_diagnostics():
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
     
     queries = {
-        "Total de Questoes": "MATCH (q:Question) RETURN count(q) as count",
-        "Questoes SEM Subtopicos (Soltas)": "MATCH (q:Question) WHERE NOT (q)-[:COVERS_TOPIC]->(:Subtopic) RETURN count(q) as count",
-        "Questoes COM Subtopicos": "MATCH (q:Question) WHERE (q)-[:COVERS_TOPIC]->(:Subtopic) RETURN count(q) as count",
-        "Total de Subtopicos": "MATCH (s:Subtopic) RETURN count(s) as count",
-        "Subtopicos SEM Topico (Pai)": "MATCH (s:Subtopic) WHERE NOT (s)-[:PART_OF]->() AND NOT (s)-[:BELONGS_TO]->() RETURN count(s) as count",
-        "Visao Geral de Nos (Labels)": "MATCH (n) RETURN labels(n) as label, count(*) as count",
-        "Exemplo de Questao Solta (ID)": "MATCH (q:Question) WHERE NOT (q)-[:COVERS_TOPIC]->(:Subtopic) RETURN q.id as id LIMIT 5"
+        "Total de Questões": "MATCH (q:Question) RETURN count(q) as count",
+        "Questões SEM Subtópicos (Soltas)": "MATCH (q:Question) WHERE NOT (q)-[:COVERS_TOPIC]->(:Subtopic) RETURN count(q) as count",
+        "Questões COM Subtópicos": "MATCH (q:Question) WHERE (q)-[:COVERS_TOPIC]->(:Subtopic) RETURN count(q) as count",
+        "Total de Subtópicos": "MATCH (s:Subtopic) RETURN count(s) as count",
+        "Subtópicos SEM Tópico (Pai)": "MATCH (s:Subtopic) WHERE NOT (s)-[:PART_OF]->() AND NOT (s)-[:BELONGS_TO]->() RETURN count(s) as count",
+        "Total de Habilidades (Skill)": "MATCH (s:Skill) RETURN count(s) as count",
+        "Questões COM Habilidades": "MATCH (q:Question) WHERE (q)-[:REQUIRES_SKILL]->(:Skill) RETURN count(q) as count",
+        "Questões COM Competências": "MATCH (q:Question) WHERE (q)-[:REQUIRES_COMPETENCE]->(:Competence) RETURN count(q) as count",
+        "Total de Áreas": "MATCH (a:Area) RETURN count(a) as count",
+        "Visão Geral de Nós (Labels)": "MATCH (n) RETURN labels(n) as label, count(*) as count"
     }
     
     try:
