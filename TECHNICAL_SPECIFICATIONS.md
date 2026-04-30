@@ -13,6 +13,7 @@ A arquitetura do Griô é dividida em três pilares fundamentais, selecionados p
 - **Banco de Dados Relacional**: **PostgreSQL**. Armazena dados transacionais, perfis de usuários, histórico imutável de avaliações e streaks de atividade.
 - **Inteligência Artificial**: **Google Gemini (Família 1.5 e 2.0)**.
     - `gemini-2.5-flash`: Utilizado para auditoria pedagógica, geração de micro-aulas via RAG e **Mentoria Socrática** (focada no encorajamento e crescimento, com proibição absoluta de personas/emojis). Operações blindadas com *Context Hygiene* no Cypher (evita vazamento de dados inferidos para a LLM).
+    - **Políticas de Resiliência (Tolerância a Falhas)**: Todos os pontos de contato críticos com o Gemini (Micro-aulas, Chatbot, Relatórios de Diagnóstico e Planos de Estudo) contam com mecanismo de *retry* exponencial em casos de rate limit ou alta demanda (HTTP 429/503). Como último recurso, as integrações disparam *fallbacks* graciosos que protegem o frontend, usando heurística nativa ou permitindo que a UI apresente botões interativos de "Tentar Novamente" aos alunos.
     - `text-embedding-004`: Gerador de vetores de alta dimensionalidade (768d) para busca semântica e similaridade de questões.
 - **Frontend**: **SvelteKit 2** com **Svelte 5 (Runes)** e TypeScript. Focado em uma experiência de usuário (UX) fluida ("Warm Earthy Elegance"), utilizando store de estado unificado e chamadas de API centralizadas (`$lib/api.ts`). O ambiente Docker roda otimizado em `node:22-alpine` para suporte ao **Vite 8**.
 

@@ -26,8 +26,12 @@
   let microlesson = $state<Microlesson | null>(null);
   let loading = $state(true);
   let error = $state("");
+  let isApiBusy = $state(false);
 
-  onMount(async () => {
+  async function loadLesson() {
+    loading = true;
+    error = "";
+    isApiBusy = false;
     try {
       const response = await api.get(`/study/${$page.params.id}`) as Microlesson;
       if (response) {
@@ -38,12 +42,19 @@
     } catch (e: any) {
       if (e.message.includes('404')) {
         error = "Lição não encontrada para este conceito.";
+      } else if (e.message.includes('503')) {
+        error = "O servidor de Inteligência Artificial está com alta demanda.";
+        isApiBusy = true;
       } else {
         error = e.message || "Ocorreu um erro ao carregar a lição.";
       }
     } finally {
       loading = false;
     }
+  }
+
+  onMount(() => {
+    loadLesson();
   });
   let areaCode = $derived(microlesson?.skill_id?.substring(0, 2) || '');
   let areaLabel = $derived(areaLabels[areaCode] || 'Área');
@@ -72,7 +83,12 @@
       </div>
       <h2>Ops! Algo deu errado</h2>
       <p>{error}</p>
-      <a href="/dashboard" class="btn btn-primary mt-6">Voltar ao Início</a>
+      {#if isApiBusy}
+        <button onclick={loadLesson} class="btn btn-primary mt-6">Tentar Novamente</button>
+        <a href="/dashboard" class="btn btn-outline mt-4">Voltar ao Início</a>
+      {:else}
+        <a href="/dashboard" class="btn btn-primary mt-6">Voltar ao Início</a>
+      {/if}
     </div>
   {:else if microlesson}
     <article class="lesson-content animate-slide-up stagger-2">
