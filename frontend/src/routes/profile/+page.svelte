@@ -5,6 +5,7 @@
   import { PUBLIC_API_BASE_URL } from '$env/static/public';
   import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { formatPedagogicalCode } from '$lib/utils';
+  import { api } from '$lib/api';
   import type { User } from '$lib/stores/userStore';
 
   interface LearningPathItem {
@@ -34,21 +35,11 @@
 
   onMount(async () => {
     try {
-      const fetchOptions = {
-        credentials: "include" as RequestCredentials
-      };
+      user = await api.get("/auth/me") as User;
 
-      const userRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, fetchOptions);
-      if (userRes.status === 401) {
-        goto("/login");
-        return;
-      }
-      user = await userRes.json();
-
-      const pathRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/learning-path/full`, fetchOptions);
-      if (pathRes.ok) {
-        const data = await pathRes.json();
-        learningPath = data.learning_path || data;
+      const data = await api.get("/api/v1/learning-path/full") as { learning_path?: LearningPathItem[] } | LearningPathItem[];
+      if (data) {
+        learningPath = (data as any).learning_path || data;
       }
 
       loading = false;

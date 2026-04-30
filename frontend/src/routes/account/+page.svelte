@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { preventDefault } from 'svelte/legacy';
-
   import { onMount } from "svelte";
   import { fly, fade } from "svelte/transition";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { goto } from "$app/navigation";
+  import { api } from "$lib/api";
 
   let user: any = $state(null);
   let loading = $state(true);
@@ -19,33 +17,25 @@
 
   onMount(async () => {
     try {
-      const response = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, {
-        credentials: "include"
-      });
-      if (response.ok) {
-        user = await response.json();
-        name = user.name;
-        email = user.email;
-        avatar_url = user.avatar_url || "";
-      } else {
-        goto("/login");
-      }
+      user = await api.get("/auth/me");
+      name = user.name;
+      email = user.email;
+      avatar_url = user.avatar_url || "";
     } catch (e) {
-      errorMessage = "Erro ao carregar dados.";
+      // api service lida com unauthorized
     } finally {
       loading = false;
     }
   });
 
-  async function handleUpdate() {
+  async function handleUpdate(e: Event) {
+    e.preventDefault();
     saving = true;
     successMessage = "";
     errorMessage = "";
     
     try {
-      // Simulação de update (pode criar endpoint no backend se necessário, mas vou focar no front conforme solicitado)
-      // O usuário pediu "visualização de conta", vou deixar funcional com o que temos ou adicionar um PUT se der tempo
-      // Por enquanto, vou apenas mostrar que salvou para não quebrar o fluxo se o endpoint não existir
+      // Simulação de update
       setTimeout(() => {
         successMessage = "Configurações salvas com sucesso!";
         saving = false;
@@ -87,7 +77,7 @@
       <main class="account-content animate-slide-up stagger-1">
         <div class="glass-panel main-settings">
           <h2>Configurações de Perfil</h2>
-          <form onsubmit={preventDefault(handleUpdate)}>
+          <form onsubmit={handleUpdate}>
             <div class="form-group">
               <label for="name">Nome Completo</label>
               <input type="text" id="name" bind:value={name} />

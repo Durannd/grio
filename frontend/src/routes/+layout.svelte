@@ -1,4 +1,4 @@
-<script lang="ts">
+﻿<script lang="ts">
   import { browser } from '$app/environment';
   import '../app.css';
   import { fade, slide } from 'svelte/transition';
@@ -9,7 +9,6 @@
   import Toast from '$lib/components/Toast.svelte';
   import { api } from '$lib/api';
   import { user, loadingStore, loadUser } from '$lib/stores/userStore';
-  import DOMPurify from 'isomorphic-dompurify';
 
   interface Props {
     children?: import('svelte').Snippet;
@@ -21,9 +20,21 @@
   let userEmail = $derived($user?.email || '');
   let userAvatar = $derived($user?.avatar_url || '');
 
-  let safeName = $derived(userName ? DOMPurify.sanitize(userName) : '');
+  let safeName = $derived(userName || '');
 
   let showDropdown = $state(false);
+
+  // Route Guard: Redirect to /prova if diagnostic is not completed
+  $effect(() => {
+    if (browser && $user && !$loadingStore) {
+      const isDiagnosticRoute = $page.url.pathname === '/prova';
+      const isPublicRoute = ['/', '/login', '/cadastro', '/sobre', '/welcome'].includes($page.url.pathname);
+      
+      if (!$user.is_diagnostic_completed && !isDiagnosticRoute && !isPublicRoute) {
+        goto('/prova');
+      }
+    }
+  });
 
   // Navbar scroll logic
   let lastScrollY = 0;
@@ -48,7 +59,7 @@
     try {
       await api.post('/auth/logout', {});
     } catch (error) {
-      // api service já lida com o log
+      // api service jÃ¡ lida com o log
     }
     user.set(null);
     showDropdown = false;
@@ -89,7 +100,7 @@
   onMount(() => {
     if (browser) {
       window.addEventListener('scroll', handleScroll);
-      // Garante que o usuário seja carregado sempre que o layout for montado/atualizado
+      // Garante que o usuÃ¡rio seja carregado sempre que o layout for montado/atualizado
       loadUser();
       return () => window.removeEventListener('scroll', handleScroll);
     }
@@ -100,7 +111,7 @@
   <nav class="glass-nav" class:nav-hidden={navbarHidden}>
     <div class="nav-content container">
       <a href="/" class="brand">
-        <img src="/grio-logo.png" alt="Logotipo Griô" class="logo-img" />
+        <img src="/grio-logo.png" alt="Logotipo GriÃ´" class="logo-img" />
       </a>
       <div class="links">
         {#if $loadingStore}
@@ -362,3 +373,4 @@
     50% { opacity: 0.8; }
   }
 </style>
+
