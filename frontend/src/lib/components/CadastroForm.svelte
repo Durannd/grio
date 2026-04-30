@@ -4,6 +4,7 @@
   let name = $state("");
   let email = $state("");
   let password = $state("");
+  let termsAccepted = $state(false);
 
   // Password Validation Runes
   let hasMinLength = $derived(password.length >= 8);
@@ -14,7 +15,7 @@
 
   function handleSubmit(e: Event) {
     e.preventDefault();
-    if (isPasswordValid) {
+    if (isPasswordValid && termsAccepted) {
       onsubmit?.({ name, email, password });
     }
   }
@@ -52,8 +53,18 @@
         </span>
       </div>
     </div>
+
+    <div class="form-group checkbox-group">
+      <label class="checkbox-container">
+        <input type="checkbox" bind:checked={termsAccepted} required />
+        <span class="checkmark"></span>
+        <span class="checkbox-text">
+          Li e concordo com os <a href="/termos" target="_blank">Termos de Uso</a> e a <a href="/privacidade" target="_blank">Política de Privacidade</a> (LGPD).
+        </span>
+      </label>
+    </div>
     
-    <button type="submit" class="btn btn-primary" disabled={!isPasswordValid || !name || !email} style="width: 100%; margin-top: 1rem; min-height: 48px;">
+    <button type="submit" class="btn btn-primary" disabled={!isPasswordValid || !name || !email || !termsAccepted} style="width: 100%; margin-top: 1rem; min-height: 48px;">
       Criar Minha Conta
     </button>
     
@@ -97,6 +108,86 @@
 
   .req-item.met svg {
     opacity: 1;
+  }
+
+  /* Checkbox styling */
+  .checkbox-group {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    cursor: pointer;
+    font-size: 0.85rem;
+    user-select: none;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkmark {
+    position: relative;
+    top: 2px;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-right: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .checkbox-container:hover input ~ .checkmark {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .checkbox-container input:checked ~ .checkmark {
+    background-color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  .checkbox-container .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 4px;
+    height: 9px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .checkbox-text a {
+    color: var(--primary-light);
+    text-decoration: underline;
+    text-decoration-color: rgba(212, 163, 115, 0.3);
+    text-underline-offset: 2px;
+    transition: text-decoration-color 0.2s ease;
+  }
+
+  .checkbox-text a:hover {
+    text-decoration-color: var(--primary-light);
   }
 
   button:disabled {
