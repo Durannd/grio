@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import { fade, fly } from "svelte/transition";
@@ -22,14 +24,14 @@
     options: Option[];
   }
 
-  let questions: Question[] = [];
-  let currentQuestionIndex = 0;
-  let loading = true;
-  let submitting = false;
-  let selectedAnswers: Record<string, number> = {};
+  let questions: Question[] = $state([]);
+  let currentQuestionIndex = $state(0);
+  let loading = $state(true);
+  let submitting = $state(false);
+  let selectedAnswers: Record<string, number> = $state({});
   let answersTime: Record<string, number> = {}; // Tempo gasto por questão em segundos
   let startTime = Date.now();
-  let progress = 0;
+  let progress = $state(0);
 
   onMount(async () => {
     try {
@@ -58,11 +60,13 @@
     }
   });
 
-  $: currentQuestion = questions[currentQuestionIndex];
-  $: progress =
-    questions.length > 0
-      ? ((currentQuestionIndex + 1) / questions.length) * 100
-      : 0;
+  let currentQuestion = $derived(questions[currentQuestionIndex]);
+  run(() => {
+    progress =
+      questions.length > 0
+        ? ((currentQuestionIndex + 1) / questions.length) * 100
+        : 0;
+  });
 
   function selectOption(questionId: string, optionId: number) {
     const timeSpent = (Date.now() - startTime) / 1000;
@@ -172,7 +176,7 @@
               progresso.
             </p>
             {#if import.meta.env.DEV}
-              <button class="btn btn-debug" on:click={debugAutoFill}
+              <button class="btn btn-debug" onclick={debugAutoFill}
                 >Auto-Preencher (Debug)</button
               >
             {/if}
@@ -219,7 +223,7 @@
                     class="option-item"
                     class:selected={selectedAnswers[currentQuestion.id] ===
                       option.id}
-                    on:click={() => selectOption(currentQuestion.id, option.id)}
+                    onclick={() => selectOption(currentQuestion.id, option.id)}
                   >
                     <div class="option-marker">
                       {String.fromCharCode(64 + option.id)}
@@ -235,7 +239,7 @@
         <footer class="onboarding-footer">
           <button
             class="btn btn-outline"
-            on:click={prevQuestion}
+            onclick={prevQuestion}
             disabled={currentQuestionIndex === 0}
           >
             Anterior
@@ -244,7 +248,7 @@
           {#if currentQuestionIndex === questions.length - 1}
             <button 
               class="btn btn-primary" 
-              on:click={handleSubmit} 
+              onclick={handleSubmit} 
               disabled={!selectedAnswers[currentQuestion.id] || submitting}
             >
               Concluir Avaliação
@@ -252,7 +256,7 @@
           {:else}
             <button
               class="btn btn-primary"
-              on:click={nextQuestion}
+              onclick={nextQuestion}
               disabled={!selectedAnswers[currentQuestion.id]}
             >
               Próximo Passo

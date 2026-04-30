@@ -4,7 +4,7 @@
   import { goto } from "$app/navigation";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
 
-  let user: any = null;
+  let user: any = $state(null);
 
   onMount(async () => {
     try {

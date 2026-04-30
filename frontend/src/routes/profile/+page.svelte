@@ -5,26 +5,37 @@
   import { PUBLIC_API_BASE_URL } from '$env/static/public';
   import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { formatPedagogicalCode } from '$lib/utils';
+  import type { User } from '$lib/stores/userStore';
 
-  let learningPath: Array<{area_id?: string, concept_name: string, description: string, score: number, is_inferred?: boolean}> = [];
-  let user: any = null;
-  let loading = true;
-  let errorMessage = "";
+  interface LearningPathItem {
+    area_id?: string;
+    concept_name: string;
+    display_name?: string;
+    friendly_code?: string;
+    description: string;
+    score: number;
+    is_inferred?: boolean;
+  }
+
+  let learningPath: LearningPathItem[] = $state([]);
+  let user: User | null = $state(null);
+  let loading = $state(true);
+  let errorMessage = $state("");
   
   // Tab management
-  let activeTab = 'technical'; // 'profile' | 'technical'
+  let activeTab = $state('technical'); // 'profile' | 'technical'
 
-  $: groupedPath = learningPath.reduce((acc: any, item) => {
+  let groupedPath = $derived(learningPath.reduce((acc: Record<string, LearningPathItem[]>, item) => {
     const area = item.area_id || (item.concept_name && !item.concept_name.startsWith('SKL-') ? item.concept_name.substring(0, 2) : 'MT');
     if (!acc[area]) acc[area] = [];
     acc[area].push(item);
     return acc;
-  }, {});
+  }, {}));
 
   onMount(async () => {
     try {
       const fetchOptions = {
-        credentials: "include"
+        credentials: "include" as RequestCredentials
       };
 
       const userRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, fetchOptions);
@@ -58,9 +69,9 @@
   {:else if errorMessage}
     <div class="status-screen error-state">
       <p>{errorMessage}</p>
-      <button class="btn btn-outline mt-4" on:click={() => window.location.reload()}>Tentar Novamente</button>
+      <button class="btn btn-outline mt-4" onclick={() => window.location.reload()}>Tentar Novamente</button>
     </div>
-  {:else}
+  {:else if user}
     <div class="profile-header animate-fade-in">
       <div class="header-content">
         {#if user.avatar_url}
@@ -85,13 +96,13 @@
     <div class="tabs-container">
       <button 
         class="tab-btn {activeTab === 'profile' ? 'active' : ''}" 
-        on:click={() => activeTab = 'profile'}
+        onclick={() => activeTab = 'profile'}
       >
         Perfil Geral
       </button>
       <button 
         class="tab-btn {activeTab === 'technical' ? 'active' : ''}" 
-        on:click={() => activeTab = 'technical'}
+        onclick={() => activeTab = 'technical'}
       >
         Dados Técnicos (Matriz ENEM)
       </button>
@@ -110,9 +121,10 @@
               <span class="info-label">Email</span>
               <span class="info-value">{user.email}</span>
             </div>
+            <!-- userStore doesn't have current_streak yet, so we'll cast to any for this legacy field if it exists or use a default -->
             <div class="info-item">
               <span class="info-label">Dias de Ofensiva</span>
-              <span class="info-value streak">{user.current_streak} dias 🔥</span>
+              <span class="info-value streak">{(user as any).current_streak || 0} dias 🔥</span>
             </div>
           </div>
         </div>

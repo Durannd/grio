@@ -1,19 +1,21 @@
 <script lang="ts">
+  import { preventDefault } from 'svelte/legacy';
+
   import { onMount } from "svelte";
   import { fly, fade } from "svelte/transition";
   import { PUBLIC_API_BASE_URL } from "$env/static/public";
   import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { goto } from "$app/navigation";
 
-  let user: any = null;
-  let loading = true;
-  let saving = false;
-  let successMessage = "";
-  let errorMessage = "";
+  let user: any = $state(null);
+  let loading = $state(true);
+  let saving = $state(false);
+  let successMessage = $state("");
+  let errorMessage = $state("");
 
-  let name = "";
-  let email = "";
-  let avatar_url = "";
+  let name = $state("");
+  let email = $state("");
+  let avatar_url = $state("");
 
   onMount(async () => {
     try {
@@ -85,7 +87,7 @@
       <main class="account-content animate-slide-up stagger-1">
         <div class="glass-panel main-settings">
           <h2>Configurações de Perfil</h2>
-          <form on:submit|preventDefault={handleUpdate}>
+          <form onsubmit={preventDefault(handleUpdate)}>
             <div class="form-group">
               <label for="name">Nome Completo</label>
               <input type="text" id="name" bind:value={name} />
