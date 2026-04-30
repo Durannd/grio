@@ -26,7 +26,7 @@
         </span>
         <p>{toast.message}</p>
       </div>
-      <button class="close-btn" on:click={() => toasts.remove(toast.id)}>
+      <button class="close-btn" onclick={() => toasts.remove(toast.id)}>
         &times;
       </button>
     </div>
