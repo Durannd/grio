@@ -1,12 +1,9 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { goto } from "$app/navigation";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
-  import axios from "axios";
+  import { api } from "$lib/api";
 
   import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { toasts } from "$lib/stores/toast";
@@ -24,6 +21,17 @@
     options: Option[];
   }
 
+  interface AssessmentResponse {
+    questions: Question[];
+  }
+
+  interface SubmitResponse {
+    attempt_id: number;
+    audit_summary: {
+      has_warnings: boolean;
+    };
+  }
+
   let questions: Question[] = $state([]);
   let currentQuestionIndex = $state(0);
   let loading = $state(true);
@@ -31,42 +39,34 @@
   let selectedAnswers: Record<string, number> = $state({});
   let answersTime: Record<string, number> = {}; // Tempo gasto por questão em segundos
   let startTime = Date.now();
-  let progress = $state(0);
+
+  let progress = $derived(
+    questions.length > 0
+      ? ((currentQuestionIndex + 1) / questions.length) * 100
+      : 0
+  );
 
   onMount(async () => {
     try {
       const area = $page.url.searchParams.get("area");
       const url = area 
-        ? `${PUBLIC_API_BASE_URL}/api/v1/assessment/diagnostico/${area}` 
-        : `${PUBLIC_API_BASE_URL}/api/v1/assessment`;
+        ? `/assessment/diagnostico/${area}` 
+        : `/assessment`;
         
-      const response = await fetch(url, {
-        credentials: "include"
-      });
-
-      if (response.status === 401) {
-        goto("/login");
-        return;
-      }
-
-      if (response.ok) {
-        const data = await response.json();
+      const data = await api.get(url) as AssessmentResponse;
+      if (data && data.questions) {
         questions = data.questions;
       }
       loading = false;
-    } catch (error) {
-      console.error("Erro ao buscar questões:", error);
+    } catch (error: any) {
+      if (error.message !== 'Unauthorized') {
+        console.error("Erro ao buscar questões:", error);
+      }
       loading = false;
     }
   });
 
   let currentQuestion = $derived(questions[currentQuestionIndex]);
-  run(() => {
-    progress =
-      questions.length > 0
-        ? ((currentQuestionIndex + 1) / questions.length) * 100
-        : 0;
-  });
 
   function selectOption(questionId: string, optionId: number) {
     const timeSpent = (Date.now() - startTime) / 1000;
@@ -101,8 +101,8 @@
   async function handleSubmit() {
     submitting = true;
     try {
-      const response = await axios.post(
-        `${PUBLIC_API_BASE_URL}/api/v1/assessment/submit`,
+      const response = await api.post(
+        `/assessment/submit`,
         {
           user_id: 0, // O backend sobrescreve isso com o ID real do token
           answers: Object.entries(selectedAnswers).map(([qId, aId]) => ({
@@ -110,14 +110,11 @@
             selected_option_id: aId,
             time_seconds: Math.round(answersTime[qId] || 0),
           })),
-        },
-        {
-          withCredentials: true
-        },
-      );
+        }
+      ) as SubmitResponse;
 
-      const attemptId = response.data.attempt_id;
-      const audit = response.data.audit_summary;
+      const attemptId = response.attempt_id;
+      const audit = response.audit_summary;
 
       if (audit && audit.has_warnings) {
         toasts.warning(

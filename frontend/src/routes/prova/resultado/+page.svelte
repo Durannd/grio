@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { fly, fade, scale } from "svelte/transition";
-  import axios from "axios";
   import { formatPedagogicalCode } from "$lib/utils";
   import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { page } from "$app/stores";
+  import { api } from "$lib/api";
 
   interface Proficiency {
     concept_name: string;
@@ -48,13 +48,10 @@
     try {
       const id = $page.url.searchParams.get("id");
       const url = id 
-        ? `http://localhost:8000/api/v1/assessment-report/history/${id}`
-        : "http://localhost:8000/api/v1/assessment-report/report";
+        ? `/assessment-report/history/${id}`
+        : "/assessment-report/report";
         
-      const res = await axios.get(url, {
-        withCredentials: true
-      });
-      report = res.data;
+      report = await api.get(url) as AssessmentReport;
     } catch (e) {
       error = "Não foi possível carregar seu diagnóstico.";
       console.error(e);
