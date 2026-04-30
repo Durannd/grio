@@ -5,9 +5,18 @@
   let email = $state("");
   let password = $state("");
 
+  // Password Validation Runes
+  let hasMinLength = $derived(password.length >= 8);
+  let hasUppercase = $derived(/[A-Z]/.test(password));
+  let hasNumber = $derived(/[0-9]/.test(password));
+  
+  let isPasswordValid = $derived(hasMinLength && hasUppercase && hasNumber);
+
   function handleSubmit(e: Event) {
     e.preventDefault();
-    onsubmit?.({ name, email, password });
+    if (isPasswordValid) {
+      onsubmit?.({ name, email, password });
+    }
   }
 </script>
 
@@ -26,22 +35,30 @@
     <div class="form-group">
       <label for="password">Senha Segura</label>
       <input type="password" id="password" bind:value={password} placeholder="••••••••" required />
+      
+      <!-- Interactive Password Strength Indicator -->
+      <div class="password-requirements">
+        <span class="req-item" class:met={hasMinLength}>
+          <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Mínimo 8 caracteres
+        </span>
+        <span class="req-item" class:met={hasUppercase}>
+          <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          1 Letra Maiúscula
+        </span>
+        <span class="req-item" class:met={hasNumber}>
+          <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          1 Número
+        </span>
+      </div>
     </div>
     
-    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; min-height: 48px;">
+    <button type="submit" class="btn btn-primary" disabled={!isPasswordValid || !name || !email} style="width: 100%; margin-top: 1rem; min-height: 48px;">
       Criar Minha Conta
     </button>
     
     <div class="reflective-statement" style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: var(--text-secondary);">
       <p>Nossa missão é democratizar a educação de alta performance através de IA e dados.</p>
-    </div>
-
-    <div class="secure-badge">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lock-icon">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-      </svg>
-      <span>SSL Secure Encrypted</span>
     </div>
   </form>
 </div>
@@ -53,23 +70,37 @@
     margin: 0 auto;
   }
 
-  .secure-badge {
-    text-align: center; 
-    margin-top: 1.5rem; 
-    color: var(--success); 
-    font-size: 0.75rem; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 0.5rem;
-    opacity: 0.8;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
+  .password-requirements {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.75rem;
   }
 
-  .lock-icon {
-    width: 14px;
-    height: 14px;
+  .req-item {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--danger);
+    transition: color 0.3s ease;
+  }
+
+  .req-item svg {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  .req-item.met {
+    color: var(--success);
+  }
+
+  .req-item.met svg {
+    opacity: 1;
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 </style>

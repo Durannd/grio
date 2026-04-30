@@ -49,9 +49,18 @@ async function fetchApi(path: string, options: RequestInit = {}): Promise<any> {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      // Não exibe toast para 403 CSRF (geralmente silencioso ou retentado) se for endpoint específico, 
-      // mas vamos deixar genérico por agora
-      const detail = errorData.detail || 'Ocorreu um erro na sua solicitação.';
+      
+      let detail = 'Ocorreu um erro na sua solicitação.';
+      
+      if (errorData.detail) {
+        if (Array.isArray(errorData.detail)) {
+          // Trata erros de validação do Pydantic (HTTP 422)
+          detail = errorData.detail.map((err: any) => err.msg).join('; ');
+        } else if (typeof errorData.detail === 'string') {
+          detail = errorData.detail;
+        }
+      }
+
       toasts.error(detail);
       throw new Error(detail);
     }

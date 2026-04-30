@@ -202,7 +202,7 @@
                           <div class="progress-bar" style="width: {concept.score * 100}%; background-color: {concept.is_inferred ? '#6B7280' : (concept.score >= 0.7 ? '#10B981' : (concept.score >= 0.4 ? '#F59E0B' : '#EF4444'))}"></div>
                         </div>
                         <div class="prof-footer mt-4">
-                          <a href="/estudar/{concept.concept_name}" class="btn btn-primary btn-sm" style="width: 100%; text-align: center;">
+                          <a href="/estudar/{concept.friendly_code || concept.concept_name}" class="btn btn-primary btn-sm" style="width: 100%; text-align: center;">
                             {concept.is_inferred ? 'Explorar' : 'Estudar'}
                           </a>
                         </div>
