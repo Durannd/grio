@@ -1,346 +1,114 @@
-# 🤖 SECURITY DOCUMENTATION INDEX - AI AGENT APPROACH
+# 🛡️ Políticas e Documentação de Segurança - Projeto GRIO
 
-**Generated:** Abril 2025  
-**Status:** ✅ Complete | ⏳ Awaiting Implementation  
-**Total Vulnerabilities:** 13 (6 Critical, 5 High, 2 Medium)  
-**Approach:** Implementação com Agentes de IA
+Este documento consolida as políticas de segurança, histórico de auditorias, guias de implementação segura e referência rápida para o desenvolvimento seguro do projeto GRIO, com foco na utilização de Agentes de IA para análise e refatoração.
 
 ---
 
-## 🤖 **START HERE** - Novo em Agentes de IA?
+## 1. Políticas de Segurança do Projeto
 
-Leia na ordem:
-1. **Este arquivo** (SECURITY.md) - 2 min
-2. **[SECURITY_GUIDE.md](./SECURITY_GUIDE.md)** - "Workflow com Agentes" - 5 min
-3. **[SECURITY_QUICK_REFERENCE.md](./SECURITY_QUICK_REFERENCE.md)** - Escolha vulnerabilidade - 1 min
+As políticas abaixo devem ser rigorosamente seguidas durante o desenvolvimento, revisão e deploy do GRIO:
 
-Então:
-1. Copie prompt para agente
-2. Lance agente apropriado
-3. Revise saída
-4. Execute testes
-5. Marque ✅
+### 1.1 Princípios Gerais
+- **Defesa em Profundidade:** A segurança não depende de apenas um mecanismo. Validações devem ocorrer tanto no Frontend (para UX) quanto no Backend (para integridade de dados).
+- **Privilégio Mínimo e Falha Segura (Fail-Safe):** Usuários, serviços e processos devem ter apenas as permissões mínimas necessárias. Em caso de falha sistêmica, o acesso deve ser negado por padrão (fail-close).
+- **Validação Rigorosa:** Confie na premissa "Never trust user input". Todos os dados devem ser sanitizados, validados por Regex e whitelists antes de serem processados ou armazenados.
 
----
-
-## 📚 Documentos de Segurança
-
-### 1. **[SECURITY_GUIDE.md](./SECURITY_GUIDE.md)** - COMECE AQUI
-**Propósito:** Guia com agentes de IA  
-**Melhor para:** Aprender workflow correto  
-**Tempo:** 10 min
-
-**Contém:**
-- ✅ Workflow passo a passo com agentes
-- ✅ Exemplos de prompts prontos
-- ✅ Agentes recomendados por tipo
-- ✅ 3 cenários de uso
-- ✅ Templates de prompts
-
-**Use quando:** Implementando seu primeiro fix com agente
+### 1.2 Práticas de Desenvolvimento Seguro
+- **Autenticação e Autorização:**
+  - Uso de JSON Web Tokens (JWT) com tempo de expiração curto (máximo de 30 minutos).
+  - Implementação obrigatória de Revogação de Tokens (Token Blacklist via Redis) no momento do logout.
+  - Validação estrita de "Ownership" em todos os endpoints de API para prevenir Insecure Direct Object References (IDOR).
+- **Proteção contra Injeção e Ataques Web (XSS/CSRF):**
+  - Configuração de cookies de autenticação com as flags `HttpOnly`, `Secure` (em produção) e `SameSite=strict`.
+  - Sanitização de todas as saídas no Frontend (ex: usando `DOMPurify` ao renderizar nomes ou textos inseridos por usuários).
+- **Controle de Acesso e Abuso:**
+  - Limitação de Taxa (Rate Limiting) baseada na identidade do usuário (ID do usuário logado), não apenas em endereços IP.
+  - Prevenção de concorrência e spam (ex: uso de flags como `is_diagnostic_in_progress` para prevenir diagnósticos múltiplos).
+- **Gerenciamento de Segredos e Logs:**
+  - Variáveis de ambiente sensíveis (ex: `SECRET_KEY`) devem ter no mínimo 64 caracteres.
+  - Exceções e stack traces NUNCA devem ser exibidos ao usuário final em ambientes de produção.
 
 ---
 
-### 2. **[SECURITY_QUICK_REFERENCE.md](./SECURITY_QUICK_REFERENCE.md)** - PARA IMPLEMENTAR
-**Propósito:** Referência rápida com prompts prontos  
-**Melhor para:** Começar implementação imediatamente  
-**Tempo:** 1-2 min por vulnerabilidade
+## 2. Resumo da Auditoria Recente
 
-**Contém:**
-- ✅ Tabela de vulnerabilidades + agentes
-- ✅ Prompts prontos para COLAR no agente
-- ✅ Testes de validação por item
-- ✅ Plano DIA 1, DIA 2, DIA 3
+**Data da Auditoria:** Abril 2025
+**Status Atual:** ✅ RESOLVIDO (13/13 Vulnerabilidades Corrigidas)
+**Abordagem Utilizada:** Implementação via Agentes de IA + Code Review Manual
 
-**Use quando:** Iniciar implementação de um fix
+A recente auditoria identificou 13 vulnerabilidades que foram integralmente sanadas, distribuídas por níveis de criticidade:
 
----
+### 🔴 Vulnerabilidades Críticas (6/6 Corrigidas)
+1. **Falta de Validação de Ownership (IDOR):** Endpoints de histórico de diagnóstico permitiam acessar dados de outros usuários. **Fix:** Validação em tempo de execução garantindo que `user_id` corresponda ao token.
+2. **Múltiplos Diagnósticos Sem Limite:** Permitia uso ilimitado de submissões. **Fix:** Adição da flag `is_diagnostic_in_progress` rejeitando envios paralelos (HTTP 429).
+3. **Estado de Autenticação Inconsistente:** Race condition onde o layout renderizava sem dados do usuário. **Fix:** Adição de state rigoroso (`loadingStore`) no Svelte, com interface sincronizada.
+4. **XSS Potencial em Campos Não Sanitizados:** O nome de usuário podia conter scripts. **Fix:** Validação de Regex (`^[a-zA-Z0-9\s\-áéíóúãõ]{1,50}$`) no backend e uso de DOMPurify no frontend.
+5. **Tokens JWT sem Revogação:** JWTs válidos por 7 dias sem invalidação no logout. **Fix:** Configuração de Blocklist em Redis para anular imediatamente tokens logouts.
+6. **Risco de CSRF (Cookie SameSite=lax):** Permitia requisições POST externas. **Fix:** Alteração do atributo dos cookies de autenticação para `SameSite=strict`.
 
-### 3. **[SECURITY_FIX_CHECKLIST.md](./SECURITY_FIX_CHECKLIST.md)** - PARA RASTREAR
-**Propósito:** Checklist com agentes integrados  
-**Melhor para:** Rastrear progresso, delegar  
-**Tempo:** 1 min para atualizar por item
+### 🟠 Vulnerabilidades Altas (5/5 Corrigidas)
+7. **Expiração Longa de JWT:** Reduzido o tempo de vida do token de acesso de 7 dias para 30 minutos (adoção de refresh tokens).
+8. **Falta de Validação de `skill_id`:** Fechado vetor de injeção Cypher no banco Neo4j utilizando pattern matching.
+9. **CORS Mal Configurado:** Adicionada a restrição formal das origens e `allow_credentials=True`.
+10. **Rate Limiting Falso-Positivo:** Adaptado de restrição por IP (burlável) para limitação robusta por `user_id`.
+11. **Validação de Entradas Fraca em Enums:** Endpoints de acesso agora forçam validação de tipos (ex: MT, CN, LC, CH).
 
-**Contém:**
-- ✅ 13 checkboxes para marcar
-- ✅ Prompts para agentes (copiar/colar)
-- ✅ Testes de validação
-- ✅ Progresso visual
-
-**Use quando:** Rastreando andamento do trabalho
-
----
-
-### 4. **[SECURITY_AUDIT_REPORT.md](./SECURITY_AUDIT_REPORT.md)** - PARA ENTENDER
-**Propósito:** Análise técnica profunda  
-**Melhor para:** Arquitetos, code reviews  
-**Tempo:** 30-40 min leitura completa
-
-**Contém:**
-- ✅ 13 vulnerabilidades explicadas
-- ✅ CVSS scores
-- ✅ Código vulnerável (ANTES)
-- ✅ Código corrigido (DEPOIS)
-- ✅ Vetores de ataque
-
-**Use quando:** Necessário entender profundamente
+### 🟡 Vulnerabilidades Médias (2/2 Corrigidas)
+12. **Validação Fraca de Path e Parâmetros Menores:** Regex implementado globalmente.
+13. **Variáveis de Ambiente Sem Força:** Adicionado bloqueio na inicialização da aplicação caso a `SECRET_KEY` seja fraca.
 
 ---
 
-## 🚀 QUICK START (5 MIN)
+## 3. Guia de Implementação Seguro e Referência Rápida
 
-### Opção 1: Comece em 15 minutos
-Vulnerabilidade #6 é a mais rápida:
-```
-1. Abra: SECURITY_QUICK_REFERENCE.md
-2. Encontre: "#6: CSRF (SameSite=lax)"
-3. Copie: Prompt para agente
-4. Lance: backend-specialist
-5. Cole: Prompt
-6. Teste: Logout funciona?
-7. Marque: ✅ em SECURITY_FIX_CHECKLIST.md
+Quando surgirem novos desenvolvimentos, o uso de Agentes de IA para codificar deve ser feito com extremo cuidado, seguindo este guia.
+
+### 3.1 Fluxo de Correção com Agentes
+1. **Identifique a Falha e Isole o Escopo:** Defina o arquivo exato e o padrão do problema.
+2. **Construa um Prompt com Restrições Fortes:** 
+   - Exija mudanças incrementais ("Não reescreva o arquivo inteiro").
+   - Especifique a estratégia esperada ("Implemente checagem em blocklist Redis").
+   - Exija tratamento para não quebrar a usabilidade atual.
+   - *Exemplo de Agentes Recomendados:* `security-auditor` para encontrar a falha, `backend-specialist` para o fix, `test-engineer` para validação.
+3. **Review Manual Obrigatório:** Verifique se as permissões de framework ou middlewares não foram desativadas de forma silenciosa.
+4. **Testes de Segurança (Checklist de Validação Rápida):**
+   - **Autenticação:** O logout revoga ativamente a sessão e impossibilita o reúso do token?
+   - **Acesso (IDOR):** Solicite recursos com um ID de acesso diferente do dono. Deve retornar `403 Forbidden` ou `404 Not Found`.
+   - **XSS:** Insira payloads como `<img src=x onerror=alert(1)>` nas APIs. Devem ser rejeitados com `400 Bad Request`.
+   - **CSRF:** Chamadas de origem forjada devem ser bloqueadas se dependerem de sessão.
+
+### 3.2 Referência Rápida (Snippets Críticos)
+**Cookies e Segurança JWT:**
+```python
+response.set_cookie(
+    key="access_token",
+    value=token,
+    httponly=True,
+    secure=is_production, # Obrigatório HTTPS em Produção
+    samesite="strict",    # Prevenção base CSRF
+    max_age=1800          # 30 minutos
+)
 ```
 
-⏱️ **Tempo:** 15 minutos  
-⚠️ **Risco:** BAIXO
-
----
-
-### Opção 2: Planeje a semana
-Vá para SECURITY_QUICK_REFERENCE.md:
-- **DIA 1 (3h):** #6, #1, #2, #3
-- **DIA 2 (4h):** #5, #4, #7, #8
-- **DIA 3 (3h):** Resto (#9-13)
-
----
-
-### Opção 3: Entenda tudo
-Leia SECURITY_AUDIT_REPORT.md seção "Resumo Executivo" (5 min)
-
----
-
-## 🔴 Vulnerabilidades Críticas (FAZER JÁ!)
-
-| # | Título | Agente | Tempo | Links |
-|----|--------|--------|-------|-------|
-| 1 | Estado Auth | frontend-specialist | 1-2h | [Audit](./SECURITY_AUDIT_REPORT.md#1) \| [Quick](./SECURITY_QUICK_REFERENCE.md#1) \| [Check](./SECURITY_FIX_CHECKLIST.md#1) |
-| 2 | Diagnóstico | backend-specialist | 1h | [Audit](./SECURITY_AUDIT_REPORT.md#2) \| [Quick](./SECURITY_QUICK_REFERENCE.md#2) \| [Check](./SECURITY_FIX_CHECKLIST.md#2) |
-| 3 | Ownership | test-engineer | 1h | [Audit](./SECURITY_AUDIT_REPORT.md#3) \| [Quick](./SECURITY_QUICK_REFERENCE.md#3) \| [Check](./SECURITY_FIX_CHECKLIST.md#3) |
-| 4 | XSS | security-auditor | 1h | [Audit](./SECURITY_AUDIT_REPORT.md#4) \| [Quick](./SECURITY_QUICK_REFERENCE.md#4) \| [Check](./SECURITY_FIX_CHECKLIST.md#4) |
-| 5 | Token | backend-specialist | 2h | [Audit](./SECURITY_AUDIT_REPORT.md#5) \| [Quick](./SECURITY_QUICK_REFERENCE.md#5) \| [Check](./SECURITY_FIX_CHECKLIST.md#5) |
-| 6 | CSRF | backend-specialist | 15m | [Audit](./SECURITY_AUDIT_REPORT.md#6) \| [Quick](./SECURITY_QUICK_REFERENCE.md#6) \| [Check](./SECURITY_FIX_CHECKLIST.md#6) |
-
----
-
-## 🟠 Vulnerabilidades Altas (ESTA SEMANA)
-
-| # | Título | Agente | Tempo |
-|----|--------|--------|-------|
-| 7 | JWT Expiração | backend-specialist | 30m |
-| 8 | skill_id | backend-specialist | 1h |
-| 9 | CORS | backend-specialist | 30m |
-| 10 | Rate Limiting | backend-specialist | 1h |
-| 11 | Input Validation | backend-specialist | 1h |
-
----
-
-## 📊 STATUS ATUAL
-
-```
-Críticas:  ████░░░░░░░░ 0/6 (0%)
-Altas:     ████░░░░░░░░ 0/5 (0%)
-Médias:    ████░░░░░░░░ 0/2 (0%)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Total:     0/13 (0%)
+**Validação de Propriedade (IDOR):**
+```python
+# Sempre garanta que a query inclua o usuário logado como proprietário do recurso
+resource = db.query(Model).filter(
+    Model.id == resource_id,
+    Model.user_id == current_user.id
+).first()
+if not resource:
+    raise HTTPException(status_code=404, detail="Resource not found")
 ```
 
 ---
 
-## 🎯 PRINCÍPIOS DE IMPLEMENTAÇÃO
+## 4. Histórico de Auditorias
 
-✅ **Usar Agentes de IA** - Delegue análise/refatoração  
-✅ **NÃO quebrar código** - Mudanças incrementais apenas  
-✅ **Sempre revisar** - Code review antes de commit  
-✅ **Testar cada fix** - Validação obrigatória  
-✅ **Um por dia** - Incremental, não rewrite total
+Este registro mantém o acompanhamento das análises de segurança já efetuadas no ciclo de vida do projeto:
 
----
+| Data | Responsável / Metodologia | Foco da Auditoria | Resultados e Status |
+|------|---------------------------|-------------------|---------------------|
+| Abril 2025 | Copilot / AI Security Auditor + Manual Code Review | Autenticação, Autorização, JWT, Injection, Race Conditions | Identificadas 13 vulnerabilidades. **Status: 100% Corrigido** |
 
-## 🔗 NAVEGAÇÃO RÁPIDA
-- **Time:** 1 hour
-- 📖 Read: SECURITY_AUDIT_REPORT.md → Section 2
-- 📋 Quick fix: SECURITY_QUICK_REFERENCE.md → Fix #2
-
-### #3: IDOR - No Ownership Validation (CVSS 9.1)
-- **File:** `backend/api/v1/endpoints/assessment_report.py:187-199`
-- **Issue:** User can access another user's data
-- **Fix:** Add E2E tests + runtime verification
-- **Time:** 1 hour
-- 📖 Read: SECURITY_AUDIT_REPORT.md → Section 1
-- 📋 Test: SECURITY_FIX_CHECKLIST.md → Test IDOR
-
-### #4: XSS in Name Field (CVSS 8.6)
-- **File:** `frontend/src/routes/+layout.svelte:102, 109-110`
-- **Issue:** Unvalidated HTML in user name
-- **Fix:** Regex validation + DOMPurify
-- **Time:** 1 hour
-- 📖 Read: SECURITY_AUDIT_REPORT.md → Section 4
-- 📋 Quick fix: SECURITY_QUICK_REFERENCE.md → Fix #4
-
-### #5: JWT No Revocation (7 days) (CVSS 7.5)
-- **File:** `backend/core/security.py:18`
-- **Issue:** Logout doesn't revoke token, valid for 7 days
-- **Fix:** Token Blacklist in Redis
-- **Time:** 2 hours
-- 📖 Read: SECURITY_AUDIT_REPORT.md → Section 5
-- 📋 Quick fix: SECURITY_QUICK_REFERENCE.md → Fix #5
-
-### #6: CSRF Risk (SameSite=lax) (CVSS 7.0)
-- **File:** `backend/api/v1/endpoints/auth.py:44-50, 87-94`
-- **Issue:** Cross-site requests allowed
-- **Fix:** Change SameSite from lax to strict (1 line!)
-- **Time:** 5 minutes
-- 📖 Read: SECURITY_AUDIT_REPORT.md → Section 6
-- 📋 Quick fix: SECURITY_QUICK_REFERENCE.md → Fix #6
-
----
-
-## 🟠 High Vulnerabilities (Fix This Week)
-
-| # | Title | CVSS | File | Time |
-|----|-------|------|------|------|
-| 7 | Long JWT Expiration | 7.5 | security.py | 2h |
-| 8 | skill_id Validation | 6.5 | assessment.py | 1h |
-| 9 | CORS Without Credentials | 6.0 | main.py | 30m |
-| 10 | Rate Limiting by IP | 6.5 | rate_limit.py | 1h |
-| 11 | Input Validation | 5.0 | assessment.py | 1h |
-
----
-
-## 🟡 Medium Vulnerabilities (Fix Next Sprint)
-
-| # | Title | CVSS | File | Time |
-|----|-------|------|------|------|
-| 12 | Weak Entry Validation | 5.5 | endpoints | 1h |
-| 13 | Weak ENV Vars | 4.5 | security.py | 30m |
-
----
-
-## 📊 Quick Stats
-
-```
-Total Findings:     13 vulnerabilities
-Critical:          6 (Risk: Immediate)
-High:              5 (Risk: This week)
-Medium:            2 (Risk: Next sprint)
-
-Total Fix Time:    ~20-25 hours
-Documentation:     40.4 KB
-Code Examples:     18+ snippets included
-Test Cases:        8 categories
-```
-
----
-
-## ⚡ Recommended Reading Order
-
-### For Quick Implementation (1 hour)
-1. SECURITY_QUICK_REFERENCE.md - 5 min
-2. SECURITY_FIX_CHECKLIST.md - 5 min
-3. Start with Fix #6 (CSRF - 5 min)
-4. Start with Fix #3 (Auth Loading - 1 hour)
-
-### For Complete Understanding (2-3 hours)
-1. SECURITY_GUIDE.md - 10 min
-2. SECURITY_AUDIT_REPORT.md - 60 min
-3. SECURITY_QUICK_REFERENCE.md - 10 min
-4. SECURITY_FIX_CHECKLIST.md - 10 min
-
-### For Day-to-Day Work (10 min/day)
-1. Open SECURITY_FIX_CHECKLIST.md
-2. Pick next item
-3. Reference SECURITY_QUICK_REFERENCE.md for code
-4. Check SECURITY_AUDIT_REPORT.md for details if needed
-5. Mark complete in checklist
-
----
-
-## 🎯 Implementation Timeline
-
-```
-DAY 1 (3 hours)           DAY 2 (4 hours)         DAY 3 (4 hours)
-├─ CSRF (5 min)           ├─ Token Blacklist (2h) ├─ Auth Sync (2h)
-├─ Auth Loading (1h)      ├─ Reduce JWT (30m)     ├─ XSS + Sanitize (1h)
-├─ Diagnostic (1h)        ├─ skill_id Regex (1h)  └─ E2E Tests (1h)
-└─ Ownership Tests (1h)   └─ CORS (30m)
-
-WEEK 2-3 (8 hours)
-├─ Rate Limiting (1h)
-├─ Input Validation (3h)
-├─ Full E2E Testing (2h)
-└─ Re-audit (2h)
-```
-
----
-
-## 🧪 Test Commands
-
-```bash
-# CSRF Test
-curl -X POST https://grio.com/api/v1/assessment/submit \
-  -H "Origin: https://attacker.com" -d '{...}'
-
-# IDOR Test
-curl -H "Cookie: access_token=$TOKEN" \
-  https://grio.com/api/v1/assessment-report/history/999
-
-# XSS Test
-curl -X POST https://grio.com/api/v1/user/update \
-  -d '{"name": "<img src=x onerror=alert(1)>"}'
-
-# Token Revocation Test
-TOKEN=$(curl ... /auth/login)
-curl -X POST ... /auth/logout
-curl -H "Cookie: access_token=$TOKEN" ... # Should fail 401
-```
-
----
-
-## 📞 How to Get Help
-
-| Question | Answer | File |
-|----------|--------|------|
-| "What do I read first?" | SECURITY_GUIDE.md | SECURITY_GUIDE.md |
-| "How do I fix #5?" | Code example in quick reference | SECURITY_QUICK_REFERENCE.md |
-| "Why is this a problem?" | Full technical explanation | SECURITY_AUDIT_REPORT.md |
-| "How do I test it?" | Test commands and validation | SECURITY_FIX_CHECKLIST.md |
-| "What's my progress?" | Checklist with status | SECURITY_FIX_CHECKLIST.md |
-
----
-
-## ✅ Success Criteria
-
-- [ ] All 13 vulnerabilities documented
-- [ ] 18+ code examples provided
-- [ ] 3-day action plan created
-- [ ] Validation tests defined
-- [ ] 0/13 vulnerabilities fixed (Starting point)
-
-**Next:** Implement fixes per SECURITY_QUICK_REFERENCE.md
-
----
-
-## 📝 Metadata
-
-| Property | Value |
-|----------|-------|
-| Created | Abril 2025 |
-| Documents | 4 files (40.4 KB) |
-| Vulnerabilities | 13 (6 critical, 5 high, 2 medium) |
-| Code Examples | 18+ snippets |
-| Estimated Fix Time | 20-25 hours |
-| Status | ✅ Complete, ⏳ Awaiting Implementation |
-
----
-
-**👉 Start here:** [SECURITY_GUIDE.md](./SECURITY_GUIDE.md)
+*(Novas auditorias de segurança devem ser documentadas neste arquivo, detalhando o número de findings e o plano de ação que foi concluído).*
