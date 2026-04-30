@@ -31,6 +31,8 @@ export async function loadUser(retryCount = 0) {
     if (userData && userData.id) {
       console.log('[UserStore] Usuário identificado:', userData.email);
       user.set(userData);
+      // Fetch initial CSRF token after successful authentication verification
+      await api.fetchCsrfToken();
     } else {
       user.set(null);
     }
