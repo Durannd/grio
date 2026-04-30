@@ -3,7 +3,7 @@ import re
 
 class UserBase(BaseModel):
     email: EmailStr
-    name: str = Field(..., min_length=2, max_length=100)
+    name: str = Field(..., min_length=2, max_length=50)
     avatar_url: str | None = None
     is_diagnostic_completed: bool = False
 
@@ -22,8 +22,8 @@ class UserCreate(UserBase):
     @field_validator('name')
     @classmethod
     def validate_name(cls, v):
-        if not re.match(r'^[a-zA-ZÀ-ÿ\s\-]{2,50}$', v):
-            raise ValueError('Nome deve conter apenas letras, espaços e hífens (2-50 caracteres)')
+        if not re.match(r'^[a-zA-Z0-9À-ÿ\s\-]{2,50}$', v):
+            raise ValueError('Nome deve conter apenas letras, números, espaços e hífens (2-50 caracteres)')
         dangerous_patterns = ['<', '>', '&', '"', "'", 'javascript', 'onerror', 'onload', 'script']
         v_lower = v.lower()
         if any(pattern in v_lower for pattern in dangerous_patterns):
