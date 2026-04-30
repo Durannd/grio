@@ -83,24 +83,38 @@ class CSRFValidator:
     """Validador CSRF para usar em middlewares ou dependências FastAPI"""
     
     def __init__(self):
-        self.tokens: dict[str, str] = {}  # Em produção, usar Redis ou banco de dados
+        # Em produção, usar Redis com sets/lists expiráveis
+        self.tokens: dict[str, list[str]] = {}
     
     def issue_token(self, session_id: str) -> str:
-        """Emite um token CSRF para uma sessão"""
+        """Emite um token CSRF para uma sessão e o adiciona à lista de tokens ativos (max 5)"""
         token, token_hash = generate_csrf_token()
-        self.tokens[session_id] = token_hash
+        
+        if session_id not in self.tokens:
+            self.tokens[session_id] = []
+            
+        self.tokens[session_id].append(token_hash)
+        
+        # Evict old tokens (keep max 5 active tabs/requests per session to prevent memory leak)
+        if len(self.tokens[session_id]) > 5:
+            self.tokens[session_id].pop(0)
+            
         return token
     
     def validate(self, session_id: str, token: str) -> bool:
-        """Valida um token CSRF"""
+        """Valida um token CSRF contra qualquer um dos tokens ativos da sessão"""
         if session_id not in self.tokens:
             return False
         
-        stored_hash = self.tokens[session_id]
-        return validate_csrf_token(token, stored_hash)
+        # Check against all active tokens for this session
+        for stored_hash in self.tokens[session_id]:
+            if validate_csrf_token(token, stored_hash):
+                return True
+                
+        return False
     
     def clear(self, session_id: str) -> None:
-        """Remove o token CSRF de uma sessão (após uso bem-sucedido)"""
+        """Remove todos os tokens CSRF de uma sessão"""
         self.tokens.pop(session_id, None)
 
 
