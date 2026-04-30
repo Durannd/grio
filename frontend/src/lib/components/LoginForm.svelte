@@ -1,18 +1,17 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  let { onsubmit } = $props();
 
-  const dispatch = createEventDispatcher();
+  let email = $state("");
+  let password = $state("");
 
-  let email = "";
-  let password = "";
-
-  function handleSubmit() {
-    dispatch("submit", { email, password });
+  function handleSubmit(e: Event) {
+    e.preventDefault();
+    onsubmit?.({ email, password });
   }
 </script>
 
 <div class="glass-card animate-slide-up stagger-2">
-  <form on:submit|preventDefault={handleSubmit}>
+  <form onsubmit={handleSubmit}>
     <div class="form-group">
       <label for="email">E-mail</label>
       <input type="email" id="email" bind:value={email} placeholder="seu@email.com" required />
