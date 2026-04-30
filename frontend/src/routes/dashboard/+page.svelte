@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import { fade, fly } from 'svelte/transition';
@@ -8,17 +10,19 @@
   import { user, loadUser } from '$lib/stores/userStore';
   import { api } from '$lib/api';
 
-  let learningPath: Array<{area_id: string, concept_name: string, display_name: string, friendly_code: string, description: string, score: number}> = [];
-  let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = [];
-  let loading = true;
-  let errorMessage = "";
+  let learningPath: Array<{area_id: string, concept_name: string, display_name: string, friendly_code: string, description: string, score: number}> = $state([]);
+  let history: Array<{id: number, created_at: string, type: string, has_analysis: boolean}> = $state([]);
+  let loading = $state(true);
+  let errorMessage = $state("");
 
-  $: currentUser = $user;
+  let currentUser = $derived($user);
 
   // Guarda reativa: se o usuário deslogar, sai do dashboard imediatamente
-  $: if (browser && !loading && !currentUser) {
-    goto('/login');
-  }
+  run(() => {
+    if (browser && !loading && !currentUser) {
+      goto('/login');
+    }
+  });
 
   onMount(async () => {
     try {
@@ -55,14 +59,14 @@
     });
   }
 
-  $: areaScores = {
+  let areaScores = $derived({
     'MT': { label: 'Matemática', color: '#00D1FF', score: 0, count: 0, delay: 150 },
     'CN': { label: 'Ciências da Natureza', color: '#BFFF00', score: 0, count: 0, delay: 300 },
     'LC': { label: 'Linguagens', color: '#FF4D00', score: 0, count: 0, delay: 450 },
     'CH': { label: 'Ciências Humanas', color: '#FFD700', score: 0, count: 0, delay: 600 }
-  };
+  });
 
-  $: {
+  run(() => {
     if (learningPath.length > 0) {
       let temp: Record<string, { score: number, count: number }> = {
         'MT': { score: 0, count: 0 },
@@ -85,9 +89,9 @@
         }
       });
     }
-  }
+  });
   
-  $: areaCards = Object.keys(areaScores).map(k => ({ id: k, ...areaScores[k as keyof typeof areaScores] }));
+  let areaCards = $derived(Object.keys(areaScores).map(k => ({ id: k, ...areaScores[k as keyof typeof areaScores] })));
 </script>
 
 <div class="dashboard-wrapper">
@@ -102,7 +106,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </div>
       <p>{errorMessage}</p>
-      <button class="btn btn-outline mt-4" on:click={() => window.location.reload()}>Tentar Novamente</button>
+      <button class="btn btn-outline mt-4" onclick={() => window.location.reload()}>Tentar Novamente</button>
     </div>
   {:else if currentUser}
     <div class="dashboard-header animate-fade-in">

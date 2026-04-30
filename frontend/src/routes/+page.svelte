@@ -3,11 +3,11 @@
   import { fade, fly } from 'svelte/transition';
   import { user } from '$lib/stores/userStore';
 
-  let isLoaded = false;
+  let isLoaded = $state(false);
 
-  $: hasCompleted = $user && ($user.is_diagnostic_completed === 1 || $user.is_diagnostic_completed === true);
-  $: diagnosticLink = hasCompleted ? '/dashboard' : '/prova';
-  $: diagnosticText = hasCompleted ? 'Ir para o Dashboard' : 'Começar Agora';
+  let hasCompleted = $derived($user?.is_diagnostic_completed === true);
+  let diagnosticLink = $derived(hasCompleted ? '/dashboard' : '/prova');
+  let diagnosticText = $derived(hasCompleted ? 'Ir para o Dashboard' : 'Começar Agora');
   
   onMount(() => {
     isLoaded = true;

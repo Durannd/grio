@@ -6,12 +6,37 @@
   import LoadingSpinner from "$lib/components/LoadingSpinner.svelte";
   import { page } from "$app/stores";
 
-  let report = null;
-  let loading = true;
-  let error = null;
+  interface Proficiency {
+    concept_name: string;
+    display_name: string;
+    friendly_code: string;
+    description: string;
+    score: number;
+    area: string;
+  }
+
+  interface AssessmentReport {
+    status: string;
+    proficiencies: Proficiency[];
+    analysis: {
+      title: string;
+      summary: string;
+      strengths: string[];
+      weaknesses: string[];
+      action_plan: string;
+    } | null;
+    summary_stats: {
+      average_score: number;
+      total_skills_mapped: number;
+    };
+  }
+
+  let report = $state<AssessmentReport | null>(null);
+  let loading = $state(true);
+  let error = $state<string | null>(null);
 
   // Mapeamento de cores por área
-  const areaColors = {
+  const areaColors: Record<string, string> = {
     "Matemática e suas Tecnologias": "#C9A05E",
     "Ciências da Natureza e suas Tecnologias": "#22C55E",
     "Ciências Humanas e suas Tecnologias": "#EF4444",
@@ -45,14 +70,14 @@
   }
 
   // Agrupar habilidades por área
-  $: groupedSkills = report?.proficiencies
-    ? report.proficiencies.reduce((acc, p) => {
+  let groupedSkills = $derived(report?.proficiencies
+    ? report.proficiencies.reduce((acc: Record<string, Proficiency[]>, p) => {
         const area = p.area || "Geral";
         if (!acc[area]) acc[area] = [];
         acc[area].push(p);
         return acc;
       }, {})
-    : {};
+    : {});
 </script>
 
 <div class="results-page">

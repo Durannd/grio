@@ -6,21 +6,32 @@
   import { PUBLIC_API_BASE_URL } from '$env/static/public';
   import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import { formatPedagogicalCode } from '$lib/utils';
+  import type { User } from '$lib/stores/userStore';
 
-  let learningPath: Array<{area_id?: string, concept_name: string, description: string, score: number, is_inferred?: boolean}> = [];
-  let user: any = null;
-  let loading = true;
-  let errorMessage = "";
+  interface LearningPathItem {
+    area_id?: string;
+    concept_name: string;
+    display_name?: string;
+    friendly_code?: string;
+    description: string;
+    score: number;
+    is_inferred?: boolean;
+  }
+
+  let learningPath: LearningPathItem[] = $state([]);
+  let user: User | null = $state(null);
+  let loading = $state(true);
+  let errorMessage = $state("");
   
-  $: areaId = $page.params.id;
-  $: areaLabel = areaId === 'MT' ? 'Matemática e suas Tecnologias' : areaId === 'CN' ? 'Ciências da Natureza e suas Tecnologias' : areaId === 'LC' ? 'Linguagens, Códigos e suas Tecnologias' : 'Ciências Humanas e suas Tecnologias';
+  let areaId = $derived($page.params.id || '');
+  let areaLabel = $derived(areaId === 'MT' ? 'Matemática e suas Tecnologias' : areaId === 'CN' ? 'Ciências da Natureza e suas Tecnologias' : areaId === 'LC' ? 'Linguagens, Códigos e suas Tecnologias' : 'Ciências Humanas e suas Tecnologias');
   
-  $: areaConcepts = learningPath.filter(c => (c.area_id && c.area_id === areaId) || (!c.area_id && c.concept_name && c.concept_name.startsWith(areaId)));
-  $: areaScore = areaConcepts.length > 0 ? areaConcepts.reduce((acc, c) => acc + c.score, 0) / areaConcepts.length : 0;
+  let areaConcepts = $derived(learningPath.filter(c => (c.area_id && c.area_id === areaId) || (!c.area_id && c.concept_name && c.concept_name.startsWith(areaId))));
+  let areaScore = $derived(areaConcepts.length > 0 ? areaConcepts.reduce((acc, c) => acc + c.score, 0) / areaConcepts.length : 0);
 
   onMount(async () => {
     try {
-      const fetchOptions = { credentials: "include" };
+      const fetchOptions = { credentials: "include" as RequestCredentials };
       const userRes = await fetch(`${PUBLIC_API_BASE_URL}/api/v1/auth/me`, fetchOptions);
       if (userRes.status === 401) {
         goto("/login");
@@ -50,7 +61,7 @@
   {:else if errorMessage}
     <div class="status-screen error-state">
       <p>{errorMessage}</p>
-      <button class="btn btn-outline mt-4" on:click={() => window.location.reload()}>Tentar Novamente</button>
+      <button class="btn btn-outline mt-4" onclick={() => window.location.reload()}>Tentar Novamente</button>
     </div>
   {:else}
     <div class="area-header animate-fade-in">

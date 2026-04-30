@@ -4,21 +4,30 @@
   import { fade, slide } from 'svelte/transition';
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
+  import { goto, invalidateAll } from '$app/navigation';
   import Chatbot from '$lib/components/Chatbot.svelte';
   import Toast from '$lib/components/Toast.svelte';
   import { api } from '$lib/api';
   import { user, loadingStore, loadUser } from '$lib/stores/userStore';
   import DOMPurify from 'isomorphic-dompurify';
 
-  $: ({ name: userName, email, avatar_url, is_diagnostic_completed } = $user || {});
-  $: safeName = userName ? DOMPurify.sanitize(userName) : '';
+  interface Props {
+    children?: import('svelte').Snippet;
+  }
 
-  let showDropdown = false;
+  let { children }: Props = $props();
+
+  let userName = $derived($user?.name || '');
+  let userEmail = $derived($user?.email || '');
+  let userAvatar = $derived($user?.avatar_url || '');
+
+  let safeName = $derived(userName ? DOMPurify.sanitize(userName) : '');
+
+  let showDropdown = $state(false);
 
   // Navbar scroll logic
   let lastScrollY = 0;
-  let navbarHidden = false;
+  let navbarHidden = $state(false);
   let scrollThreshold = 10;
 
   function handleScroll() {
@@ -77,11 +86,11 @@
     };
   }
 
-  onMount(async () => {
+  onMount(() => {
     if (browser) {
       window.addEventListener('scroll', handleScroll);
       // Garante que o usuário seja carregado sempre que o layout for montado/atualizado
-      await loadUser();
+      loadUser();
       return () => window.removeEventListener('scroll', handleScroll);
     }
   });
@@ -101,7 +110,7 @@
           <a href="/sobre">Sobre</a>
 
           <div class="user-profile">
-            <button class="profile-trigger" on:click={toggleDropdown} aria-haspopup="true" aria-expanded={showDropdown}>
+            <button class="profile-trigger" onclick={toggleDropdown} aria-haspopup="true" aria-expanded={showDropdown}>
               {#if $user.avatar_url}
                 <img src={$user.avatar_url} alt={`Avatar de ${safeName}`} class="avatar" />
               {:else}
@@ -110,14 +119,14 @@
             </button>
 
             {#if showDropdown}
-              <div class="profile-dropdown glass-panel" role="menu" tabindex="-1" in:slide={{ duration: 200 }} use:clickOutside on:keydown={handleKeydown}>
+              <div class="profile-dropdown glass-panel" role="menu" tabindex="-1" in:slide={{ duration: 200 }} use:clickOutside onkeydown={handleKeydown}>
                 <div class="dropdown-header">
                   <span class="user-name">{safeName}</span>
                   <span class="user-email">{$user.email}</span>
                 </div>
                 <div class="dropdown-divider"></div>
-                <button class="account-btn" role="menuitem" on:click={() => { showDropdown = false; goto('/account'); }}>Minha Conta</button>
-                <button class="logout-btn" role="menuitem" on:click={logout}>Sair</button>
+                <button class="account-btn" role="menuitem" onclick={() => { showDropdown = false; goto('/account'); }}>Minha Conta</button>
+                <button class="logout-btn" role="menuitem" onclick={logout}>Sair</button>
               </div>
             {/if}
           </div>
@@ -132,7 +141,7 @@
 
   {#key $page.url.pathname}
     <div class="page-transition-wrapper container" in:fade={{ duration: 300, delay: 150 }} out:fade={{ duration: 150 }}>
-      <slot />
+      {@render children?.()}
     </div>
   {/key}
 

@@ -10,14 +10,14 @@
   }
 
   // Ocultar automaticamente em rotas específicas para manter a sobriedade visual
-  $: isHiddenRoute = ['/login', '/cadastro'].includes($page.url.pathname);
+  let isHiddenRoute = $derived(['/login', '/cadastro'].includes($page.url.pathname));
 
-  let isOpen = false;
-  let message = "";
-  let messages = [
+  let isOpen = $state(false);
+  let message = $state("");
+  let messages = $state([
     { text: "Olá! Sou o assistente do Griô. Como posso te ajudar? 📚", isBot: true }
-  ];
-  let isLoading = false;
+  ]);
+  let isLoading = $state(false);
   let chatHistory: ChatMessage[] = [];
 
   function toggleChat() {
@@ -42,7 +42,7 @@
         selected_option_id: 0,
         chat_history: chatHistory,
         user_message: userMessage
-      });
+      }) as { response: string };
 
       if (response && response.response) {
         const botMessage = response.response;
@@ -75,7 +75,7 @@
       <div class="chat-header">
         <img src="/grio-logo.png" alt="Logo" class="header-logo" />
         <span>Assistente Griô</span>
-        <button class="close-btn" on:click={toggleChat}>&times;</button>
+        <button class="close-btn" onclick={toggleChat} aria-label="Fechar chat">&times;</button>
       </div>
       
       <div class="message-list">
@@ -96,9 +96,9 @@
           type="text" 
           placeholder="Tire uma dúvida ou peça uma questão..." 
           bind:value={message}
-          on:keydown={handleKeydown}
+          onkeydown={handleKeydown}
         />
-        <button on:click={sendMessage} disabled={isLoading}>
+        <button onclick={sendMessage} disabled={isLoading} aria-label="Enviar mensagem">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" fill="currentColor"/>
           </svg>
@@ -107,7 +107,7 @@
     </div>
   {/if}
 
-  <button class="float-btn" on:click={toggleChat} aria-label="Abrir Chatbot">
+  <button class="float-btn" onclick={toggleChat} aria-label="Abrir Chatbot">
     <img src="/grio-logo.png" alt="Logo Griô" class="btn-logo" />
   </button>
 </div>
