@@ -91,7 +91,7 @@
           <h3>Pronto para praticar?</h3>
           <p>Agora que você revisou este conceito, que tal testar seus conhecimentos com um micro-simulado direcionado?</p>
           <div class="actions mt-6">
-            <a href="/praticar/{microlesson.skill_id}" class="btn btn-primary">Praticar Agora</a>
+            <a href="/praticar/{microlesson.friendly_name || microlesson.skill_id}" class="btn btn-primary">Praticar Agora</a>
             <a href={areaCode ? `/area/${areaCode}` : '/dashboard'} class="btn btn-outline ml-4">Voltar para {areaLabel}</a>
           </div>
         </div>
