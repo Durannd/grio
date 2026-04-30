@@ -14,6 +14,13 @@ services:
     depends_on:
       - db
       - redis
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+        - action: rebuild
+          path: ./backend/requirements.txt
 
   db:
     image: postgres:13
@@ -44,6 +51,15 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./frontend/package.json
 
 volumes:
   postgres_data:
