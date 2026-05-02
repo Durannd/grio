@@ -11,6 +11,8 @@ def validate_environment():
         "NEO4J_USER": "Neo4j username",
         "NEO4J_PASSWORD": "Neo4j password",
         "DATABASE_URL": "PostgreSQL connection string",
+        "REDIS_HOST": "Redis server host",
+        "REDIS_PORT": "Redis server port",
     }
     
     missing_vars = []

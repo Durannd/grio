@@ -2,8 +2,10 @@ from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.errors import RateLimitExceeded
-from api.v1.endpoints import users, concepts, assessment, auth, learning_path, chatbot, assessment_report, study_plan, study
+from api.v1.endpoints import users, concepts, assessment, auth, learning_path, chatbot, assessment_report, study_plan, study, diagnostic
+from api import health_check
 from database import engine, Base
+from sqlalchemy import text
 from core.env import validate_environment
 from core.logger import logger
 from core.rate_limit import limiter
@@ -18,6 +20,15 @@ import os
 validate_environment()
 
 Base.metadata.create_all(bind=engine)
+
+# Garante que a coluna exigida no MVP exista no banco de dados, caso o SQLAlchemy não tenha atualizado o schema
+try:
+    with engine.connect() as conn:
+        conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_diagnostic_in_progress BOOLEAN DEFAULT FALSE;"))
+        conn.commit()
+        logger.info("Verificação do schema da tabela users concluída com sucesso.")
+except Exception as e:
+    logger.error(f"Erro ao verificar/atualizar o schema do banco de dados: {e}")
 
 logger.info("Starting Griô backend...")
 
@@ -74,3 +85,5 @@ app.include_router(learning_path.router, prefix="/api/v1/learning-path", tags=["
 app.include_router(chatbot.router, prefix="/api/v1/chatbot", tags=["chatbot"])
 app.include_router(study_plan.router, prefix="/api/v1/study-plan", tags=["study-plan"])
 app.include_router(study.router, prefix="/api/v1/study", tags=["study"])
+app.include_router(diagnostic.router, prefix="/api/v1/students", tags=["diagnostic"])
+app.include_router(health_check.router, tags=["health"])

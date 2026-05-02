@@ -7,10 +7,13 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - ${APPDATA}/gcloud:/tmp/keys:ro
     env_file:
       - ./backend/.env
     environment:
       - REDIS_URL=redis://redis:6379/0
+      - GOOGLE_CLOUD_PROJECT=project-497263e0-2cd2-4643-82b
+      - GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/application_default_credentials.json
     depends_on:
       - db
       - redis
