@@ -112,7 +112,7 @@
     <div class="area-cards-grid">
       {#each areaCards as area (area.id)}
         <a 
-          href="/area/{area.id}"
+          href="/mapa/{area.id}"
           class="area-card"
           style="--area-color: {area.color}; text-decoration: none;"
           in:fly={{ y: 20, duration: 800, delay: area.delay }}
