@@ -85,5 +85,5 @@ app.include_router(learning_path.router, prefix="/api/v1/learning-path", tags=["
 app.include_router(chatbot.router, prefix="/api/v1/chatbot", tags=["chatbot"])
 app.include_router(study_plan.router, prefix="/api/v1/study-plan", tags=["study-plan"])
 app.include_router(study.router, prefix="/api/v1/study", tags=["study"])
-app.include_router(diagnostic.router, prefix="/api/v1/students", tags=["diagnostic"])
+app.include_router(diagnostic.router, prefix="/api/v1/diagnostic", tags=["diagnostic"])
 app.include_router(health_check.router, tags=["health"])
