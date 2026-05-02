@@ -1,5 +1,6 @@
 <script lang="ts">
     import { fade, scale } from 'svelte/transition';
+    import { maskId } from '$lib/utils';
 
     interface Props {
         node: any;
@@ -15,10 +16,13 @@
         loading = true;
         error = null;
         try {
+            // No backend, o studentId 'me' seria resolvido para o usuário logado
             const studentId = 'me'; 
+            // O questionId precisa ser o ID real da questão onde o erro ocorreu.
+            // Como estamos num mapa de conceitos, vamos usar um ID simulado para buscar o diagnóstico.
             const questionId = `q_mock_${node.id}`; 
             
-            const res = await fetch(`/api/v1/students/${studentId}/root-cause?question_id=${questionId}`);
+            const res = await fetch(`/api/v1/diagnostic/${studentId}/root-cause?question_id=${questionId}`);
             if (!res.ok) throw new Error('Falha ao buscar diagnóstico');
             
             diagnosis = await res.json();
@@ -33,7 +37,7 @@
             
             diagnosis = {
                 root_causes: [
-                    { id: `${node.id}_base`, name: fallbackName, mastery: 0.2, distance: 2 }
+                    { id: maskId(`${node.id}_base`), name: fallbackName, mastery: 0.2, distance: 2 }
                 ]
             };
         } finally {

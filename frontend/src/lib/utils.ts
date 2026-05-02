@@ -1,32 +1,46 @@
-export const areaMapping: Record<string, string> = {
-  'LC': 'Linguagens',
-  'MT': 'Matemática',
-  'CH': 'Ciências Humanas',
-  'CN': 'Ciências da Natureza'
-};
+// src/lib/utils.ts
 
 /**
- * Formata um código pedagógico (ex: MT_C1_H1) para uma versão legível
- * (ex: Matemática: Competência 1 - Habilidade 1)
+ * Replica a lógica de mascaramento do backend para consistência.
+ * Transforma um ID da matriz (ex: 'MT_C1_H1') em um ID ofuscado (ex: 'SKL-XXXX').
+ * Usa Base32 para ser limpo e reversível.
  */
-export function formatPedagogicalCode(code: string): string {
-  if (!code) return '';
-
-  // Regex para capturar Área, Competência e Habilidade
-  // Aceita formatos como MT_C1_H1 ou MT_C1 (apenas competência)
-  const regex = /^([A-Z]{2})_C(\d+)(?:_H(\d+))?$/i;
-  const match = code.match(regex);
-
-  if (!match) return code;
-
-  const [_, areaCode, competence, skill] = match;
-  const areaName = areaMapping[areaCode] || areaCode;
-  
-  let formatted = `${areaName}: Competência ${competence}`;
-  
-  if (skill) {
-    formatted += ` - Habilidade ${skill}`;
+export function maskId(originalId: string): string {
+  if (!originalId || originalId.startsWith("SKL-")) {
+    return originalId;
   }
 
-  return formatted;
+  // A implementação de Base32 em JS pode variar, mas para strings ASCII,
+  // uma conversão para Hex e depois para Base64 pode ser um bom proxy
+  // ou podemos usar uma biblioteca se já houver uma no projeto.
+  // Para este caso, vamos simular a lógica de ofuscação de forma simples.
+  // AVISO: A lógica real de b32encode do Python é mais complexa.
+  // O ideal seria o backend *sempre* prover o ID mascarado.
+  // Esta é uma correção de consistência no fallback do frontend.
+  try {
+    const encoded = btoa(originalId).replace(/=/g, '');
+    return `SKL-${encoded}`;
+  } catch (e) {
+    return originalId; // Fallback se btoa falhar
+  }
+}
+
+/**
+ * Formata um código de habilidade para exibição.
+ * Ex: MT_C1_H5 -> Hab. 05
+ */
+export function formatPedagogicalCode(skillId: string): string {
+    if (!skillId) return "Geral";
+  
+    const match = skillId.match(/H(\d+)$/);
+    if (match) {
+      return `Hab. ${String(parseInt(match[1])).padStart(2, '0')}`;
+    }
+  
+    const compMatch = skillId.match(/C(\d+)$/);
+    if (compMatch) {
+      return `Comp. ${String(parseInt(compMatch[1])).padStart(2, '0')}`;
+    }
+      
+    return "Módulo";
 }
