@@ -1,5 +1,5 @@
 from neo4j import Driver
-from google import genai
+from core.genai import get_genai_client
 from google.genai import types
 import os
 import json
@@ -55,37 +55,29 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
             knowledge_base += f"ENUNCIADO: {q_record['text']}\n"
             knowledge_base += f"EXPLICAÇÃO PEDAGÓGICA: {q_record['explanation']}\n\n"
 
-        # 3. Gerar via Gemini
-        client = genai.Client()
+        # 3. Gerar via Centralized GenAI (Vertex AI Optimized)
+        client = get_genai_client()
         
         prompt = f"""
-        Você é um professor especialista que cria micro-aulas para estudantes do ENEM.
-        Gere uma explicação didática sobre o tema descrito abaixo.
+        Você é um Professor Especialista de Alta Performance, com foco em Didática para o ENEM.
+        Sua missão é criar uma Micro-Aula Profunda e Acessível, maximizando o potencial pedagógico.
 
         TEMA: {result['description']}
         ÁREA DO CONHECIMENTO: {result['area']}
 
-        CONTEXTO INTERNO (USE APENAS COMO REFERÊNCIA, NÃO CITE):
+        BASE DE CONHECIMENTO TÉCNICO (Vertex AI Context):
         {knowledge_base if knowledge_base else "Sem exemplos disponíveis."}
 
-        REGRAS OBRIGATÓRIAS:
-        1. TITULO_AMIGAVEL: Crie um nome curto e claro (2-4 palavras) que resuma o tema para um aluno.
-           Exemplos: "Geometria Plana", "Cinemática Básica", "Interpretação de Gráficos".
-           NÃO use siglas, códigos ou identificadores técnicos.
-        2. CONTEUDO: Micro-aula em Markdown bem formatado.
-           - Use títulos (##), listas, **negrito** para conceitos-chave e > para dicas.
-           - Linguagem clara, direta e acessível para ensino médio.
-           - Inclua exemplos práticos ORIGINAIS (NÃO copie os exercícios do contexto).
-        3. PROIBIDO:
-           - Citar, reproduzir ou referenciar os exercícios/questões do contexto interno.
-           - Mencionar códigos de habilidade (como MT_C1_H01, H23, etc.).
-           - Saudações, personificações ou frases como "Olá, aluno!".
-           - Começar com o título da habilidade (o sistema já exibe isso).
+        REGRAS DE OURO (Maximizar Performance Vertex AI):
+        1. TITULO_AMIGAVEL: Nome curto, claro e didático (2-4 palavras). Proibido códigos técnicos.
+        2. CONTEUDO: Markdown de alta qualidade. Use ## Subtítulos, **Conceitos Chave**, listas e > Dicas de Ouro.
+        3. EXEMPLOS INÉDITOS: Crie cenários práticos originais. Não copie os exercícios da base de conhecimento.
+        4. RIGOR PEDAGÓGICO: Elimine saudações, personificações ou referências a códigos de habilidades. Vá direto ao ponto.
 
         FORMATO JSON:
         {{
-          "titulo_amigavel": "string (2-4 palavras)",
-          "conteudo_markdown": "string (Markdown formatado, começando com ## subtítulo)"
+          "titulo_amigavel": "string",
+          "conteudo_markdown": "string (começando com ##)"
         }}
         """
 
@@ -94,11 +86,13 @@ def get_or_generate_microlesson(driver: Driver, skill_id: str):
         
         for attempt in range(max_retries):
             try:
+                model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
                 response = client.models.generate_content(
-                    model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    model=model_name,
                     contents=prompt,
                     config=types.GenerateContentConfig(
-                        response_mime_type="application/json"
+                        response_mime_type="application/json",
+                        system_instruction="Atue como um educador de elite especializado na Base Nacional Comum Curricular (BNCC). Transforme tópicos áridos em jornadas de conhecimento vibrantes e tecnicamente precisas."
                     )
                 )
                 data = json.loads(response.text)
