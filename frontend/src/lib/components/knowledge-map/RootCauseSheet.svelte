@@ -37,7 +37,8 @@
             
             diagnosis = {
                 root_causes: [
-                    { id: maskId(`${node.id}_base`), name: fallbackName, mastery: 0.2, distance: 2 }
+                    // Em caso de falha, oferece um link para estudar o próprio conceito selecionado
+                    { id: node.id, name: node.name, mastery: node.mastery, distance: 1 }
                 ]
             };
         } finally {
