@@ -5,7 +5,7 @@ from models.question import Question
 from core.neo4j import get_driver
 from collections import defaultdict
 
-from google import genai
+from core.genai import get_genai_client
 from google.genai import types
 import os
 import json
@@ -13,8 +13,8 @@ import json
 def process_assessment_submission(db: Session, submission: AssessmentSubmission):
     driver = get_driver()
     
-    # Configurar Auditor
-    client = genai.Client()
+    # Configurar Auditor via Fonte Única de Verdade (Vertex AI se disponível)
+    client = get_genai_client()
 
     option_map = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E"}
     detailed_results = []
@@ -43,18 +43,21 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
                     "skills": result["skills"]
                 })
 
-        # --- Auditoria Pedagógica via IA ---
+        # --- Auditoria Pedagógica via IA (Vertex AI Optimized) ---
+        # Objetivo: Maximizar o rigor pedagógico e a precisão do diagnóstico.
         audit_prompt = f"""
-        Analise o padrão de respostas deste estudante no ENEM para detectar possíveis chutes (guesses).
+        Você é um Auditor Pedagógico de Alta Performance especializado na Matriz de Referência do ENEM.
+        Sua tarefa é analisar o comportamento cognitivo do estudante através do snapshot de performance fornecido.
         
-        CRITÉRIOS CRÍTICOS:
-        1. TEMPO EXTREMAMENTE CURTO (< 3s): Indica alta probabilidade de chute ou automação. Confidence deve ser < 0.2.
-        2. TEMPO CURTO (< 10s) EM MÉDIAS/DIFÍCEIS: Provável chute. Confidence deve ser < 0.4.
+        CRITÉRIOS DE INTEGRIDADE (Maximizar performance Vertex AI):
+        1. TEMPO EXTREMAMENTE CURTO (< 3s): Indica inconsistência cognitiva grave (chute/automação). Confidence < 0.2.
+        2. TEMPO INCOMPATÍVEL (< 10s) EM QUESTÕES MÉDIAS/DIFÍCEIS: Alta probabilidade de chute técnico. Confidence < 0.4.
+        3. PADRÕES DE ACERTO: Avalie se acertos em questões difíceis com tempos baixos são consistentes com o restante do perfil.
         
-        RESPOSTAS:
+        SNAPSHOT DE RESPOSTAS:
         {json.dumps(detailed_results)}
         
-        Retorne um JSON:
+        Retorne um JSON com análise técnica:
         {{
           "audit": [
             {{
@@ -70,11 +73,14 @@ def process_assessment_submission(db: Session, submission: AssessmentSubmission)
 
         for attempt in range(max_retries):
             try:
+                # Utiliza o modelo centralizado definido no .env
+                model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
                 audit_resp = client.models.generate_content(
-                    model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    model=model_name,
                     contents=audit_prompt,
                     config=types.GenerateContentConfig(
-                        response_mime_type="application/json"
+                        response_mime_type="application/json",
+                        system_instruction="Atue como um especialista em psicometria e avaliação educacional de larga escala (ENEM). Sua prioridade absoluta é a precisão pedagógica do diagnóstico."
                     )
                 )
                 audit_data = json.loads(audit_resp.text)["audit"]

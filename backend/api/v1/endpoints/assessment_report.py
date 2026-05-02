@@ -7,14 +7,14 @@ from sqlalchemy.orm import Session
 from database import get_db
 import os
 import json
-from google import genai
+from core.genai import get_genai_client
 from google.genai import types
 from core.translator import get_friendly_name, mask_id, get_friendly_code
 
 router = APIRouter()
 
 def generate_ai_analysis(proficiencies: list):
-    """Helper to generate AI analysis from proficiencies list"""
+    """Helper to generate AI analysis from proficiencies list using centralized GenAI client"""
     if not proficiencies:
         return None
 
@@ -22,42 +22,43 @@ def generate_ai_analysis(proficiencies: list):
         f"- [{p.get('area', 'Geral')}] {get_friendly_name(p['id'])}: {p['score']*100:.1f}% - {p['description']}"
         for p in proficiencies
     ])    
-    prompt = f"""
-    Você é um assistente de análise pedagógica especializado no ENEM.
-    Sua tarefa é converter dados técnicos de proficiência em recomendações diagnósticas objetivas.
     
-    PERFIL DE PROFICIÊNCIA DO ESTUDANTE:
+    # Prompt otimizado para Vertex AI com foco em profundidade pedagógica
+    prompt = f"""
+    Você é um Engenheiro de Diagnóstico Pedagógico de Alta Performance, especializado na Teoria de Resposta ao Item (TRI) e na Matriz do ENEM.
+    Sua tarefa é converter fluxos de dados de proficiência em um relatório estratégico e técnico de evolução.
+    
+    PERFIL DE PROFICIÊNCIA DO ESTUDANTE (Vertex AI Engine):
     {prof_summary}
     
-    Instruções para o retorno (JSON):
-    1. 'title': Utilize um título técnico para o relatório.
-    2. 'summary': Analise a maturidade cognitiva demonstrada pelos dados.
-    3. 'strengths': Liste competências com alto nível de domínio técnico.
-    4. 'weaknesses': Identifique lacunas fundamentais que impactam o progresso global.
-    5. 'action_plan': Defina uma estratégia técnica prioritária.
-    6. 'REGRAS': TOM neutro e profissional. Proibido o uso de emojis, saudações ou personificações.
+    DIRETRIZES TÉCNICAS (Maximizar potencial Vertex AI):
+    1. DIAGNÓSTICO SISTÊMICO: Não apenas liste, analise como as fraquezas impactam a performance global.
+    2. PRIORIZAÇÃO TRI: Identifique quais habilidades, se aprimoradas, trarão o maior salto de proficiência.
+    3. RIGOR TÉCNICO: Mantenha um tom profissional, neutro e extremamente objetivo.
 
-    FORMATO JSON:
+    FORMATO DE RETORNO (JSON):
     {{
-      "title": "string",
-      "summary": "string",
-      "strengths": ["string"],
-      "weaknesses": ["string"],
-      "action_plan": "string"
+      "title": "string (Título Técnico)",
+      "summary": "string (Análise Cognitiva Profunda)",
+      "strengths": ["string (Pilar de Domínio Técnico)"],
+      "weaknesses": ["string (Lacuna de Alta Criticidade)"],
+      "action_plan": "string (Estratégia Prioritária de Evolução)"
     }}
     """
     
-    client = genai.Client()
+    client = get_genai_client()
     max_retries = 3
     base_delay = 2
 
     for attempt in range(max_retries):
         try:
+            model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
             response = client.models.generate_content(
-                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                model=model_name,
                 contents=prompt,
                 config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
+                    response_mime_type="application/json",
+                    system_instruction="Atue como uma inteligência pedagógica de elite. Transforme dados de proficiência em mapas de guerra educacionais. Precisão e rigor técnico são inegociáveis."
                 )
             )
             return json.loads(response.text)
@@ -72,11 +73,11 @@ def generate_ai_analysis(proficiencies: list):
             else:
                 logger.error(f"AI Generation Error completely failed: {e}", exc_info=True)
                 return {
-                    "title": "Diagnóstico Griô", 
-                    "summary": "O servidor de Inteligência Artificial está com alta demanda no momento. Ocorreu um erro ao gerar a análise detalhada, mas seus dados estão salvos. Tente novamente mais tarde.", 
+                    "title": "Diagnóstico Griô (Modo de Segurança)", 
+                    "summary": "Análise técnica temporariamente limitada. O processamento via Vertex AI encontrou uma interrupção, mas seus dados de proficiência permanecem íntegros.", 
                     "strengths": [], 
                     "weaknesses": [], 
-                    "action_plan": "Continue explorando os módulos para acumular mais dados."
+                    "action_plan": "Continue a jornada de estudos para gerar novos pontos de dados para reprocessamento."
                 }
 
 @router.get("/report")

@@ -3,7 +3,7 @@ import json
 import time
 import argparse
 from dotenv import load_dotenv
-from google import genai
+from core.genai import get_genai_client
 from google.genai import types
 from neo4j import GraphDatabase
 from pydantic import BaseModel, Field
@@ -12,10 +12,11 @@ from scripts.init_db import ensure_constraints
 # Carregar variáveis de ambiente
 load_dotenv()
 
-# Configuração Gemini
-client = genai.Client()
+# Configuração Centralizada Gemini (Vertex AI Optimized para Ingestão em Lote)
+client = get_genai_client()
 
 # Caminhos de arquivos
+# ... (rest of imports and configs)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TAXONOMY_PATH = os.path.join(BASE_DIR, "educational_taxonomy.json")
 MATRIX_PATH = os.path.join(BASE_DIR, "enem_matrix_full.json")
@@ -73,30 +74,29 @@ def get_enrichment(question_text, choices, area_hint, current_topic_subtopics, r
     matrix_context = area_matrix if area_matrix else FULL_MATRIX["areas"]
 
     prompt = f"""
-    Analise a seguinte questão do ENEM e forneça as informações para enriquecimento pedagógico.
+    Você é um Engenheiro de Dados Educacionais de Alta Performance, especializado na Matriz de Referência do ENEM.
+    Sua missão é realizar o enriquecimento pedagógico cirúrgico da questão fornecida para alimentar nosso grafo de conhecimento.
     
-    QUESTÃO:
+    QUESTÃO (Vertex AI Data Stream):
     {question_text}
     
     ALTERNATIVAS:
     {choices}
     
     ---
-    REGRAS DE TAXONOMIA (MANDATÓRIO):
-    1. AREA e TOPIC: Escolha EXATAMENTE desta lista:
+    DIRETRIZES TÉCNICAS (Maximizar potencial Vertex AI):
+    1. TAXONOMIA RÍGIDA: Escolha EXATAMENTE desta lista para AREA e TOPIC:
     {json.dumps(EDUCATIONAL_TAXONOMY, indent=2, ensure_ascii=False)}
     
-    2. COMPETENCIES e SKILLS: Escolha apenas IDs existentes nesta matriz oficial:
+    2. MAPEAMENTO DE MATRIZ: Utilize apenas IDs existentes nesta matriz oficial:
     {json.dumps(matrix_context, indent=2, ensure_ascii=False)}
     
-    3. SUBTOPICS (CONSOLIDAÇÃO EXTREMA): 
-       Aqui estão subtópicos já cadastrados no banco para esta área: {list(current_topic_subtopics)}
-       - REGRA DE OURO: Você DEVE REUTILIZAR um ou mais subtópicos desta lista se a questão tiver o mínimo de relação.
-       - PROIBIDO criar sinônimos ou especificações (Ex: Se já existe "Poluição", não crie "Poluição da Água").
-       - SÓ crie um novo subtópico se for um conceito TOTALMENTE INÉDITO. 
-       - Se for criar um novo, seja genérico, curto (1 a 3 palavras) e use "Title Case".
+    3. CONSOLIDAÇÃO DE SUBTÓPICOS: 
+       Subtópicos existentes no grafo para esta área: {list(current_topic_subtopics)}
+       - REGRA DE OURO: Reutilize subtópicos da lista acima se houver qualquer correlação técnica. Evite fragmentação.
+       - SÓ crie um novo subtópico se for um conceito fundamentalmente inédito.
     
-    4. DIAGNÓSTICO: 'is_diagnostic' true apenas para conceitos base (meta: 15% do total).
+    4. PRECISÃO PEDAGÓGICA: A 'explanation' deve ser profunda, clara e focada na resolução lógica da questão.
     
     NOTA: Em 'skills', use apenas o código curto (ex: 'H1'). O sistema fará o link com a competência.
     """

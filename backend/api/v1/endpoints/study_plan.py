@@ -4,7 +4,7 @@ from core.deps import get_current_user
 from models.user import User
 from database import get_db
 from sqlalchemy.orm import Session
-from google import genai
+from core.genai import get_genai_client
 from google.genai import types
 import os
 import json
@@ -22,12 +22,7 @@ async def get_study_plan(
         AssessmentAttempt.user_id == current_user.id
     ).order_by(AssessmentAttempt.created_at.desc()).first()
 
-    # 2. Verificar Cache no Postgres. O Cache deve ser inválido se:
-    # a) O attempt não possuir analysis_json preenchido (ou seja, attempt "novo") mas o cache for antigo?
-    # Para ser simples no MVP: vamos amarrar o cache do Study Plan ao AssessmentAttempt
-    # Mas como o study_plan_cache tá na tabela de usuários, vamos verificar se o JSON guardado 
-    # tem uma chave de `attempt_id`. Se o `attempt_id` for menor que o último, refaz o plano.
-    
+    # 2. Verificar Cache no Postgres
     use_cache = False
     if current_user.study_plan_cache and latest_attempt:
         try:
@@ -55,53 +50,50 @@ async def get_study_plan(
             if not proficiencies:
                 return {"status": "pending", "message": "Faça a prova diagnóstica primeiro para gerar seu plano."}
 
-            # 3. Gerar Plano de Estudos com Gemini
+            # 3. Gerar Plano de Estudos via Centralized Client (Vertex AI Optimized)
             prof_summary = "\n".join([f"- {p['id']}: {p['score']*100:.1f}% {'(Inferido)' if p['is_inferred'] else ''} - {p['description']}" for p in proficiencies])
             
             prompt = f"""
-            Você é um assistente de planejamento de estudos especializado no ENEM.
-            Com base nas proficiências do estudante abaixo, gere um PLANO DE ESTUDOS técnico e objetivo.
+            Você é um Arquiteto de Aprendizagem de Alta Performance, especializado em Otimização de Estudos para o ENEM.
+            Sua missão é projetar um Plano de Estudos técnico, cirúrgico e focado em ganho real de proficiência (TRI).
             
-            PROFICIÊNCIAS:
+            FLUXO DE PROFICIÊNCIA DO ESTUDANTE (Vertex AI Engine):
             {prof_summary}
             
-            Instruções Críticas de Análise:
-            1. Scores marcados como '(Inferido)' representam potencial latente identificado pela nossa rede neural, não erros reais. Trate-os como áreas de expansão e descoberta.
-            2. Scores baixos SEM a marcação '(Inferido)' são lacunas reais (erros em questões). Priorize estas para remediação urgente.
-            3. Identifique as 3 maiores lacunas prioritárias (focando em erros reais primeiro).
-            4. Para cada lacuna, indique:
-               - O que estudar (temas específicos e fundamentais).
-               - Por que estudar (relevância técnica para a matriz ENEM).
-               - Uma orientação prática de estudo.
-            5. TOM: Estritamente profissional, neutro e direto. Proibido o uso de personas, saudações ou tratamentos informais.
+            DIRETRIZES TÉCNICAS (Maximizar potencial Vertex AI):
+            1. PRIORIZAÇÃO TRI: Lacunas reais (scores baixos sem marcação de inferência) devem ser remediadas IMEDIATAMENTE para estancar a perda de pontos por erros em questões fáceis/médias.
+            2. EXPANSÃO DE POTENCIAL: Utilize as habilidades '(Inferido)' como ganchos cognitivos para acelerar a curva de aprendizado em áreas de afinidade.
+            3. ESTRATÉGIA CIRÚRGICA: O plano deve ser prático, técnico e livre de qualquer ruído informacional ou saudações.
             
-            FORMATO JSON:
+            FORMATO DE RETORNO (JSON):
             {{
               "plan": [
                 {{
                   "priority": 1,
                   "skill_code": "string",
-                  "title": "string",
+                  "title": "string (Título Técnico)",
                   "topics": ["string"],
-                  "justification": "string",
-                  "tip": "string"
+                  "justification": "string (Análise de Relevância ENEM)",
+                  "tip": "string (Dica de Alta Performance)"
                 }}
               ],
-              "motivation": "string"
+              "motivation": "string (Síntese Estratégica)"
             }}
             """
             
-            client = genai.Client()
+            client = get_genai_client()
             max_retries = 3
             base_delay = 2
             
             for attempt in range(max_retries):
                 try:
+                    model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
                     response = client.models.generate_content(
-                        model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                        model=model_name,
                         contents=prompt,
                         config=types.GenerateContentConfig(
-                            response_mime_type="application/json"
+                            response_mime_type="application/json",
+                            system_instruction="Atue como um estrategista educacional sênior. Sua prioridade é a eficiência cognitiva e a maximização da nota TRI através de intervenções precisas."
                         )
                     )
                     plan_data = json.loads(response.text)
@@ -127,4 +119,4 @@ async def get_study_plan(
                         time.sleep(delay)
                     else:
                         logger.error(f"Erro crítico ao processar plano de estudos IA: {e}", exc_info=True)
-                        raise HTTPException(status_code=503, detail="O servidor de Inteligência Artificial está com alta demanda. Por favor, tente novamente em alguns instantes.")
+                        raise HTTPException(status_code=503, detail="O servidor de Inteligência Artificial via Vertex AI está com alta demanda. Seus dados estão preservados, tente novamente em alguns instantes.")

@@ -4,10 +4,9 @@ from core.deps import get_current_user
 from core.rate_limit import limiter, get_rate_limit
 from models.user import User
 from schemas.chatbot import MentorRequest, MentorResponse
-from google import genai
+from core.genai import get_genai_client
 from google.genai import types
 import os
-from core.translator import get_friendly_name
 
 router = APIRouter()
 
@@ -27,23 +26,27 @@ def socratic_mentor(
         logger = logging.getLogger(__name__)
     
     driver = get_driver()
+    client = get_genai_client()
     
+    if not client:
+        raise HTTPException(status_code=500, detail="Serviço de IA não configurado.")
+
     # Suportar assistência genérica ou específica por questão
+    model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+    
     if mentor_request.question_id == "general":
-        # Modo de assistência geral
+        # Modo de assistência geral (Vertex AI Optimized)
         system_instruction = """
-        Você é um Mentor Educacional do Griô, especializado em preparação para o ENEM.
-        Seu objetivo é ajudar o estudante com dúvidas sobre conceitos, estratégias de estudo e resolução de problemas.
-        Seja encorajador, motivacional e focado no aprendizado.
+        Você é o Mentor Educacional Griô, uma inteligência pedagógica de alta performance especializada no ENEM.
+        Sua missão é guiar o estudante através de conceitos complexos, estratégias de estudo e resolução de problemas.
         
-        DIRETRIZES:
-        1. TOM: Profissional, amigável e motivacional.
-        2. MÉTODO: Explique conceitos de forma clara, usando exemplos quando possível.
-        3. LINGUAGEM: PROIBIÇÃO EXTREMA DO USO DE EMOJIS. Não use gírias ou jargões técnicos sem explicar.
-        4. CONCISÃO: Respostas claras e diretas, máximo 4 frases.
+        DIRETRIZES TÉCNICAS (Maximizar potencial Vertex AI):
+        1. TOM: Profissional, encorajador e focado em maturidade cognitiva.
+        2. MÉTODO: Utilize analogias claras e exemplos práticos para desmistificar temas áridos.
+        3. LINGUAGEM: PROIBIÇÃO ABSOLUTA DE EMOJIS. Use Markdown para estruturação.
+        4. CONCISÃO: Máximo 4 frases por resposta. Vá direto ao ponto pedagógico.
         """
         
-        client = genai.Client()
         history = []
         
         for msg in mentor_request.chat_history:
@@ -58,7 +61,7 @@ def socratic_mentor(
         for attempt in range(max_retries):
             try:
                 response = client.models.generate_content(
-                    model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    model=model_name,
                     contents=history,
                     config=types.GenerateContentConfig(
                         system_instruction=system_instruction
@@ -81,7 +84,7 @@ def socratic_mentor(
                     logger.error(f"Gemini API completely failed in general chat: {str(e)}")
                     raise HTTPException(
                         status_code=503,
-                        detail="O servidor de Inteligência Artificial está com alta demanda. Tente novamente em alguns momentos."
+                        detail="O Mentor Griô via Vertex AI está temporariamente indisponível. Tente novamente em instantes."
                     )
     
     # Modo específico por questão
@@ -126,40 +129,35 @@ def socratic_mentor(
         user_letter = option_map.get(mentor_request.selected_option_id)
         is_correct = user_letter == result["correct_answer"]
         
-        # 2. Configurar o Prompt Socrático
-        skills_context = ", ".join([f"{get_friendly_name(code)}: {desc}" for code, desc in zip(result["skill_codes"], result["skill_descriptions"])])
+        # 2. Configurar o Prompt Socrático (Vertex AI Optimized)
+        skills_context = ", ".join([f"{code}: {desc}" for code, desc in zip(result["skill_codes"], result["skill_descriptions"])])
         
         system_instruction = f"""
-        Você é um Mentor Socrático especializado no ENEM.
-        Seu objetivo é auxiliar o estudante na resolução de questões, utilizando o método socrático para guiá-lo ao raciocínio correto sem fornecer a resposta diretamente. Seja sempre encorajador, motivacional e focado no crescimento do aluno.
+        Você é o Mentor Socrático Griô de Alta Performance.
+        Seu objetivo é guiar o estudante pelo labirinto cognitivo do ENEM, utilizando o método socrático para que ele descubra o caminho correto por conta própria.
         
-        CONTEXTO DA QUESTÃO:
+        CONTEXTO TÉCNICO DA QUESTÃO:
         Texto: {result["text"]}
-        Opção Correta: {result["correct_answer"]}
-        Explicação Técnica: {result["explanation"]}
-        Habilidades Relacionadas: {skills_context}
+        Gabarito: {result["correct_answer"]}
+        Análise Pedagógica: {result["explanation"]}
+        Habilidades Matriz ENEM: {skills_context}
         
         RESPOSTA DO ESTUDANTE:
-        O estudante selecionou a opção {user_letter}: "{options.get(mentor_request.selected_option_id)}"
-        Status: {'Correto' if is_correct else 'Incorreto'}
+        Opção {user_letter}: "{options.get(mentor_request.selected_option_id)}"
+        Status: {'Correto (Validar Raciocínio)' if is_correct else 'Incorreto (Redirecionar Cognição)'}
         
-        DIRETRIZES DE RESPOSTA:
-        1. TOM: Profissional, encorajador e motivacional (focado no progresso).
-        2. MÉTODO: Não forneça a alternativa correta. Utilize perguntas direcionadas para que o estudante identifique o erro ou confirme a lógica do acerto.
-        3. LINGUAGEM: PROIBIÇÃO EXTREMA DO USO DE EMOJIS. Não atue como um personagem ou entidade (NÃO incorpore o Mestre Griô). Não use gírias.
-        4. CONCISÃO: Limite a resposta a no máximo 3 frases curtas.
-        5. FOCO: Relacione o feedback com a Habilidade ENEM associada à questão de forma clara e amigável.
+        DIRETRIZES DE TUTORIA (Maximizar potencial Vertex AI):
+        1. MÉTODO SOCRÁTICO: NUNCA revele a alternativa correta. Faça perguntas que exponham a contradição no erro ou reforcem a lógica do acerto.
+        2. RIGOR E ESTÍMULO: Seja técnico, profissional e motivacional. PROIBIÇÃO ABSOLUTA DE EMOJIS.
+        3. CONCISÃO EXTREMA: Máximo 3 frases. Foque na Habilidade ENEM associada.
         """
-
-        # 3. Chamar o Gemini
-        client = genai.Client()
         
         history = []
         for msg in mentor_request.chat_history:
             history.append({"role": "user" if msg.role == "user" else "model", "parts": [{"text": msg.content}]})
             
         if not history:
-            input_text = f"O aluno acabou de responder a questão {mentor_request.question_id} e {'acertou' if is_correct else 'errou'}. Inicie a orientação."
+            input_text = f"O aluno acabou de responder a questão {mentor_request.question_id} e {'acertou' if is_correct else 'errou'}. Inicie a orientação técnica."
             history.append({"role": "user", "parts": [{"text": input_text}]})
 
         max_retries = 3
@@ -168,7 +166,7 @@ def socratic_mentor(
         for attempt in range(max_retries):
             try:
                 response = client.models.generate_content(
-                    model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    model=model_name,
                     contents=history,
                     config=types.GenerateContentConfig(
                         system_instruction=system_instruction
@@ -191,5 +189,5 @@ def socratic_mentor(
                     logger.error(f"Gemini API completely failed in specific question chat: {str(e)}")
                     raise HTTPException(
                         status_code=503,
-                        detail="O servidor de Inteligência Artificial está com alta demanda. Tente novamente em alguns momentos."
+                        detail="O Mentor Griô via Vertex AI está processando muitas dúvidas no momento. Tente novamente em instantes."
                     )
