@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from database import get_db
 from crud.question import get_assessment_questions
@@ -203,3 +204,22 @@ def submit_assessment(
         current_user.is_diagnostic_in_progress = False
         db.add(current_user)
         db.commit()
+
+class AttemptSubmission(BaseModel):
+    question_id: str
+    is_correct: bool
+
+@router.post("/students/{student_id}/attempts", status_code=202)
+@limiter.limit(get_rate_limit("assessment"))
+def submit_attempt(
+    request: Request,
+    student_id: str,
+    attempt: AttemptSubmission,
+    current_user: User = Depends(get_current_user)
+):
+    if str(current_user.id) != student_id:
+        raise HTTPException(status_code=403, detail="Not authorized to submit attempts for this user")
+        
+    # Por enquanto, apenas um "pass" na lógica de cálculo, como requisitado para o MVP core.
+    # A atualização no grafo seria feita via um job assíncrono ou chamada subsequente.
+    return {"message": "Attempt registered", "student_id": student_id, "question_id": attempt.question_id, "is_correct": attempt.is_correct}
