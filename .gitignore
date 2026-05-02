@@ -102,3 +102,4 @@ htmlcov/
 .openclaude-profile.json
 .env
 backend/.env
+frontend/.env
